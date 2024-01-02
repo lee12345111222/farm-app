@@ -1,0 +1,31 @@
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap');
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+html,
+body,
+#__next,
+main {
+    @apply w-full h-full;
+}
+
+.primary-solid-button {
+    --background-color: #4682b4 !important;
+    --text-color: #fff;
+    --border-color: #4682b4;
+    --border-radius: 0.5rem;
+}
+.primary-outline-button {
+    --background-color: #fff !important;
+    --text-color: #708090 !important;
+    --border-color: #708090 !important;
+    --border-radius: 0.5rem;
+}

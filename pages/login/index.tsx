@@ -1,37 +1,41 @@
 import React from 'react'
-import { Form, Input } from 'antd-mobile'
+import Image from 'next/image'
+import { Form, Input, Button } from 'antd-mobile'
 
-const Login =  () => {
-  return (
-    <>
-      <Form layout='horizontal' mode='card'>
-        <Form.Header>卡片模式及分组</Form.Header>
-        <Form.Item label='手机号'>
-          <Input placeholder='请输入' />
-        </Form.Item>
-        <Form.Item label='短信验证码'>
-          <Input placeholder='请输入' />
-        </Form.Item>
-        <Form.Header />
-        <Form.Item label='姓名'>
-          <Input placeholder='请输入' />
-        </Form.Item>
-        <Form.Item label='邮箱地址'>
-          <Input placeholder='请输入' />
-        </Form.Item>
-        <Form.Item label='所在城市'>
-          <Input placeholder='请输入' />
-        </Form.Item>
-        <Form.Header />
-      </Form>
-      <Form layout='horizontal' mode='card'>
-        <Form.Header>带辅助操作</Form.Header>
-        <Form.Item label='短信验证码' extra={<a>发送验证码</a>}>
-          <Input placeholder='请输入' />
-        </Form.Item>
-      </Form>
-    </>
-  )
+const Login = () => {
+    return (
+        <div className="w-full h-full">
+            <div className="relative bg-[url('/background.png')] bg-cover h-[56.5%]">
+                <div className="flex items-center absolute top-[67px] right-[12px]">
+                    <img
+                        className="mr-[25px] w-[20px] h-[19px]"
+                        src="/language.png"
+                        alt="language"
+                    />
+                    <img className="w-[18.5px] h-[14.5px]" src="/menu.png" alt="menu" />
+                </div>
+            </div>
+            <div className="p-[27px] pt-[27.5px]">
+                <div className="mb-[54.5px] text-light-color text-[26px] font-light">
+                    您好！歡迎登錄
+                </div>
+                <div className="text-center">
+                    <Button
+                        color="primary"
+                        fill="solid"
+                        className="w-[321px] !h-[46px] !mb-[31px] primary-solid-button">
+                        登入
+                    </Button>
+                    <Button
+                        color="primary"
+                        fill="outline"
+                        className="w-[321px] !h-[46px] primary-outline-button">
+                        註冊
+                    </Button>
+                </div>
+            </div>
+        </div>
+    )
 }
 
 export default Login
