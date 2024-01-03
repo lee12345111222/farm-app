@@ -1,38 +1,58 @@
 import React from 'react'
 import Image from 'next/image'
+import Header from '@/components/header'
 import { Form, Input, Button } from 'antd-mobile'
+import { useRouter } from 'next/navigation'
 
 const Login = () => {
+    const router = useRouter()
+
     return (
-        <div className="w-full h-full">
-            <div className="relative bg-[url('/background.png')] bg-cover h-[56.5%]">
-                <div className="flex items-center absolute top-[67px] right-[12px]">
-                    <img
-                        className="mr-[25px] w-[20px] h-[19px]"
-                        src="/language.png"
-                        alt="language"
-                    />
-                    <img className="w-[18.5px] h-[14.5px]" src="/menu.png" alt="menu" />
-                </div>
+        <div className="w-full h-full relative pt-[116px]">
+            <Header />
+            <div className="flex justify-center">
+                <img
+                    src="/logo.png"
+                    className="w-[61px] h-[61px]"
+                    alt=""
+                    onClick={() => router.push('/')}
+                />
             </div>
-            <div className="p-[27px] pt-[27.5px]">
-                <div className="mb-[54.5px] text-light-color text-[26px] font-light">
-                    您好！歡迎登錄
-                </div>
-                <div className="text-center">
-                    <Button
-                        color="primary"
-                        fill="solid"
-                        className="w-[321px] !h-[46px] !mb-[31px] primary-solid-button">
-                        登入
-                    </Button>
-                    <Button
-                        color="primary"
-                        fill="outline"
-                        className="w-[321px] !h-[46px] primary-outline-button">
-                        註冊
-                    </Button>
-                </div>
+            <div className="">
+                <Form
+                    layout="horizontal"
+                    className="mt-[35px]"
+                    footer={
+                        <div className="w-full">
+                            <div className="mt-[25px] mb-[50px] pr-[27px] flex justify-end text-[#708090] text-[15px]">
+                                忘記密碼
+                            </div>
+                            <div className="w-full flex justify-center">
+                                <Button
+                                    type="submit"
+                                    color="primary"
+                                    fill="solid"
+                                    className="w-[321px] !h-[46px] !mb-[31px] primary-solid-button">
+                                    登入
+                                </Button>
+                            </div>
+                        </div>
+                    }>
+                    <Form.Item
+                        name="name"
+                        label={
+                            <img className="w-[17px] h-[17px]" src="/nickname.png" alt="nickname" />
+                        }>
+                        <Input placeholder="用户名" />
+                    </Form.Item>
+                    <Form.Item
+                        name="password"
+                        label={
+                            <img className="w-[17px] h-[17px]" src="/password.png" alt="password" />
+                        }>
+                        <Input placeholder="密碼" />
+                    </Form.Item>
+                </Form>
             </div>
         </div>
     )

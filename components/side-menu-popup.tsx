@@ -1,12 +1,13 @@
-import React from 'react'
-import Image from 'next/image'
-import Header from '@/components/header'
-import { Form, Input, Button } from 'antd-mobile'
-import { useRouter } from 'next/navigation'
-import FooterToolBar from '@/components/footer-tool-bar'
+import React, { useState } from 'react'
+import { Popup } from 'antd-mobile'
+interface IProps {
+    visible: boolean
+    open: () => void
+    close: () => void
+}
 
-const Home = () => {
-    const router = useRouter()
+const SideMenuPopup = (props: IProps) => {
+    const { visible, close } = props
     const menus = [
         {
             img: '/home_slices/mysquare.png',
@@ -35,28 +36,25 @@ const Home = () => {
         },
     ]
     return (
-        <div className="w-full h-full relative bg-[#F6F9FF]">
-            <div className="relative bg-[url('/home_slices/bg.png')] bg-cover h-[38%]">
-                <Header home logo />
-                <div className="absolute top-[118px] left-[30px] text-white text-[19px]">
-                    晚安，Ronald的農場！
-                </div>
-            </div>
-            <div className="home-cards-wrapper">
+        <Popup
+            visible={visible}
+            onMaskClick={() => {
+                close()
+            }}
+            position="right"
+            bodyStyle={{ width: '270px' }}>
+            <div className="pt-[59px] pl-[43.5px]">
                 {menus.map((menu) => {
                     return (
-                        <div
-                            key={menu.label}
-                            className="flex justify-center items-center home-card">
+                        <div key={menu.label} className="flex items-center mb-[20px]">
                             <img className="w-[20px] h-[20px]" src={menu.img} alt="" />
                             <div className="text-[#708090] text-[20px] ml-[14px]">{menu.label}</div>
                         </div>
                     )
                 })}
             </div>
-            <FooterToolBar />
-        </div>
+        </Popup>
     )
 }
 
-export default Home
+export default SideMenuPopup

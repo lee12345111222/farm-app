@@ -19,13 +19,68 @@ main {
 
 .primary-solid-button {
     --background-color: #4682b4 !important;
-    --text-color: #fff;
-    --border-color: #4682b4;
-    --border-radius: 0.5rem;
+    --text-color: #fff !important;
+    --border-color: #4682b4 !important;
+    --border-radius: 0.5rem !important;
 }
 .primary-outline-button {
     --background-color: #fff !important;
     --text-color: #708090 !important;
     --border-color: #708090 !important;
     --border-radius: 0.5rem;
+}
+.adm-list-body {
+    border-top: none !important;
+    border-bottom-color: #a0a0a0 !important;
+}
+.adm-list {
+    padding: 0px 27px !important;
+}
+.adm-list-item {
+    padding-left: 0 !important;
+}
+.adm-list-item-content-prefix {
+    width: auto !important;
+    padding: 1.4rem 0.875rem 0.825rem 0 !important;
+}
+.adm-list-item-content-main {
+    padding: 0 !important;
+    padding-top: 1.15rem !important;
+}
+.adm-list-item-content {
+    border-top-color: #a0a0a0 !important;
+    padding-top: 1.25rem !important;
+}
+.adm-list-item:first-of-type .adm-list-item-content {
+    padding-top: 0 !important;
+}
+
+.adm-input-element::placeholder {
+    color: #708090 !important;
+    font-size: 18px !important;
+    font-weight: 300;
+}
+.adm-form-footer {
+    padding: 0 !important;
+}
+.home-cards-wrapper {
+    padding: 0 27px;
+    transform: translateY(-21px);
+}
+.home-card {
+    width: 320px;
+    height: 63px;
+    background: #ffffff;
+    border-radius: 15px;
+    margin-bottom: 12px;
+}
+.home-center-icon {
+    width: 52.5px;
+    height: 52.5px;
+    background: #4682b4;
+    border-radius: 50%;
+    @apply flex items-center justify-center;
+}
+.home-center-icon-wrapper {
+    transform: translateY(-2rem);
 }
