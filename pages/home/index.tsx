@@ -30,8 +30,8 @@ const Home = () => {
         },
         {
             img: '/home_slices/connectus.png',
-            label: '联络我们',
-            onClick: () => 1,
+            label: '聯絡我們',
+            onClick: () => router.push('/chat'),
         },
     ]
     return (
@@ -47,7 +47,8 @@ const Home = () => {
                     return (
                         <div
                             key={menu.label}
-                            className="flex justify-center items-center home-card">
+                            className="flex justify-center items-center home-card"
+                            onClick={menu.onClick}>
                             <img className="w-[20px] h-[20px]" src={menu.img} alt="" />
                             <div className="text-[#708090] text-[20px] ml-[14px]">{menu.label}</div>
                         </div>

@@ -64,15 +64,23 @@ main {
     padding: 0 !important;
 }
 .home-cards-wrapper {
-    padding: 0 27px;
-    transform: translateY(-21px);
+    transform: translateY(-1.3125rem);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
 }
+
 .home-card {
     width: 320px;
     height: 63px;
     background: #ffffff;
     border-radius: 15px;
     margin-bottom: 12px;
+}
+@media all and (max-width: 375px) {
+    .home-cards-wrapper {
+        transform: translateY(-3.5rem);
+    }
 }
 .home-center-icon {
     width: 52.5px;
@@ -83,4 +91,10 @@ main {
 }
 .home-center-icon-wrapper {
     transform: translateY(-2rem);
+}
+.footer-tool-wrapper {
+    margin-right: 1.6875rem;
+}
+.first-tool-wrapper {
+    margin-right: 2.4375rem;
 }

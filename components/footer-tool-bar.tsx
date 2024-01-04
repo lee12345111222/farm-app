@@ -21,7 +21,7 @@ const FooterToolBar = () => {
             img: '/home_slices/connect.png',
             label: '聯絡我們',
             centerIcon: true,
-            onClick: () => 1,
+            onClick: () => router.push('/chat'),
         },
         {
             img: '/home_slices/user-record.png',
@@ -46,7 +46,8 @@ const FooterToolBar = () => {
                         className={`flex flex-col items-center ${
                             menu.centerIcon ? 'home-center-icon-wrapper' : ''
                         }`}
-                        style={{ marginRight: mr, height: menu.centerIcon ? '5rem' : 'auto' }}>
+                        style={{ marginRight: mr, height: menu.centerIcon ? '5rem' : 'auto' }}
+                        onClick={menu.onClick}>
                         <div className={`${menu.centerIcon ? 'home-center-icon' : ''}`}>
                             <img className="w-[20px] h-[20px]" src={menu.img} alt="" />
                         </div>
