@@ -37,12 +37,14 @@ const Chat = () => {
     }
     const ref = useRef<HTMLDivElement>(null)
     useEffect(() => {
-        const height = ref.current?.clientHeight
-        if (message.length > 2 && height) {
-            setHeight(ref.current?.clientHeight + 'px')
+        const height = ref.current?.clientHeight!
+        const bodyHeight = document.body?.clientHeight
+        if (height > bodyHeight) {
+            setHeight(height + 'px')
+        } else {
+            setHeight(bodyHeight + 'px')
         }
     }, [ref.current?.clientHeight])
-    console.log(height)
 
     return (
         <div className="w-full  bg-[#F5F5F5] relative" style={{ height }}>
@@ -52,22 +54,22 @@ const Chat = () => {
                     return (
                         <div key={item.id}>
                             {item.type === 'receive' ? (
-                                <div className="flex pl-[20px] mb-[35px] ">
+                                <div className="flex pl-[20px] mb-[35px] pr-[75px]">
                                     <img
                                         className="w-[50px] h-[50px] mr-[8px] "
                                         src={item.avatar}
                                         alt=""
                                     />
-                                    <div className="w-[221px] p-[10px] bg-[#79E1BE] rounded-lg rounded-tl-none">
+                                    <div className="p-[10px] bg-[#79E1BE] rounded-lg rounded-tl-none">
                                         {item.text}
                                     </div>
                                 </div>
                             ) : (
-                                <div className="flex pl-[78px] mb-[35px]">
-                                    <div className="bg-[#4682B4] w-[221px] p-[10px] mr-[8px] rounded-lg rounded-tr-none">
+                                <div className="flex flex-row-reverse pr-[20px] mb-[35px] pl-[75px]">
+                                    <img className="w-[50px] h-[50px]" src={item.avatar} alt="" />
+                                    <div className="bg-[#4682B4] p-[10px] mr-[8px] rounded-lg rounded-tr-none">
                                         {item.text}
                                     </div>
-                                    <img className="w-[50px] h-[50px]" src={item.avatar} alt="" />
                                 </div>
                             )}
                         </div>
