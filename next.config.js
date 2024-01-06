@@ -12,7 +12,7 @@ const withTM = require('next-transpile-modules')([
 ]);
 const nextConfig = withTM(withImages({
   i18n: {
-    locales: ['en', 'fr', 'nl'],
+    locales: ['en', 'zh'],
     defaultLocale: 'en',
   },
   sassOptions: {

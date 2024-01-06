@@ -2,10 +2,12 @@ import React from 'react'
 import Image from 'next/image'
 import Header from '@/components/header'
 import { Form, Input, Button } from 'antd-mobile'
-import { useRouter } from 'next/navigation'
+import { useRouter } from 'next/router'
+import { language } from '@/utils/language'
 
 const Home = () => {
-    const router = useRouter()
+    const router = useRouter();
+    const { locale: activeLocale } = router;
 
     return (
         <div className="w-full h-full">
@@ -15,7 +17,7 @@ const Home = () => {
 
             <div className="p-[27px] pt-[27.5px]">
                 <div className="mb-[54.5px] text-light-color text-[26px] font-light">
-                    您好！歡迎登錄
+                {language[activeLocale || 'zh']?.hello}
                 </div>
                 <div className="text-center">
                     <Button
@@ -25,7 +27,7 @@ const Home = () => {
                         onClick={() => {
                             router.push('/login')
                         }}>
-                        登入
+                        {language[activeLocale || 'zh']?.login}
                     </Button>
                     <Button
                         color="primary"
@@ -34,7 +36,7 @@ const Home = () => {
                         onClick={() => {
                             router.push('/register')
                         }}>
-                        註冊
+                        {language[activeLocale || 'zh']?.regisit}
                     </Button>
                 </div>
             </div>

@@ -1,34 +1,38 @@
 import Link from 'next/link'
 import { useRouter } from 'next/router'
 
-export default function LocaleSwitcher() {
+interface Iprops{
+  children: React.ReactNode
+}
+export default function LocaleSwitcher(props: Iprops) {
   const router = useRouter()
   const { locales, locale: activeLocale } = router
+
+  console.log(locales, activeLocale)
 
   const otherLocales = (locales || []).filter(
     (locale) => locale !== activeLocale
   )
 
   return (
-    <div>
-      <p>Locale switcher:</p>
-      <ul>
+    <>
+     
         {otherLocales.map((locale) => {
           const { pathname, query, asPath } = router
+          console.log(pathname, query, asPath )
           return (
-            <li key={locale}>
+            <span key={locale}>
               <Link
                 href={{ pathname, query }}
                 as={asPath}
                 locale={locale}
                 legacyBehavior
               >
-                {locale}
+               {props.children}
               </Link>
-            </li>
+            </span>
           )
         })}
-      </ul>
-    </div>
+    </>
   )
 }
