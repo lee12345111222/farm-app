@@ -20,7 +20,9 @@ export const language: Record<string, any> = {
     farminformation: 'Information',
     forggetpassword: 'forget the password',
     goodnight: "Good night, Ronald's farm!",
-    more: 'more'
+    more: 'more',
+    takeorally: 'take orally',
+    vaccine: 'vaccine'
   },
   zh: {
     hello: "您好！歡迎登錄",
@@ -43,6 +45,8 @@ export const language: Record<string, any> = {
     farminformation: '農場資料',
     forggetpassword: '忘記密碼',
     goodnight: "晚安，Ronald的農場！",
-    more: '查看更多'
+    more: '查看更多',
+    takeorally: '口服',
+    vaccine: '疫苗'
   },
 };
