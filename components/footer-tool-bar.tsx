@@ -13,12 +13,12 @@ const FooterToolBar = () => {
     {
       img: "/home_slices/home.png",
       label: language[activeLocale || "zh"]?.home,
-      onClick: () => 1,
+      onClick: () => router.push("/home"),
     },
     {
       img: "/home_slices/message.png",
       label: language[activeLocale || "zh"]?.latestnews,
-      onClick: () => 1,
+      onClick: () => router.push("/news"),
     },
     {
       img: "/home_slices/connect.png",

@@ -98,3 +98,6 @@ main {
 .first-tool-wrapper {
     margin-right: 2.4375rem;
 }
+.shop .adm-tabs-header{
+    border-bottom-width: 0;
+}
