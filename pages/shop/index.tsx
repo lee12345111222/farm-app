@@ -18,7 +18,7 @@ const News = memo(() => {
       </div>
       <div className="px-4">
         <SearchBar
-          placeholder="搜尋"
+          placeholder={language[activeLocale || "zh"]?.search}
           showCancelButton
           icon={<img src='/news/search.png' className="w-4 h-4 mr-2"/>}
           style={{
@@ -43,7 +43,7 @@ const News = memo(() => {
         </Tabs>
         <ShopList/>
       </div>
-      <img src="/news/shopCart.png" alt="" className="fixed right-4 bottom-[110px] w-11" />
+      <img src="/news/shopCart.png" onClick={() => router.push('/shopCart')} alt="" className="fixed right-4 bottom-[110px] w-11" />
       <FooterToolBar />
     </div>
   );

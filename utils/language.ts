@@ -17,12 +17,15 @@ export const language: Record<string, any> = {
     agreeterms: 'I agree to the above terms',
     home: 'Home',
     userrecord: 'Records', 
-    farminformation: 'Information',
+    farminformation: 'Info',
     forggetpassword: 'forget the password',
     goodnight: "Good night, Ronald's farm!",
     more: 'more',
     takeorally: 'take orally',
-    vaccine: 'vaccine'
+    vaccine: 'vaccine',
+    price: 'price',
+    search: 'search',
+    select: 'select'
   },
   zh: {
     hello: "您好！歡迎登錄",
@@ -47,6 +50,9 @@ export const language: Record<string, any> = {
     goodnight: "晚安，Ronald的農場！",
     more: '查看更多',
     takeorally: '口服',
-    vaccine: '疫苗'
+    vaccine: '疫苗',
+    price: '價錢',
+    search: '搜尋',
+    select: '選擇'
   },
 };

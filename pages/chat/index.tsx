@@ -80,8 +80,8 @@ const Chat = () => {
                 <Input
                     onEnterPress={onEnterPress}
                     className="border border-transparent	 w-[272px] h-[40px] !bg-[#F5F5F5] rounded-lg"></Input>
-                <img className="ml-[10px] w-[27px] h-[27px]" src="/menu.png" alt="menu" />
-                <img className="ml-[10px] w-[27px] h-[27px]" src="/menu.png" alt="menu" />
+                <img className="ml-[10px] w-[27px] h-[27px]" src="/news/expression.png" alt="menu" />
+                <img className="ml-[10px] w-[27px] h-[27px]" src="/news/add.png" alt="menu" />
             </div>
         </div>
     )

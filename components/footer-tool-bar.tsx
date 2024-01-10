@@ -60,7 +60,7 @@ const FooterToolBar = () => {
             </div>
 
             <div
-              className="mt-[6px] text-[#708090] text-[12px]"
+              className="mt-[6px] text-[#708090] text-[12px] text-center"
               style={{ width: wd }}
             >
               {menu.label}

@@ -101,3 +101,23 @@ main {
 .shop .adm-tabs-header{
     border-bottom-width: 0;
 }
+.shopDetail .adm-capsule-tabs-header, .shopDetail .adm-capsule-tabs-tab-wrapper{
+    padding: 0;
+}
+.shopDetail .adm-capsule-tabs-tab-list{
+    justify-content: space-between;
+}
+.shopDetail .adm-capsule-tabs-tab-wrapper{
+    width: 31%;
+    flex-grow: 0;
+}
+.shopDetail .adm-capsule-tabs-tab{
+    border-radius: 10px;
+}
+.tablePage .adm-dropdown-item-title{
+    justify-content: space-between;
+    width: 100%;
+}
+.tablePage .adm-dropdown-item .adm-dropdown-item-title-arrow{
+    font-size: 12px;
+}
