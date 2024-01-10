@@ -15,7 +15,7 @@ const News = memo(() => {
   return (
     <div className="w-full min-h-dvh bg-[#F6F9FF] pb-[143px] shop">
       <div className="bg-cover h-36">
-        <Header back title="購物車" />
+        <Header back title={language[activeLocale || "zh"]?.shopCart} />
       </div>
       <div className="px-4">
         <ShopList shopCart />

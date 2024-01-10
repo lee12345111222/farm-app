@@ -25,7 +25,8 @@ export const language: Record<string, any> = {
     vaccine: 'vaccine',
     price: 'price',
     search: 'search',
-    select: 'select'
+    select: 'select',
+    shopCart: 'ShopCart'
   },
   zh: {
     hello: "您好！歡迎登錄",
@@ -53,6 +54,7 @@ export const language: Record<string, any> = {
     vaccine: '疫苗',
     price: '價錢',
     search: '搜尋',
-    select: '選擇'
+    select: '選擇',
+    shopCart: '購物車'
   },
 };

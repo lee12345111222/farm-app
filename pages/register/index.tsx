@@ -92,7 +92,7 @@ const Register = () => {
             />
           </Form.Item>
         </Form>
-        <div className="mt-[50px] w-full flex justify-center">
+        <div className="mt-[50px] pb-[50px] w-full flex justify-center">
           <Radio
             style={{
               "--icon-size": "18px",

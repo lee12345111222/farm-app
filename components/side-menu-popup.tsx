@@ -21,7 +21,7 @@ const SideMenuPopup = (props: IProps) => {
     {
       img: "/home_slices/medicine.png",
       label: language[activeLocale || "zh"]?.buymedications,
-      onClick: () => router.push('/sjop'),
+      onClick: () => router.push('/shop'),
     },
     {
       img: "/home_slices/news.png",

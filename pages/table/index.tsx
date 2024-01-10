@@ -40,8 +40,9 @@ const News = memo(() => {
         <div className="flex flex-wrap justify-between">
           {
             new Array(4).fill(1).map((ele,idx) => (
-              <div className="w-[45%] h-44 bg-white mt-4 rounded-xl" key={idx}>
+              <div className="w-[45%] h-44 bg-white mt-4 rounded-xl flex flex-col items-center" key={idx}>
                 <div className="font-[PingFang SC, PingFang SC] text-[#333333] font-medium text-lg truncate text-center mt-4 pb-3">表格A</div>
+                <img src="/news/table.png" className="w-20 h-24" alt="" />
               </div>
             ))
           }

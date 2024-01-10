@@ -28,7 +28,7 @@ const News = memo(() => {
           </div>
         </div>
         {new Array(5).fill(1).map((ele, idx) => (
-          <div className="pb-4 bg-white rounded-2xl mt-[40px]" key={idx}>
+          <div className="pb-4 bg-white rounded-2xl mt-[40px]" onClick={() => router.push('/news/detail')} key={idx}>
             <img src="/home_slices/bg.png" alt="" className="rounded-t-2xl w-full h-20 object-cover" />
             <div className="w-full px-6 flex font-[PingFang SC-Bold] font-blod text-[#708090] text-2xl leading-4 mt-4">
               <span className="mr-2">12月會讯</span>

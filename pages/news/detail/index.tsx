@@ -11,7 +11,7 @@ const News = memo(() => {
   const { locale: activeLocale } = router;
 
   return (
-    <div className="w-full min-h-dvh bg-[#F6F9FF] ">
+    <div className="w-full min-h-dvh bg-[#F6F9FF] pb-[143px]">
       <div className="bg-cover h-44">
         <Header logo />
       </div>
