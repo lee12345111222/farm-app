@@ -15,7 +15,7 @@ const News = memo(() => {
         <Header logo />
       </div>
       <div className="px-4">
-        <Dropdown className="rounded-xl" style={{
+      <Dropdown className="rounded-xl" style={{
           '--adm-font-size-main': '18px',
           '--adm-color-light': '#000'
         }}>
@@ -37,16 +37,7 @@ const News = memo(() => {
             </div>
           </Dropdown.Item>
         </Dropdown>
-        <div className="flex flex-wrap justify-between">
-          {
-            new Array(4).fill(1).map((ele,idx) => (
-              <div onClick={() => router.push('/record')} className="w-[45%] h-44 bg-white mt-4 rounded-xl flex flex-col items-center" key={idx}>
-                <div className="font-[PingFang SC, PingFang SC] text-[#333333] font-medium text-lg truncate text-center mt-4 pb-3">表格A</div>
-                <img src="/news/table.png" className="w-20 h-24" alt="" />
-              </div>
-            ))
-          }
-        </div>
+        <img src="/news/table.png" className="w-[100%] mt-4" alt="" />
       </div>
       <FooterToolBar />
     </div>

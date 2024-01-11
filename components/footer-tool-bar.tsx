@@ -29,7 +29,7 @@ const FooterToolBar = () => {
     {
       img: "/home_slices/user-record.png",
       label: language[activeLocale || "zh"]?.userrecord,
-      onClick: () => router.push("/table"),
+      onClick: () => router.push("/record"),
     },
     {
       img: "/home_slices/square.png",
