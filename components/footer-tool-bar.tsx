@@ -39,9 +39,9 @@ const FooterToolBar = () => {
   ];
 
   return (
-    <div className="w-full h-[91px] pt-[18px] px-[26px] pb-[34px]  flex  fixed bottom-0 bg-white rounded-t-2xl">
+    <div className="w-full h-[91px] pt-[18px] pb-[34px] flex justify-center  fixed bottom-0 bg-white rounded-t-2xl">
       {menus.map((menu, index) => {
-        const mr = `${index == 0 ? "2.4375rem" : "1.6875rem"}`;
+        const mr = `${index == 0 ? "1.2rem" : "0.8rem"}`;
         const wd = `${index == 0 ? "1.5rem" : "3rem"}`;
         return (
           <div
@@ -51,6 +51,7 @@ const FooterToolBar = () => {
             }`}
             style={{
               marginRight: mr,
+              marginLeft: mr,
               height: menu.centerIcon ? "5rem" : "auto",
             }}
             onClick={menu.onClick}

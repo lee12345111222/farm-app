@@ -18,17 +18,17 @@ const Home = () => {
     {
       img: "/home_slices/medicine.png",
       label: language[activeLocale || "zh"]?.buymedications,
-      onClick: () => 1,
+      onClick: () => router.push('/shop'),
     },
     {
       img: "/home_slices/news.png",
       label: language[activeLocale || "zh"]?.latestnews,
-      onClick: () => 1,
+      onClick: () => router.push('/news'),
     },
     {
       img: "/home_slices/table.png",
       label: language[activeLocale || "zh"]?.usefulforms,
-      onClick: () => 1,
+      onClick: () => router.push('/table'),
     },
     {
       img: "/home_slices/connectus.png",
