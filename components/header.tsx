@@ -6,12 +6,13 @@ interface IHeader {
   home?: boolean;
   back?: boolean;
   title?: string;
+  styles?:string;
 }
 const Header = (props: IHeader) => {
-  const { logo, home, back,title } = props;
+  const { logo, home, back,title, styles} = props;
   const router = useRouter();
   return (
-    <div className="w-full flex justify-between items-center absolute top-[67px] right-[12px]">
+    <div className={`w-full flex justify-between items-center absolute top-16 right-[12px] ${styles}`}>
       {logo ? (
         <img
           className="ml-[40px] w-[26px] h-[26px]"
