@@ -13,7 +13,7 @@ const Home = () => {
     {
       img: "/home_slices/mysquare.png",
       label: language[activeLocale || "zh"]?.myfarm,
-      onClick: () => 1,
+      onClick: () => router.push('/farm'),
     },
     {
       img: "/home_slices/medicine.png",

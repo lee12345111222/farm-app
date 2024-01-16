@@ -37,7 +37,7 @@ const News = memo(() => {
           styles="top-10"
         />
       </div>
-      <div className="mx-3 h-12 bg-[#B0C4DE] flex justify-between px-1 items-center rounded-lg">
+      <div className="mx-3 h-12 mt-3 bg-[#B0C4DE] flex justify-between px-1 items-center rounded-lg">
         {tab.map((ele) => (
           <div
             key={ele.name}

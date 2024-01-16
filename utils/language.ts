@@ -29,6 +29,7 @@ export const language: Record<string, any> = {
     shopCart: 'ShopCart',
     immunity: 'immunity',
     feed: 'Farm feed recipe database',
+    chickenbatch: 'Chicken batch database',
   },
   zh: {
     hello: "您好！歡迎登錄",
@@ -60,5 +61,6 @@ export const language: Record<string, any> = {
     shopCart: '購物車',
     immunity: '免疫程序资料库',
     feed: '農場饲料配方资料库',
+    chickenbatch: '雞隻批次资料库',
   },
 };

@@ -15,16 +15,15 @@ import { language } from "@/utils/language";
 import FooterToolBar from "@/components/footer-tool-bar";
 import PieChart from "@/components/pieChart";
 
-const list = [
-  { name: "免疫程序" },
-  { name: "清潔程序" },
-  { name: "農場饲料配方" },
-  { name: "雞隻批次资料" },
-];
-
 const News = memo(() => {
   const router = useRouter();
   const { locale: activeLocale } = router;
+  const list = [
+    { name: "免疫程序", click: () => router.push("/immunity") },
+    { name: "清潔程序", click: () => router.push("/animals") },
+    { name: "農場饲料配方", click: () => router.push("/feed") },
+    { name: "雞隻批次资料", click: () => router.push("/chickenBatch") },
+  ];
 
   const getDom = (title?: string) => (
     <Dropdown
@@ -108,10 +107,10 @@ const News = memo(() => {
                   <PieChart />
                 </div>
                 <div className="font-[PingFang SC, PingFang SC] font-normal text-[#708090] text-sm mt-3">
-                  图表{idx+1}
+                  图表{idx + 1}
                 </div>
               </div>
-              {idx !==2 && <Divider direction="vertical" className="!h-12" />}
+              {idx !== 2 && <Divider direction="vertical" className="!h-12" />}
             </>
           ))}
         </div>
@@ -125,7 +124,7 @@ const News = memo(() => {
             <div className="font-[PingFang SC, PingFang SC] font-normal text-[#708090] text-base">
               {ele.name}
             </div>
-            <div className="flex items-center">
+            <div className="flex items-center" onClick={ele.click}>
               <div className="font-[PingFang SC, PingFang SC] font-normal text-[#4682B4] text-xs mr-2.5">
                 view more
               </div>
