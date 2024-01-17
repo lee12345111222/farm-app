@@ -34,7 +34,7 @@ const FooterToolBar = () => {
     {
       img: "/home_slices/square.png",
       label: language[activeLocale || "zh"]?.farminformation,
-      onClick: () => 1,
+      onClick: () => router.push('/farm'),
     },
   ];
 

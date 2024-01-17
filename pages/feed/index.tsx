@@ -5,26 +5,48 @@ import { useRouter } from "next/router";
 import { language } from "@/utils/language";
 import CalendarPicker from "@/components/calendarPicker";
 
-const list = [
-  { name: "每月混合飼料次數", unit: '次' },
-  { name: "飼料混合器數量" , unit: '個'},
-  { name: "雞苗飼料混合器容量" , unit: '公斤'},
-  { name: "中雞至大雞飼料混合器容量" , unit: '公斤'},
-  { name: "大雞飼料混合器容量" , unit: '公斤'},
-  { name: "料塔容量" , unit: '公斤'},
-  { name: "料塔敷量" , unit: '個'},
-  { name: "每月飼料混合器清潔次數" , unit: '次'},
-  { name: "每月料塔清潔次數" , unit: '次'},
-];
-const tab = [
-  { name: "饲料用量" },
-  { name: "料倉及穀倉容量" },
-  { name: "精料用量" },
-];
+// const list = [
+//   { name: "每月混合飼料次數", unit: '次' },
+//   { name: "飼料混合器數量" , unit: '個'},
+//   { name: "雞苗飼料混合器容量" , unit: '公斤'},
+//   { name: "中雞至大雞飼料混合器容量" , unit: '公斤'},
+//   { name: "大雞飼料混合器容量" , unit: '公斤'},
+//   { name: "料塔容量" , unit: '公斤'},
+//   { name: "料塔敷量" , unit: '個'},
+//   { name: "每月飼料混合器清潔次數" , unit: '次'},
+//   { name: "每月料塔清潔次數" , unit: '次'},
+// ];
+// The number of mixed feeds per month
+// The number of feeder mixers
+// Chicken fry feed mixer capacity
+// Medium to large chicken feeder capacity
+// Chicken mixer capacity
+// Tower capacity
+// The amount of material tower dressing
+// The number of cleaning times per month for the feed mixer
+// The number of times the tower is cleaned per month
+
 
 const News = memo(() => {
   const router = useRouter();
   const { locale: activeLocale } = router;
+
+  const tab = [
+    { name: language[activeLocale || "zh"]?.feedingdose},
+    { name: language[activeLocale || "zh"]?.capacity },
+    { name: language[activeLocale || "zh"]?.spermdose},
+  ];
+  const list = [
+    { name: "每月混合飼料次數", unit: '次' },
+    { name: "飼料混合器數量" , unit: '個'},
+    { name: "雞苗飼料混合器容量" , unit: '公斤'},
+    { name: "中雞至大雞飼料混合器容量" , unit: '公斤'},
+    { name: "大雞飼料混合器容量" , unit: '公斤'},
+    { name: "料塔容量" , unit: '公斤'},
+    { name: "料塔敷量" , unit: '個'},
+    { name: "每月飼料混合器清潔次數" , unit: '次'},
+    { name: "每月料塔清潔次數" , unit: '次'},
+  ];
 
   const [active, setActive] = useState("饲料用量");
 

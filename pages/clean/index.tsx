@@ -5,22 +5,17 @@ import { useRouter } from "next/router";
 import { language } from "@/utils/language";
 import CalendarPicker from "@/components/calendarPicker";
 
-
-
 const News = memo(() => {
   const router = useRouter();
   const { locale: activeLocale } = router;
+
   const list = [
-    { name: language[activeLocale || "zh"]?.immunizationdate },
-    { name: language[activeLocale || "zh"]?.vaccinename },
-    { name: language[activeLocale || "zh"]?.vaccinestrains },
-    { name: language[activeLocale || "zh"]?.vaccinestype },
-    { name: language[activeLocale || "zh"]?.vaccinesage },
-    { name: language[activeLocale || "zh"]?.vaccinationsnums },
-    { name: language[activeLocale || "zh"]?.administered },
-    { name: language[activeLocale || "zh"]?.vaccinesroute },
-    { name: language[activeLocale || "zh"]?.manufacturers },
-    { name: language[activeLocale || "zh"]?.vaccinewhere},
+    { name: language[activeLocale || "zh"]?.clearingdate },
+    { name: language[activeLocale || "zh"]?.cleantype },
+    { name: language[activeLocale || "zh"]?.rodenticidestype },
+    { name: language[activeLocale || "zh"]?.endoparasitic },
+    { name: language[activeLocale || "zh"]?.exoparasitic },
+    { name: language[activeLocale || "zh"]?.insecticide },
   ];
 
   return (
@@ -28,7 +23,7 @@ const News = memo(() => {
       <div className="bg-cover h-24">
         <Header
           back
-          title={language[activeLocale || "zh"]?.immunity}
+          title={language[activeLocale || "zh"]?.clean}
           styles="top-10"
         />
       </div>

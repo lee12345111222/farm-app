@@ -89,22 +89,19 @@ const News = memo(() => {
           </div>
         </div>
       </div>
-      <div className="mx-3 mt-6 px-5 py-4 rounded-md bg-white">
-        {/* <div className="flex mt-4 items-center justify-between">
-          {new Array(3).fill(1).map((ele, idx) => (
+      <div className="mx-3">
+        <div className="flex flex-wrap justify-between">
+          {["line", "pie", "line", "bar"].map((ele: any, idx) => (
             <>
-              <div className="text-center" key={idx}>
-                <div className="w-16 h-11">
-                  <PieChart />
-                </div>
-                <div className="font-[PingFang SC, PingFang SC] font-normal text-[#708090] text-sm mt-3">
-                  图表{idx+1}
-                </div>
+              <div
+                className="w-[47%] bg-white h-32 mt-3  rounded-2xl py-3"
+                key={idx}
+              >
+                <PieChart type={ele} />
               </div>
-              {idx !==2 && <Divider direction="vertical" className="!h-12" />}
             </>
           ))}
-        </div> */}
+        </div>
       </div>
       <div className="mx-3 mt-3 pt-3 pb-4 px-3  bg-white  rounded-2xl">
         <div className="h-12 bg-[#B0C4DE] flex justify-between px-1 items-center rounded-lg">
@@ -119,6 +116,11 @@ const News = memo(() => {
               {ele.name}
             </div>
           ))}
+        </div>
+      </div>
+      <div className="mx-3 mt-3">
+        <div className="flex flex-wrap justify-between bg-white rounded-2xl py-3 h-48">
+          <PieChart type="doubouleOptions" />
         </div>
       </div>
     </div>

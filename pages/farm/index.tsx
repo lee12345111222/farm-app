@@ -19,10 +19,22 @@ const News = memo(() => {
   const router = useRouter();
   const { locale: activeLocale } = router;
   const list = [
-    { name: "免疫程序", click: () => router.push("/immunity") },
-    { name: "清潔程序", click: () => router.push("/animals") },
-    { name: "農場饲料配方", click: () => router.push("/feed") },
-    { name: "雞隻批次资料", click: () => router.push("/chickenBatch") },
+    {
+      name: language[activeLocale || "zh"]?.immunityname,
+      click: () => router.push("/immunity"),
+    },
+    {
+      name: language[activeLocale || "zh"]?.cleanname,
+      click: () => router.push("/clean"),
+    },
+    {
+      name: language[activeLocale || "zh"]?.feedname,
+      click: () => router.push("/feed"),
+    },
+    {
+      name: language[activeLocale || "zh"]?.chickenbatchname,
+      click: () => router.push("/chickenBatch"),
+    },
   ];
 
   const getDom = (title?: string) => (
@@ -63,15 +75,15 @@ const News = memo(() => {
         <div className="overflow-hidden">
           <div className="mt-20 h-52 w-[84%] bg-white pl-6 pt-4 pr-5 rounded-md">
             <div className="font-[PingFang SC, PingFang SC] font-medium text-[#708090] text-lg mb-4">
-              Ronald的農場！
+              {language[activeLocale || "zh"]?.farmhello}
             </div>
             <div className="font-[PingFang SC, PingFang SC] font-medium text-[#708090] text-sm mb-4">
-              注冊養殖額度:
+              {language[activeLocale || "zh"]?.farmquota}
               <span className="font-bold underline ml-2">100</span>
             </div>
             <div className="flex items-center mb-3 ">
               <div className="font-[PingFang SC, PingFang SC] font-medium text-[#708090] text-sm">
-                雞隻種類：
+                {language[activeLocale || "zh"]?.chickentype}
               </div>
               <div className="justify-between flex flex-1">
                 {new Array(3).fill(1).map((ele, idx) => getDom())}
@@ -79,35 +91,35 @@ const News = memo(() => {
             </div>
             <div className="flex items-center mb-4 flex-1 justify-between ">
               <div className="font-[PingFang SC, PingFang SC] font-medium text-[#708090] text-sm">
-                雞舍種類：
+                {language[activeLocale || "zh"]?.cooptype}
               </div>
               <div className="tablePage flex-1">{getDom("開放式")}</div>
             </div>
             <div className="flex items-center flex-1 justify-between">
               <div className="font-[PingFang SC, PingFang SC] font-medium text-[#708090] text-sm">
-                雞苗: <span className="font-bold underline">x</span> 隻
+              {language[activeLocale || "zh"]?.small}: <span className="font-bold underline">x</span> {language[activeLocale || "zh"]?.nums}
               </div>
               <div className="font-[PingFang SC, PingFang SC] font-medium text-[#708090] text-sm">
-                中雞:: <span className="font-bold underline">x</span> 隻
+              {language[activeLocale || "zh"]?.medium}: <span className="font-bold underline">x</span> {language[activeLocale || "zh"]?.nums}
               </div>
               <div className="font-[PingFang SC, PingFang SC] font-medium text-[#708090] text-sm">
-                大雞: <span className="font-bold underline">x</span> 隻
+              {language[activeLocale || "zh"]?.big}: <span className="font-bold underline">x</span> {language[activeLocale || "zh"]?.nums}
               </div>
             </div>
           </div>
         </div>
       </div>
       <div className="mx-3 -mt-6 px-5 py-4 rounded-md bg-white">
-        <div className="tablePage farm-content">{getDom("批次A")}</div>
+        <div className="tablePage farm-content">{getDom(`${language[activeLocale || "zh"]?.batch}A`)}</div>
         <div className="flex mt-4 items-center justify-between">
           {new Array(3).fill(1).map((ele, idx) => (
             <>
               <div className="text-center" key={idx}>
                 <div className="w-16 h-11">
-                  <PieChart />
+                  <PieChart type="pie" />
                 </div>
                 <div className="font-[PingFang SC, PingFang SC] font-normal text-[#708090] text-sm mt-3">
-                  图表{idx + 1}
+                  form{idx + 1}
                 </div>
               </div>
               {idx !== 2 && <Divider direction="vertical" className="!h-12" />}

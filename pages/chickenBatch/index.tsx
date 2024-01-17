@@ -101,6 +101,7 @@ const News = memo(() => {
             {ele.right.map((elem,idx) => (
               <div
                 key={idx}
+                onClick={() => {console.log(123);router.push('/animals')}}
                 className="flex px-5 py-5 justify-between items-center border-b border-[#D7E8FE]"
               >
                 <div className="font-[PingFang SC, PingFang SC] font-medium text-[#708090] text-sm">
