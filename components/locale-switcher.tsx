@@ -25,6 +25,7 @@ export default function LocaleSwitcher(props: Iprops) {
               <Link
                 href={{ pathname, query }}
                 as={asPath}
+                replace
                 locale={locale}
                 legacyBehavior
               >

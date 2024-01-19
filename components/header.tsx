@@ -24,21 +24,12 @@ const Header = (props: IHeader) => {
           onClick={() => router.push("/home")}
         />
       ) : back ? (
-        home ? (
-          <LeftOutline
-            color={home ? "#fff" : "#000"}
-            className="ml-[40px]"
-            fontSize={16}
-            onClick={() => router.back()}
-          />
-        ) : (
-          <img
-            className="ml-[40px] w-2 h-4"
-            src={`/back.png`}
-            alt="back"
-            onClick={() => router.back()}
-          />
-        )
+        <img
+          className="ml-[40px] w-2 h-4"
+          src={home ? "/backwhite.png" : `/back.png`}
+          alt="back"
+          onClick={() => router.back()}
+        />
       ) : (
         <div></div>
       )}

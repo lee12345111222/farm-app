@@ -73,13 +73,39 @@ const News = memo(() => {
           styles="top-8"
         />
         <div className="overflow-hidden">
-          <div className="mt-20 h-52 w-[84%] bg-white pl-6 pt-4 pr-5 rounded-md">
+          <div className="mt-20 h-52 w-[84%] bg-white pl-6 pt-4 pr-5 rounded-md relative">
+            <Space className="absolute right-3 top-4">
+              <Button
+                size="mini"
+                type="button"
+                color="primary"
+                fill="solid"
+                style={{
+                  "--background-color": "#4682B4",
+                }}
+              >
+                保存
+              </Button>
+              <Button size="mini" type="reset" fill="solid">
+                重設
+              </Button>
+            </Space>
             <div className="font-[PingFang SC, PingFang SC] font-medium text-[#708090] text-lg mb-4">
               {language[activeLocale || "zh"]?.farmhello}
             </div>
-            <div className="font-[PingFang SC, PingFang SC] font-medium text-[#708090] text-sm mb-4">
-              {language[activeLocale || "zh"]?.farmquota}
-              <span className="font-bold underline ml-2">100</span>
+            <div className="font-[PingFang SC, PingFang SC] font-medium text-[#708090] text-sm mb-4 flex">
+              <span className="flex-shrink-0">
+                {language[activeLocale || "zh"]?.farmquota}
+              </span>
+              {/* <span className="font-bold underline ml-2">100</span> */}
+              <Input
+                className="font-medium underline ml-2 w-1 -mt-1"
+                defaultValue="XXX"
+                style={{
+                  "--color": "#708090",
+                  fontSize: 14,
+                }}
+              />
             </div>
             <div className="flex items-center mb-3 ">
               <div className="font-[PingFang SC, PingFang SC] font-medium text-[#708090] text-sm">
@@ -96,21 +122,50 @@ const News = memo(() => {
               <div className="tablePage flex-1">{getDom("開放式")}</div>
             </div>
             <div className="flex items-center flex-1 justify-between">
-              <div className="font-[PingFang SC, PingFang SC] font-medium text-[#708090] text-sm">
-              {language[activeLocale || "zh"]?.small}: <span className="font-bold underline">x</span> {language[activeLocale || "zh"]?.nums}
+              <div className="font-[PingFang SC, PingFang SC] font-medium text-[#708090] text-sm flex-shrink-0 flex">
+                {language[activeLocale || "zh"]?.small}:{" "}
+                <Input
+                  className="font-medium underline ml-2 !w-8 flex-grow-0 -mt-1"
+                  defaultValue="xxx"
+                  style={{
+                    "--color": "#708090",
+                    fontSize: 14,
+                  }}
+                />{" "}
+                {language[activeLocale || "zh"]?.nums}
               </div>
-              <div className="font-[PingFang SC, PingFang SC] font-medium text-[#708090] text-sm">
-              {language[activeLocale || "zh"]?.medium}: <span className="font-bold underline">x</span> {language[activeLocale || "zh"]?.nums}
+              <div className="font-[PingFang SC, PingFang SC] font-medium text-[#708090] text-sm  flex-shrink-0 flex">
+                {language[activeLocale || "zh"]?.medium}:{" "}
+                <Input
+                  className="font-medium underline ml-2 !w-8 flex-grow-0 -mt-1"
+                  defaultValue="xxx"
+                  style={{
+                    "--color": "#708090",
+                    fontSize: 14,
+                  }}
+                />{" "}
+                {language[activeLocale || "zh"]?.nums}
               </div>
-              <div className="font-[PingFang SC, PingFang SC] font-medium text-[#708090] text-sm">
-              {language[activeLocale || "zh"]?.big}: <span className="font-bold underline">x</span> {language[activeLocale || "zh"]?.nums}
+              <div className="font-[PingFang SC, PingFang SC] font-medium text-[#708090] text-sm  flex-shrink-0 flex">
+                {language[activeLocale || "zh"]?.big}:{" "}
+                <Input
+                  className="font-medium underline ml-2 !w-8 flex-grow-0 -mt-1"
+                  defaultValue="xxx"
+                  style={{
+                    "--color": "#708090",
+                    fontSize: 14,
+                  }}
+                />{" "}
+                {language[activeLocale || "zh"]?.nums}
               </div>
             </div>
           </div>
         </div>
       </div>
       <div className="mx-3 -mt-6 px-5 py-4 rounded-md bg-white">
-        <div className="tablePage farm-content">{getDom(`${language[activeLocale || "zh"]?.batch}A`)}</div>
+        <div className="tablePage farm-content">
+          {getDom(`${language[activeLocale || "zh"]?.batch}A`)}
+        </div>
         <div className="flex mt-4 items-center justify-between">
           {new Array(3).fill(1).map((ele, idx) => (
             <>

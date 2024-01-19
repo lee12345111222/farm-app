@@ -1,6 +1,9 @@
 import Header from '@/components/header'
 import { Input } from 'antd-mobile'
 import React, { useState, useEffect, useRef } from 'react'
+// import data from '@emoji-mart/data'
+// import Picker from '@emoji-mart/react'
+// import { SearchIndex } from 'emoji-mart'
 
 const Chat = () => {
     const [height, setHeight] = useState('100%')
@@ -45,10 +48,19 @@ const Chat = () => {
             setHeight(bodyHeight + 'px')
         }
     }, [ref.current?.clientHeight])
-
+    // console.log(data, 'data')
+    // async function search(value: any) {
+    //     const emojis = await SearchIndex.search(value)
+    //     const results = emojis.map((emoji: { skins: { native: any }[] }) => {
+    //       return emoji.skins[0].native
+    //     })
+      
+    //     console.log(results)
+    //   }
     return (
         <div className="w-full  bg-[#F5F5F5] relative" style={{ height }}>
             <Header logo />
+            {/* <Picker data={data} onEmojiSelect={(e: any) => {onEnterPress({target: {value:e.native}});console.log(e)}} /> */}
             <div className="pt-[134px] pb-[101px] text-white" ref={ref}>
                 {message.map((item) => {
                     return (

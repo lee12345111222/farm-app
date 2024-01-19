@@ -15,11 +15,14 @@ import { language } from "@/utils/language";
 import FooterToolBar from "@/components/footer-tool-bar";
 import PieChart from "@/components/pieChart";
 
-const tab = [{ name: "死淘率" }, { name: "用藥記錄" }];
-
 const News = memo(() => {
   const router = useRouter();
   const { locale: activeLocale } = router;
+
+  const tab = [
+    { name: language[activeLocale || "zh"]?.mortality },
+    { name: language[activeLocale || "zh"]?.medicationrecords },
+  ];
 
   const [active, setActive] = useState("死淘率");
 
@@ -56,36 +59,85 @@ const News = memo(() => {
         <Header home back title="雞群A" />
       </div>
       <div className="overflow-hidden px-3 -mt-36 flex justify-center">
-        <div className="pb-5 w-[100%] bg-white pl-6 pt-4 pr-5  rounded-2xl">
-          <div className="font-[PingFang SC, PingFang SC] font-medium text-[#708090] text-sm mb-6">
-            批次名稱: <span className="font-bold underline ml-2">X</span>
+        <div className="pb-5 w-[100%] bg-white pl-6 pt-4 pr-5  rounded-2xl relative">
+          <Space className="absolute right-3 top-4">
+            <Button
+              size="mini"
+              type="button"
+              color="primary"
+              fill="solid"
+              style={{
+                "--background-color": "#4682B4",
+              }}
+            >
+              保存
+            </Button>
+            <Button size="mini" type="reset" fill="solid">
+              重設
+            </Button>
+          </Space>
+          <div className="font-[PingFang SC, PingFang SC] font-medium text-[#708090] text-sm mb-6 flex">
+            <span className="flex-shrink-0">
+              {language[activeLocale || "zh"]?.batchname}：
+            </span>
+            <Input
+              className="font-medium underline -mt-1"
+              defaultValue="xxx"
+              style={{
+                "--color": "#708090",
+                fontSize: 14,
+              }}
+            />
           </div>
-          <div className="font-[PingFang SC, PingFang SC] font-medium text-[#708090] text-sm mb-4">
-            ID：
-            <span className="font-bold underline ml-2">XXXX </span>
+          <div className="font-[PingFang SC, PingFang SC] font-medium text-[#708090] text-sm mb-4 flex">
+            <span className="flex-shrink-0">ID：</span>
+            <Input
+              className="font-medium underline -mt-1"
+              defaultValue="xxx"
+              style={{
+                "--color": "#708090",
+                fontSize: 14,
+              }}
+            />
           </div>
           <div className="flex items-center mb-4">
             <div className="font-[PingFang SC, PingFang SC] font-medium text-[#708090] text-sm">
-              出孵日期:
+              {language[activeLocale || "zh"]?.incubationdate}:
             </div>
             <div className="w-30 ml-2">{getDom("11/11/2023")}</div>
           </div>
           <div className="flex items-center mb-6">
-            <div className="font-[PingFang SC, PingFang SC] font-medium text-[#708090] text-sm">
-              本批入雞總數:
+            <div className="font-[PingFang SC, PingFang SC] font-medium text-[#708090] text-sm flex-shrink-0">
+              {language[activeLocale || "zh"]?.chickentotal}:
             </div>
-            <span className="font-bold underline ml-2 text-[#708090] ">
+            <Input
+              className="font-medium underline -mt-1 !w-10 ml-2"
+              defaultValue="2045"
+              style={{
+                "--color": "#708090",
+                fontSize: 14,
+              }}
+            />
+            <span className="font-bold underline ml-2 text-[#708090]  flex-shrink-0">
               {" "}
-              2045 隻
+              {activeLocale === "zh" ? "隻" : ""}
             </span>
           </div>
           <div className="flex items-center">
-            <div className="font-[PingFang SC, PingFang SC] font-medium text-[#708090] text-sm">
-              雞苗供應商:
+            <div className="font-[PingFang SC, PingFang SC] font-medium text-[#708090] text-sm flex-shrink-0">
+              {language[activeLocale || "zh"]?.chickenseedlingsupplier}:
             </div>
-            <span className="font-bold underline ml-2 text-[#708090] ">
+            <Input
+              className="font-medium underline -mt-1 ml-2"
+              defaultValue="xxx"
+              style={{
+                "--color": "#708090",
+                fontSize: 14,
+              }}
+            />
+            {/* <span className="font-bold underline ml-2 text-[#708090] ">
               XXXX{" "}
-            </span>
+            </span> */}
           </div>
         </div>
       </div>

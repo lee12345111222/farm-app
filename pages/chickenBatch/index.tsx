@@ -80,7 +80,7 @@ const News = memo(() => {
       >
         <img src="/news/add-white.png" className="w-4 h-4" alt="" />
         <div className="font-[PingFang SC, PingFang SC] font-medium text-sm text-white ml-2">
-          加入雞群
+          {language[activeLocale || "zh"]?.addchicken}
         </div>
       </div>
       <div className="mx-3 mt-3 bg-white overflow-hidden rounded-lg">
