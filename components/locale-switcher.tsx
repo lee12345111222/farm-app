@@ -19,7 +19,6 @@ export default function LocaleSwitcher(props: Iprops) {
      
         {otherLocales.map((locale) => {
           const { pathname, query, asPath } = router
-          console.log(pathname, query, asPath )
           return (
             <span key={locale}>
               <Link

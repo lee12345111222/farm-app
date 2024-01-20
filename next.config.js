@@ -18,6 +18,17 @@ const nextConfig = withTM(withImages({
   sassOptions: {
     includePaths: [path.join(__dirname, 'styles')],
   },
+  // async rewrites() {
+  //   return {
+  //     fallback: [
+  //       {
+  //         source: '/ingest/:path*',
+  //         destination: `https://custom-routes-proxying-endpoint.vercel.app/:path*`,
+  //       },
+  //     ],
+  //   }
+  // },
 }))
+
 
 module.exports = nextConfig
