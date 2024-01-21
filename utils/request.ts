@@ -1,4 +1,4 @@
-const baseUrl = ''
+const baseUrl = '/base'
 
 //get请求封装
 export const fetchGet = function(url: any, params: { [x: string]: any; }) {

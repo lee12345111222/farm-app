@@ -4,8 +4,9 @@ import React, { useState, useEffect, useRef } from "react";
 import data from "@emoji-mart/data";
 import Picker from "@emoji-mart/react";
 import { SearchIndex } from "emoji-mart";
-import { useSocket } from "@/hooks/useSocket";
 import { useRouter } from "next/router";
+import useWebsocket from "@/hooks/useWebsocket";
+import { upload } from "@/utils";
 
 const Chat = () => {
   const router = useRouter();
@@ -13,7 +14,7 @@ const Chat = () => {
   const { query } = router;
 
   const [height, setHeight] = useState("100%");
-  const [message, setMessage] = useState([
+  const [message, setMessage] = useState<Record<string, any>[]>([
     // {
     //   id: 1,
     //   text: "这是文字这是文字这是文字这是文字这是文字这是文字这是文字这是文字这是文字",
@@ -35,6 +36,24 @@ const Chat = () => {
 
   const chatSocket = useRef<Record<string, any>>({});
 
+  const { wsData, readyState, sendMessage, reconnect } = useWebsocket({
+    url: query.id ? "ws://54.153.241.236:8000/ws/chat/" + query.id + "/" : "", // 此参数为websocket地址
+  });
+  useEffect(() => {
+    // 接受到socket数据， 进行业务逻辑处理
+    if (Object.keys(wsData).length !== 0) {
+      console.log(wsData);
+      const data1 = JSON.parse(wsData.message[0]);
+      console.log(data1.msgValue + "\n");
+      onEnterPress({ target: { value: data1.msgValue } } as any, "receive");
+    }
+
+    // 如果是已关闭且是当前页面自动重连
+    if (readyState.key === 3) {
+      reconnect();
+    }
+  }, [wsData, readyState]);
+
   useEffect(() => {
     const height = ref.current?.clientHeight!;
     const bodyHeight = document.body?.clientHeight;
@@ -45,22 +64,22 @@ const Chat = () => {
     }
   }, [ref.current?.clientHeight]);
 
-  useEffect(() => {
-    if (query.id) {
-      console.log(query.id, "query");
-      chatSocket.current = new WebSocket(
-        "ws://" + "54.153.241.236:8000" + "/ws/chat/" + query.id + "/"
-      );
-      console.log(chatSocket, "chatSocket");
+  // useEffect(() => {
+  //   if (query.id) {
+  //     console.log(query.id, "query");
+  //     chatSocket.current = new WebSocket(
+  //       "ws://" + "54.153.241.236:8000" + "/ws/chat/" + query.id + "/"
+  //     );
+  //     console.log(chatSocket, "chatSocket");
 
-      chatSocket.current.onmessage = function (e: { data: string }) {
-        const data = JSON.parse(e.data);
-        const data1 = JSON.parse(data.message[0]);
-        console.log(data1.msgValue + "\n");
-        onEnterPress({ target: { value: data1.msgValue } } as any, "receive");
-      };
-    }
-  }, [query.id]);
+  //     chatSocket.current.onmessage = function (e: { data: string }) {
+  //       const data = JSON.parse(e.data);
+  //       const data1 = JSON.parse(data.message[0]);
+  //       console.log(data1.msgValue + "\n");
+  //       onEnterPress({ target: { value: data1.msgValue } } as any, "receive");
+  //     };
+  //   }
+  // }, [query.id]);
 
   const onEnterPress = (
     e: React.KeyboardEvent<HTMLInputElement>,
@@ -70,14 +89,16 @@ const Chat = () => {
 
     if (!type) {
       //发送状态
-      chatSocket.current.send(
-        JSON.stringify({message: JSON.stringify({
-          id: "0001",
-          sendId: query.id,
-          acceptId: query.id === "0001" ? "0002" : "0001",
-          msgType: "1",
-          msgValue: v,
-        })})
+      sendMessage(
+        JSON.stringify({
+          message: JSON.stringify({
+            id: "0001",
+            sendId: query.id,
+            acceptId: query.id === "0001" ? "0002" : "0001",
+            msgType: "1",
+            msgValue: v,
+          }),
+        })
       );
     }
 
@@ -112,6 +133,7 @@ const Chat = () => {
       >
         <Header logo />
         <div className="pt-[134px] pb-[101px] text-white" ref={ref}>
+          <img src={'http://54.153.241.236:8000/chat/downloadFil/1705823955736.png'} />
           {message.map((item) => {
             return (
               <div key={item.id}>
@@ -174,6 +196,10 @@ const Chat = () => {
             alt="menu"
           />
           <img
+            onClick={async (e) => {
+              e.stopPropagation();
+              upload('/chat/uploadFile', (name: string) => onEnterPress({ target: { value: name } } as any))
+            }}
             className="ml-[10px] w-[27px] h-[27px]"
             src="/news/add.png"
             alt="menu"
