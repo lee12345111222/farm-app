@@ -1,14 +1,19 @@
 import Header from "@/components/header";
-import { Input } from "antd-mobile";
+import { Input, Toast } from "antd-mobile";
 import React, { useState, useEffect, useRef } from "react";
 import data from "@emoji-mart/data";
 import Picker from "@emoji-mart/react";
 import { SearchIndex } from "emoji-mart";
 import { useRouter } from "next/router";
 import useWebsocket from "@/hooks/useWebsocket";
-import { upload } from "@/utils";
+import { isFile, isImage, upload } from "@/utils";
+import { baseUrl } from "@/utils/request";
 
-const Chat = () => {
+interface Iprops {
+  sendMessage: Function;
+  messagememo: Record<string, any>;
+}
+const Chat = ({ sendMessage, messagememo }: Iprops) => {
   const router = useRouter();
 
   const { query } = router;
@@ -34,33 +39,46 @@ const Chat = () => {
 
   const ref = useRef<HTMLDivElement>(null);
 
-  const chatSocket = useRef<Record<string, any>>({});
+  // const chatSocket = useRef<Record<string, any>>({});
 
-  const { wsData, readyState, sendMessage, reconnect } = useWebsocket({
-    url: query.id ? "ws://54.153.241.236:8000/ws/chat/" + query.id + "/" : "", // 此参数为websocket地址
-  });
+  // const { wsData, readyState, sendMessage, reconnect } = useWebsocket({
+  //   url: query.id ? "ws://54.153.241.236:8000/ws/chat/" + query.id + "/" : "", // 此参数为websocket地址
+  // });
+  // useEffect(() => {
+  //   // 接受到socket数据， 进行业务逻辑处理
+  //   if (Object.keys(wsData).length !== 0) {
+  //     console.log(wsData);
+  //     const data1 = JSON.parse(wsData.message[0]);
+  //     console.log(data1.msgValue + "\n");
+  //     onEnterPress({ target: { value: data1.msgValue } } as any, "receive");
+  //   }
+
+  //   // 如果是已关闭且是当前页面自动重连
+  //   if (readyState.key === 3) {
+  //     reconnect();
+  //   }
+  // }, [wsData, readyState]);
+  console.log(messagememo, "messagememo");
   useEffect(() => {
-    // 接受到socket数据， 进行业务逻辑处理
-    if (Object.keys(wsData).length !== 0) {
-      console.log(wsData);
-      const data1 = JSON.parse(wsData.message[0]);
+    if (Object.keys(messagememo).length !== 0) {
+      console.log(messagememo);
+      const data1 = JSON.parse(messagememo.message);
       console.log(data1.msgValue + "\n");
       onEnterPress({ target: { value: data1.msgValue } } as any, "receive");
     }
-
-    // 如果是已关闭且是当前页面自动重连
-    if (readyState.key === 3) {
-      reconnect();
+  }, [messagememo]);
+  useEffect(() => {
+    if(query.id){
+      let list = localStorage.getItem("message" + query.id) || "[]";
+      let arr = JSON.parse(list);
+      setMessage(arr);
     }
-  }, [wsData, readyState]);
+  
+  }, [query.id]);
 
   useEffect(() => {
-    const height = ref.current?.clientHeight!;
-    const bodyHeight = document.body?.clientHeight;
-    if (height > bodyHeight) {
-      setHeight(height + "px");
-    } else {
-      setHeight(bodyHeight + "px");
+    if(ref.current){
+      window.scrollTo(0, ref.current?.clientHeight);
     }
   }, [ref.current?.clientHeight]);
 
@@ -81,15 +99,12 @@ const Chat = () => {
   //   }
   // }, [query.id]);
 
-  const onEnterPress = (
-    e: React.KeyboardEvent<HTMLInputElement>,
-    type?: string
-  ) => {
+  const onEnterPress = (e: Record<string, any>, type?: string) => {
     const v = (e.target as any).value;
-
+    console.log(e.target, "target");
     if (!type) {
       //发送状态
-      sendMessage(
+      let res = sendMessage?.(
         JSON.stringify({
           message: JSON.stringify({
             id: "0001",
@@ -100,9 +115,30 @@ const Chat = () => {
           }),
         })
       );
+      if(!res){
+        Toast.show({
+          content: 'The network is not good, please refresh',
+        })
+        return
+      }
+      let list = localStorage.getItem("message" + query.id) || "[]";
+      let pre = JSON.parse(list);
+      localStorage.setItem(
+        "message" + query.id,
+        JSON.stringify([
+          ...pre,
+          {
+            id: message.length + 1,
+            text: v,
+            type:  "send",
+            avatar: "/user_photo2.png",
+          },
+        ])
+      );
     }
 
     setMessage((pre) => {
+      
       return [
         ...pre,
         {
@@ -124,16 +160,43 @@ const Chat = () => {
     setEmojiShow(false);
   };
 
+  console.log(message, "message");
+  const getFiledom = (ele: Record<string, any>) => {
+    const filetype = isImage(ele.text) ? "img" : isFile(ele.text) ? "file" : "";
+    console.log(filetype, "filetype", ele);
+    if (filetype === "img") {
+      return (
+        <img
+          src={baseUrl + "/chat/downloadFile/" + ele.text}
+          className="rounded-lg w-[100%]"
+        />
+      );
+    } else if (filetype === "file") {
+      return (
+        <a
+          className="text-white underline"
+          onClick={() =>
+            window.open(baseUrl + "/chat/downloadFile/" + ele.text)
+          }
+        >
+          {ele.text}
+        </a>
+      );
+    } else {
+      return ele.text;
+    }
+  };
+
   return (
     <>
       <div
-        className="w-full  bg-[#F5F5F5] relative"
-        style={{ height }}
+        className="w-full  bg-[#F5F5F5] relative min-h-screen"
+        // style={{ height }}
         onClick={handleAllClick}
       >
         <Header logo />
         <div className="pt-[134px] pb-[101px] text-white" ref={ref}>
-          <img src={'http://54.153.241.236:8000/chat/downloadFil/1705823955736.png'} />
+          {/* <img src={'http://54.153.241.236:8000/chat/downloadFil/1705823955736.png'} /> */}
           {message.map((item) => {
             return (
               <div key={item.id}>
@@ -144,8 +207,15 @@ const Chat = () => {
                       src={item.avatar}
                       alt=""
                     />
-                    <div className="p-[10px] bg-[#79E1BE] rounded-lg rounded-tl-none self-center break-all">
-                      {item.text}
+                    <div
+                      className={` ${
+                        isImage(item.text)
+                          ? "bg-white"
+                          : "bg-[#79E1BE] p-[10px]"
+                      } rounded-lg rounded-tl-none self-center break-all`}
+                    >
+                      {/* {item.text} */}
+                      {getFiledom(item)}
                     </div>
                   </div>
                 ) : (
@@ -155,8 +225,15 @@ const Chat = () => {
                       src={item.avatar}
                       alt=""
                     />
-                    <div className="bg-[#4682B4] p-[10px] mr-[8px] rounded-lg rounded-tr-none self-center break-all">
-                      {item.text}
+                    <div
+                      className={`${
+                        isImage(item.text)
+                          ? "bg-white"
+                          : "bg-[#4682B4] p-[10px]"
+                      }   mr-[8px] rounded-lg rounded-tr-none self-center break-all`}
+                    >
+                      {/* {item.text} */}
+                      {getFiledom(item)}
                     </div>
                   </div>
                 )}
@@ -198,7 +275,11 @@ const Chat = () => {
           <img
             onClick={async (e) => {
               e.stopPropagation();
-              upload('/chat/uploadFile', (name: string) => onEnterPress({ target: { value: name } } as any))
+              upload("/chat/uploadFile", (name: string, filetype: string) => {
+                onEnterPress({
+                  target: { value: name },
+                } as any);
+              });
             }}
             className="ml-[10px] w-[27px] h-[27px]"
             src="/news/add.png"

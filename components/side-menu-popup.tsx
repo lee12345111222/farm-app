@@ -36,7 +36,7 @@ const SideMenuPopup = (props: IProps) => {
     {
       img: "/home_slices/connectus.png",
       label: language[activeLocale || "zh"]?.contactus,
-      onClick: () => router.push('/chat'),
+      onClick: () => router.push('/chat?id=0002'),
     },
   ];
   return (

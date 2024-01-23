@@ -1,4 +1,4 @@
-import { useState, useRef, useEffect } from "react";
+import { useState, useRef, useEffect, useCallback } from "react";
 
 interface Iprops {
   url: string;
@@ -48,9 +48,14 @@ const useWebsocket = ({ url }: Iprops) => {
     ws.current?.close();
   }; // 发送数据
 
-  const sendMessage = (str: string) => {
-    ws.current?.send(str);
-  }; //重连
+  const sendMessage = useCallback((str: string) => {
+    if(readyState){
+        ws.current?.send(str);
+        return true
+    }else{
+        return false
+    }
+  },[ ws.current]);
 
   const reconnect = () => {
     try {
@@ -60,7 +65,7 @@ const useWebsocket = ({ url }: Iprops) => {
     } catch (e) {
       console.log(e);
     }
-  };
+  }; //重连
 
   useEffect(() => {
     if (url) {
