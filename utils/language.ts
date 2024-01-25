@@ -95,6 +95,11 @@ export const language: Record<string, any> = {
     feedtab2name3: "Monthly usage of copper material for mother's daughter",
     feedtab2name4: 'Monthly consumption of Longdan mother feed',
     feedtab2name5: 'Monthly usage of public materials',
+    addshop: 'add product',
+    shopname: 'Name',
+    shopprice: 'Price',
+    shopresources_id: 'Img',
+    shopremarks: 'Remarks',
   },
   zh: {
     hello: "您好！歡迎登錄",
@@ -192,5 +197,10 @@ export const language: Record<string, any> = {
     feedtab2name3: "每月後母雅铜料用量",
     feedtab2name4: '每月隆蛋母料用量',
     feedtab2name5: '每月公料用量',
+    addshop: '新增商品',
+    shopname: '商品名稱',
+    shopprice: '商品價格',
+    shopresources_id: '商品圖片',
+    shopremarks: '商品備註',
   },
 };

@@ -49,7 +49,7 @@ const useWebsocket = ({ url }: Iprops) => {
   }; // 发送数据
 
   const sendMessage = useCallback((str: string) => {
-    if(readyState){
+    if(readyState === 3){
         ws.current?.send(str);
         return true
     }else{

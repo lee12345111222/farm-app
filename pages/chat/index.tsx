@@ -1,5 +1,5 @@
 import Header from "@/components/header";
-import { Input, Toast } from "antd-mobile";
+import { Button, Input, Toast } from "antd-mobile";
 import React, { useState, useEffect, useRef } from "react";
 import data from "@emoji-mart/data";
 import Picker from "@emoji-mart/react";
@@ -39,26 +39,7 @@ const Chat = ({ sendMessage, messagememo }: Iprops) => {
 
   const ref = useRef<HTMLDivElement>(null);
 
-  // const chatSocket = useRef<Record<string, any>>({});
-
-  // const { wsData, readyState, sendMessage, reconnect } = useWebsocket({
-  //   url: query.id ? "ws://54.153.241.236:8000/ws/chat/" + query.id + "/" : "", // 此参数为websocket地址
-  // });
-  // useEffect(() => {
-  //   // 接受到socket数据， 进行业务逻辑处理
-  //   if (Object.keys(wsData).length !== 0) {
-  //     console.log(wsData);
-  //     const data1 = JSON.parse(wsData.message[0]);
-  //     console.log(data1.msgValue + "\n");
-  //     onEnterPress({ target: { value: data1.msgValue } } as any, "receive");
-  //   }
-
-  //   // 如果是已关闭且是当前页面自动重连
-  //   if (readyState.key === 3) {
-  //     reconnect();
-  //   }
-  // }, [wsData, readyState]);
-  console.log(messagememo, "messagememo");
+  const inputRef = useRef(null);
   useEffect(() => {
     if (Object.keys(messagememo).length !== 0) {
       console.log(messagememo);
@@ -68,46 +49,29 @@ const Chat = ({ sendMessage, messagememo }: Iprops) => {
     }
   }, [messagememo]);
   useEffect(() => {
-    if(query.id){
+    if (query.id) {
       let list = localStorage.getItem("message" + query.id) || "[]";
       let arr = JSON.parse(list);
       setMessage(arr);
     }
-  
   }, [query.id]);
 
   useEffect(() => {
-    if(ref.current){
+    if (ref.current) {
       window.scrollTo(0, ref.current?.clientHeight);
     }
   }, [ref.current?.clientHeight]);
 
-  // useEffect(() => {
-  //   if (query.id) {
-  //     console.log(query.id, "query");
-  //     chatSocket.current = new WebSocket(
-  //       "ws://" + "54.153.241.236:8000" + "/ws/chat/" + query.id + "/"
-  //     );
-  //     console.log(chatSocket, "chatSocket");
 
-  //     chatSocket.current.onmessage = function (e: { data: string }) {
-  //       const data = JSON.parse(e.data);
-  //       const data1 = JSON.parse(data.message[0]);
-  //       console.log(data1.msgValue + "\n");
-  //       onEnterPress({ target: { value: data1.msgValue } } as any, "receive");
-  //     };
-  //   }
-  // }, [query.id]);
 
   const onEnterPress = (e: Record<string, any>, type?: string) => {
     const v = (e.target as any).value;
-    console.log(e.target, "target");
     if (!type) {
       //发送状态
       let res = sendMessage?.(
         JSON.stringify({
           message: JSON.stringify({
-            id: "0001",
+            msgId: "0001",
             sendId: query.id,
             acceptId: query.id === "0001" ? "0002" : "0001",
             msgType: "1",
@@ -115,11 +79,11 @@ const Chat = ({ sendMessage, messagememo }: Iprops) => {
           }),
         })
       );
-      if(!res){
+      if (!res) {
         Toast.show({
-          content: 'The network is not good, please refresh',
-        })
-        return
+          content: "network error",
+        });
+        return;
       }
       let list = localStorage.getItem("message" + query.id) || "[]";
       let pre = JSON.parse(list);
@@ -130,7 +94,7 @@ const Chat = ({ sendMessage, messagememo }: Iprops) => {
           {
             id: message.length + 1,
             text: v,
-            type:  "send",
+            type: "send",
             avatar: "/user_photo2.png",
           },
         ])
@@ -138,7 +102,6 @@ const Chat = ({ sendMessage, messagememo }: Iprops) => {
     }
 
     setMessage((pre) => {
-      
       return [
         ...pre,
         {
@@ -160,14 +123,12 @@ const Chat = ({ sendMessage, messagememo }: Iprops) => {
     setEmojiShow(false);
   };
 
-  console.log(message, "message");
   const getFiledom = (ele: Record<string, any>) => {
     const filetype = isImage(ele.text) ? "img" : isFile(ele.text) ? "file" : "";
-    console.log(filetype, "filetype", ele);
     if (filetype === "img") {
       return (
         <img
-          src={baseUrl + "/chat/downloadFile/" + ele.text}
+          src={baseUrl + "/resources/downloadFile/" + ele.text}
           className="rounded-lg w-[100%]"
         />
       );
@@ -176,7 +137,7 @@ const Chat = ({ sendMessage, messagememo }: Iprops) => {
         <a
           className="text-white underline"
           onClick={() =>
-            window.open(baseUrl + "/chat/downloadFile/" + ele.text)
+            window.open(baseUrl + "/resources/downloadFile/" + ele.text)
           }
         >
           {ele.text}
@@ -246,8 +207,8 @@ const Chat = ({ sendMessage, messagememo }: Iprops) => {
             <Picker
               data={data}
               onEmojiSelect={(e: any) => {
-                console.log(e);
                 setVal((val) => (val || "") + (e.native || ""));
+                inputRef.current?.focus();
               }}
             />
           </div>
@@ -256,6 +217,7 @@ const Chat = ({ sendMessage, messagememo }: Iprops) => {
           <Input
             onEnterPress={onEnterPress}
             value={val}
+            ref={inputRef}
             onChange={(val) => setVal(val)}
             style={{
               padding: "8px",
@@ -275,7 +237,7 @@ const Chat = ({ sendMessage, messagememo }: Iprops) => {
           <img
             onClick={async (e) => {
               e.stopPropagation();
-              upload("/chat/uploadFile", (name: string, filetype: string) => {
+              upload("/resources/add", (name: string, filetype: string) => {
                 onEnterPress({
                   target: { value: name },
                 } as any);

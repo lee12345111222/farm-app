@@ -1,23 +1,46 @@
-import { Stepper } from "antd-mobile";
+import { Stepper, InfiniteScroll } from "antd-mobile";
 import { MinusCircleOutline } from "antd-mobile-icons";
 import { useRouter } from "next/router";
-import React, { memo } from "react";
+import React, { memo, useState } from "react";
 
 interface Iprops {
   shopCart?: boolean;
+  hasMore?: boolean;
+  data?: any[];
+  loadMore?: () => Promise<void>;
 }
 
 const ShopList = memo((props: Iprops) => {
-  const { shopCart } = props;
-  const router = useRouter()
+  const { shopCart, hasMore=false, loadMore, data } = props;
+  const router = useRouter();
+
+  // const [data, setData] = useState<string[]>([]);
+  // const [hasMore, setHasMore] = useState(true);
+  // async function loadMore() {
+  //   const append = await new Promise((resolve, reject) => {
+  //     setTimeout(() => {
+  //       resolve(["1", "2", "3"]);
+  //     }, 1000);
+  //   });
+  //   console.log(append, "append");
+  //   setData(val => [...val, ...append])
+  //   setHasMore(append.length > 0);
+
+  //   console.log(111);
+  // }
 
   const handleShopClick = () => {
-    router.push('/shopDetail')
-  }
+    router.push("/shopDetail");
+  };
 
-  const shopDom = new Array(5).fill(1).map((ele, idx) => (
+  const shopDom = data?.map((ele, idx) => (
     <div className="px-4 py-4 bg-white rounded-t-xl mb-4 flex">
-      <img onClick={handleShopClick} className="w-20 mr-6" src="/news/shop.png" alt="" />
+      <img
+        onClick={handleShopClick}
+        className="w-20 mr-6"
+        src="/news/shop.png"
+        alt=""
+      />
       <div className="flex-1">
         <div className="font-[PingFang SC-Medium] text-[#333333] font-medium text-base truncate mt-2 mb-7">
           文字描述
@@ -42,10 +65,15 @@ const ShopList = memo((props: Iprops) => {
       </div>
     </div>
   ));
-  const shopCartDom = new Array(2).fill(1).map((ele, idx) => (
+  const shopCartDom = data?.map((ele, idx) => (
     <div className="px-4 py-4 bg-white rounded-t-xl mb-4 flex items-center">
       <MinusCircleOutline className="w-5 mr-4" fontSize={20} color="#FF0000" />
-      <img onClick={handleShopClick} className="w-20 mr-6" src="/news/shop.png" alt="" />
+      <img
+        onClick={handleShopClick}
+        className="w-20 mr-6"
+        src="/news/shop.png"
+        alt=""
+      />
       <div className="flex-1">
         <div className="font-[PingFang SC, PingFang SC] text-[#000] font-medium text-lg truncate mt-2 mb-6">
           文字描述
@@ -61,7 +89,12 @@ const ShopList = memo((props: Iprops) => {
       </div>
     </div>
   ));
-  return <div className="">{shopCart ? shopCartDom : shopDom}</div>;
+  return (
+    <>
+      <div className="flex-1">{shopCart ? shopCartDom : shopDom}</div>
+     {loadMore&& <InfiniteScroll loadMore={loadMore} hasMore={hasMore} />}
+    </>
+  );
 });
 
 export default ShopList;

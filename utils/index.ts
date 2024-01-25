@@ -1,13 +1,13 @@
 import { Dialog, Toast } from "antd-mobile";
 import { fetchPost } from "./request";
 
-export const upload = (url: string, fn: Function) => {
+export const upload = (url: string, fn: Function, allowed?:any[]) => {
   //选择文件的 input 元素
   const fileInput: HTMLInputElement = document.createElement("input");
   fileInput.type = "file";
   fileInput.click();
 
-  const allowedFormats = [
+  const allowedFormats = allowed || [
     "pdf",
     "doc",
     "docx",
@@ -42,16 +42,16 @@ export const upload = (url: string, fn: Function) => {
         return;
       }
       try {
+        Toast.show({
+          icon: 'loading',
+          content: 'uploading…',
+          duration: 0,
+        })
         // 发送文件到服务器
         const response = await fetchPost(url, { file: file });
         if (response?.code === "0") {
-          console.log(
-            "文件上传成功",
-            response,
-            isImage(file.name) ? "img" : "file",
-            file
-          );
-          fn(response.data?.[0], isImage(file.name) ? "img" : "file");
+         
+          fn(response.data||'', isImage(file.name) ? "img" : "file");
 
           // await fetchPost("/chat/downloadFile/" + response.data?.[0], {});
         } else {
@@ -60,11 +60,13 @@ export const upload = (url: string, fn: Function) => {
             content: "文件上传失败",
           });
         }
+        Toast.clear()
       } catch (error) {
         console.error("发生错误:", error);
         Toast.show({
           content: "发生错误" + error,
         });
+        Toast.clear()
       }
     }
   };

@@ -51,6 +51,9 @@ main {
     border-top-color: #a0a0a0 !important;
     padding-top: 1.25rem !important;
 }
+.addshop .resources_id .adm-list-item-content {
+    border: none!important;
+}
 .adm-list-item:first-of-type .adm-list-item-content {
     padding-top: 0 !important;
 }
