@@ -22,7 +22,7 @@ const Register = () => {
       "Content-Type": "application/json",
     });
     console.log(res, "res");
-    if (res.code === "0") {
+    if (res?.code === "0") {
       Toast.show("success");
     }
   };

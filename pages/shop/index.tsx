@@ -8,12 +8,15 @@ import {
   SearchBar,
   Tabs,
   InfiniteScroll,
+  Toast,
+  Dialog,
 } from "antd-mobile";
 import { useRouter } from "next/router";
 import { language } from "@/utils/language";
 import FooterToolBar from "@/components/footer-tool-bar";
 import ShopList from "@/components/shopList";
-import { fetchGet } from "@/utils/request";
+import { fetchGet, fetchPost } from "@/utils/request";
+import { Action } from "antd-mobile/es/components/action-sheet";
 
 const admin = true//管理員
 
@@ -22,10 +25,11 @@ const News = memo(() => {
   const { locale: activeLocale } = router;
   const [data, setData] = useState<string[]>([]);
   const [hasMore, setHasMore] = useState(true);
+  const [activeKey, setActiveKey] = useState("0"); // 0:口服,1:疫苗
 
-  const getShopList = useCallback(async () => {
-    let res = await fetchGet("/commodity/query_page", { page: 1, size: 10 });
-    if (res.code === "0") {
+  const getShopList = useCallback(async (params?:Record<string,any>) => {
+    let res = await fetchGet("/commodity/query_page", { page: 1, size: 10, type: activeKey, ...params });
+    if (res?.code === "0") {
       const data = res.data?.[0] || {};
 
       console.log(data, "data");
@@ -40,6 +44,53 @@ const News = memo(() => {
     // setHasMore(append.length > 0)
     console.log(123);
   }, []);
+  const handleDeleteClick= async(commodityId: string) => {
+    Dialog.show({
+      content: '人在天边月上明，风初紧，吹入画帘旌',
+      closeOnAction: true,
+      actions: [
+        [
+          {
+            key: 'cancel',
+            text: '取消',
+          },
+          {
+            key: 'delete',
+            text: '删除',
+            bold: true,
+            danger: true,
+          },
+        ],
+      ],
+      onAction: async(action: Action, index: number) => {
+        console.log(action, index)
+        if(action.key === 'delete'){
+          let res = await fetchGet("/commodity/delete", { id:  commodityId});
+          if (res?.code === "0") {
+            console.log(res, "res");
+            Toast.show('success')
+            getShopList()
+          } else {
+            Toast.show('Network error')
+          }
+        }
+      }
+    })
+
+  
+  }
+
+  const handleAddClick = async(commodityId: string) => {
+    let res = await fetchPost("/cart/add_commodity", { commodityId }, {
+      "Content-Type": "application/json",
+    });
+    if (res?.code === "0") {
+      console.log(res, "res");
+      Toast.show('success')
+    } else {
+      Toast.show('Network error')
+    }
+  }
 
   return (
     <div className="w-full min-h-dvh bg-[#F6F9FF] pb-[143px] shop">
@@ -79,6 +130,8 @@ const News = memo(() => {
         <Tabs
           activeLineMode="fixed"
           className="my-6 text-[#708090] font-bold"
+          activeKey={activeKey}
+          onChange={(key) => {setActiveKey(key);getShopList({type: key})}}
           style={{
             "--title-font-size": "20px",
             "--active-title-color": "#000",
@@ -88,14 +141,14 @@ const News = memo(() => {
         >
           <Tabs.Tab
             title={language[activeLocale || "zh"]?.takeorally}
-            key="fruits"
+            key="0"
           />
           <Tabs.Tab
             title={language[activeLocale || "zh"]?.vaccine}
-            key="vegetables"
+            key="1"
           />
         </Tabs>
-        <ShopList hasMore={hasMore} data={data} loadMore={getShopList} />
+        <ShopList hasMore={hasMore} data={data} loadMore={getShopList} addToCart={handleAddClick} deleteProduct={handleDeleteClick} />
       </div>
       <img
         src="/news/shopCart.png"

@@ -1,5 +1,5 @@
-import { Stepper, InfiniteScroll } from "antd-mobile";
-import { MinusCircleOutline } from "antd-mobile-icons";
+import { Stepper, InfiniteScroll, Space } from "antd-mobile";
+import { DeleteOutline, MinusCircleOutline } from "antd-mobile-icons";
 import { useRouter } from "next/router";
 import React, { memo, useState } from "react";
 
@@ -8,10 +8,12 @@ interface Iprops {
   hasMore?: boolean;
   data?: any[];
   loadMore?: () => Promise<void>;
+  addToCart?: (commodityId: string) => void;
+  deleteProduct?:(commodityId: string) => void;
 }
 
 const ShopList = memo((props: Iprops) => {
-  const { shopCart, hasMore=false, loadMore, data } = props;
+  const { shopCart, hasMore = false, loadMore, data, addToCart, deleteProduct } = props;
   const router = useRouter();
 
   // const [data, setData] = useState<string[]>([]);
@@ -29,21 +31,20 @@ const ShopList = memo((props: Iprops) => {
   //   console.log(111);
   // }
 
-  const handleShopClick = () => {
+  const handleShopClick = (e: React.MouseEvent) => {
+    e.stopPropagation();
     router.push("/shopDetail");
   };
 
   const shopDom = data?.map((ele, idx) => (
-    <div className="px-4 py-4 bg-white rounded-t-xl mb-4 flex">
-      <img
-        onClick={handleShopClick}
-        className="w-20 mr-6"
-        src="/news/shop.png"
-        alt=""
-      />
+    <div
+      className="px-4 py-4 bg-white rounded-t-xl mb-4 flex"
+      onClick={handleShopClick}
+    >
+      <img className="w-20 mr-6" src="/news/shop.png" alt="" />
       <div className="flex-1">
         <div className="font-[PingFang SC-Medium] text-[#333333] font-medium text-base truncate mt-2 mb-7">
-          文字描述
+          {ele.name}
         </div>
         <div className="flex justify-between items-center">
           <Stepper
@@ -60,7 +61,25 @@ const ShopList = memo((props: Iprops) => {
               console.log(value);
             }}
           />
-          <img src="/news/shopCart.png" className="w-6 h-6" alt="" />
+          <Space>
+            <img
+              src="/news/shopCart.png"
+              className="w-6 h-6"
+              alt=""
+              onClick={(e) => {
+                e.stopPropagation();
+                addToCart?.(ele.id);
+              }}
+            />
+            <DeleteOutline
+               onClick={(e) => {
+                e.stopPropagation();
+                deleteProduct?.(ele.id);
+              }}
+              className="w-6 h-6"
+              color="var(--adm-color-danger)"
+            />
+          </Space>
         </div>
       </div>
     </div>
@@ -76,14 +95,14 @@ const ShopList = memo((props: Iprops) => {
       />
       <div className="flex-1">
         <div className="font-[PingFang SC, PingFang SC] text-[#000] font-medium text-lg truncate mt-2 mb-6">
-          文字描述
+          {ele.name}
         </div>
         <div className="flex justify-between items-center">
           <span className="font-[PingFang SC, PingFang SC] text-[#999999] font-bold text-lg truncate">
             x1
           </span>
           <span className="font-[PingFang SC, PingFang SC] text-[#4682B4] font-bold text-xl truncate">
-            ￥500.8
+            ￥{ele.price}
           </span>
         </div>
       </div>
@@ -92,7 +111,7 @@ const ShopList = memo((props: Iprops) => {
   return (
     <>
       <div className="flex-1">{shopCart ? shopCartDom : shopDom}</div>
-     {loadMore&& <InfiniteScroll loadMore={loadMore} hasMore={hasMore} />}
+      {loadMore && <InfiniteScroll loadMore={loadMore} hasMore={hasMore} />}
     </>
   );
 });
