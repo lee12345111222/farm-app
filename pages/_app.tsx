@@ -51,6 +51,7 @@ export default function MyApp({ Component, pageProps }: AppPropsWithLayout) {
     }
   }, [readyState, messagememo]);
 
+
   const handleSend = useCallback(sendMessage, [sendMessage]);
 
 

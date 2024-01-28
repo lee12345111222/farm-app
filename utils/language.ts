@@ -100,6 +100,7 @@ export const language: Record<string, any> = {
     shopprice: 'Price',
     shopresources_id: 'Img',
     shopremarks: 'Remarks',
+    shptype: 'Product type',
   },
   zh: {
     hello: "您好！歡迎登錄",
@@ -202,5 +203,6 @@ export const language: Record<string, any> = {
     shopprice: '商品價格',
     shopresources_id: '商品圖片',
     shopremarks: '商品備註',
+    shptype: '商品类别',
   },
 };

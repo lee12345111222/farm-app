@@ -1,5 +1,13 @@
 export const baseUrl = "/base";
 
+const checkLogin = (res: { data: string; code: string }) => {
+  console.log(res, "res");
+  if (res.data === "未登录") {
+    window.location.href = "/login/home";
+  }
+  return res;
+};
+
 //get请求封装
 export const fetchGet = function (url: any, params: { [x: string]: any }) {
   let list = [];
@@ -9,13 +17,20 @@ export const fetchGet = function (url: any, params: { [x: string]: any }) {
   }
   const data = list.join("&");
   let allUrl = `${baseUrl}/${url}?${data}`;
+  const user = JSON.parse(localStorage.getItem("user") || "");
   // debugger
-  return fetch(allUrl)
+  return fetch(allUrl, {
+    headers: {
+      token: user?.token,
+    },
+  })
     .then((res) => {
       return res.json();
     })
+    .then(checkLogin)
     .catch((err) => {
       console.log(err);
+      return err;
     });
 };
 // post请求封装
@@ -28,18 +43,22 @@ export const fetchPost = function (
   for (let key in params) {
     formData.append(key, params[key]);
   }
+  const user = JSON.parse(localStorage.getItem("user") || "");
   return fetch(baseUrl + url, {
-    body: header? JSON.stringify(params) : formData,
+    body: header ? JSON.stringify(params) : formData,
     method: "POST",
     headers: {
+      token: user?.token,
       ...header,
     },
   })
     .then((res) => {
       return res.json();
     })
+    .then(checkLogin)
     .catch((err) => {
       console.log(err);
+      return err;
     });
 };
 // 这个其实写不写都不行

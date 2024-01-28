@@ -51,7 +51,7 @@ export const upload = (url: string, fn: Function, allowed?:any[]) => {
         const response = await fetchPost(url, { file: file });
         if (response?.code === "0") {
          
-          fn(response.data||'', isImage(file.name) ? "img" : "file");
+          fn(response.data?.id||'', isImage(file.name) ? "img" : "file");
 
           // await fetchPost("/chat/downloadFile/" + response.data?.[0], {});
         } else {

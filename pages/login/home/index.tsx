@@ -10,7 +10,7 @@ const Home = () => {
     const { locale: activeLocale } = router;
 
     return (
-        <div className="w-full h-full">
+        <div className="w-full h-full  firstPage">
             <div className="relative bg-[url('/background.png')] bg-cover h-[56.5%]">
                 <Header />
             </div>

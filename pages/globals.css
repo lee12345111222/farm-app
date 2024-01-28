@@ -27,43 +27,43 @@ main {
     --background-color: #fff !important;
     --text-color: #708090 !important;
     --border-color: #708090 !important;
-    --border-radius: 0.5rem;
+    --border-radius: 0.5rem !important;;
 }
-.adm-list-body {
+.firstPage .adm-list-body {
     border-top: none !important;
     border-bottom-color: #a0a0a0 !important;
 }
-.adm-list {
+.firstPage .adm-list {
     padding: 0px 27px !important;
 }
-.adm-list-item {
+.firstPage .adm-list-item {
     padding-left: 0 !important;
 }
-.adm-list-item-content-prefix {
+.firstPage .adm-list-item-content-prefix {
     width: auto !important;
     padding: 1.4rem 0.875rem 0.825rem 0 !important;
 }
-.adm-list-item-content-main {
+.firstPage .adm-list-item-content-main {
     padding: 0 !important;
     padding-top: 1.15rem !important;
 }
-.adm-list-item-content {
+.firstPage .adm-list-item-content {
     border-top-color: #a0a0a0 !important;
     padding-top: 1.25rem !important;
 }
 .addshop .resources_id .adm-list-item-content {
     border: none!important;
 }
-.adm-list-item:first-of-type .adm-list-item-content {
+.firstPage .adm-list-item:first-of-type .adm-list-item-content {
     padding-top: 0 !important;
 }
 
-.adm-input-element::placeholder {
+.firstPage .adm-input-element::placeholder {
     color: #708090 !important;
     font-size: 18px !important;
     font-weight: 300;
 }
-.adm-form-footer {
+.firstPage .adm-form-footer {
     padding: 0 !important;
 }
 .home-cards-wrapper {

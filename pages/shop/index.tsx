@@ -46,17 +46,17 @@ const News = memo(() => {
   }, []);
   const handleDeleteClick= async(commodityId: string) => {
     Dialog.show({
-      content: '人在天边月上明，风初紧，吹入画帘旌',
+      content: 'Are you sure you want to delete it?',
       closeOnAction: true,
       actions: [
         [
           {
             key: 'cancel',
-            text: '取消',
+            text: 'cancel',
           },
           {
             key: 'delete',
-            text: '删除',
+            text: 'delete',
             bold: true,
             danger: true,
           },
@@ -80,8 +80,8 @@ const News = memo(() => {
   
   }
 
-  const handleAddClick = async(commodityId: string) => {
-    let res = await fetchPost("/cart/add_commodity", { commodityId }, {
+  const handleAddClick = async(commodityId: string, number: string) => {
+    let res = await fetchPost("/cart/add_commodity", { commodityId, number  }, {
       "Content-Type": "application/json",
     });
     if (res?.code === "0") {
@@ -101,7 +101,6 @@ const News = memo(() => {
         <div className="flex">
           <SearchBar
             placeholder={language[activeLocale || "zh"]?.search}
-            showCancelButton
             className="flex-1"
             icon={<img src="/news/search.png" className="w-4 h-4 mr-2" />}
             style={{

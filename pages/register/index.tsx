@@ -1,7 +1,7 @@
 import React from "react";
 import Image from "next/image";
 import Header from "@/components/header";
-import { Form, Input, Button, Radio } from "antd-mobile";
+import { Form, Input, Button, Radio, Toast } from "antd-mobile";
 import { useRouter } from "next/router";
 import { language } from "@/utils/language";
 import { CollectMoneyOutline } from "antd-mobile-icons";
@@ -11,15 +11,28 @@ import { PasswordInput } from "@/components/passwordInput";
 const Register = () => {
   const router = useRouter();
   const { locale: activeLocale } = router;
+  
   const onFinish = async (vals: Record<string, string>) => {
     console.log(vals, "vals");
-    let res = await fetchPost("api/users/", vals);
-    let res1 = await fetchPost("api/users/activation/", {});
-    // router.push("/home");
+    if(vals.password !== vals.repassword){
+      return Toast.show('The password and reset password must be the same')
+    }
+    let res = await fetchPost("/user/add", vals, {
+      "Content-Type": "application/json",
+    });
+    if(res.code === '0'){
+      Toast.show('success')
+      router.push('/login')
+    }else{
+      Toast.show(res.data)
+    }
+    console.log(res,'res')
+    // let res1 = await fetchPost("api/users/activation/", {});
+    // // router.push("/home");
   };
 
   return (
-    <div className="w-full h-full relative pt-[116px]">
+    <div className="w-full h-full relative pt-[116px] firstPage">
       <Header />
       <div className="flex justify-center">
         <img
@@ -102,7 +115,7 @@ const Register = () => {
             rules={[
               { required: true, message: "The phone_number cannot be empty" },
             ]}
-            name="phone_number"
+            name="phone"
             label={
               <img className="w-[17px] h-[17px]" src="/phone.png" alt="phone" />
             }
@@ -122,7 +135,7 @@ const Register = () => {
             rules={[
               { required: true, message: "The farm_name cannot be empty" },
             ]}
-            name="farm_name"
+            name="farmName"
             label={<CollectMoneyOutline className="w-[17px] h-[17px]" />}
           >
             <Input placeholder={language[activeLocale || "zh"]?.farmname} />
@@ -131,7 +144,7 @@ const Register = () => {
             rules={[
               { required: true, message: "The farm_code cannot be empty" },
             ]}
-            name="farm_code"
+            name="farmCode"
             label={
               <img
                 className="w-[17px] h-[17px]"

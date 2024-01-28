@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import Image from "next/image";
 import Header from "@/components/header";
-import { Form, Input, Button } from "antd-mobile";
+import { Form, Input, Button, Toast } from "antd-mobile";
 import { useRouter } from "next/router";
 import { language } from "@/utils/language";
 import { EyeInvisibleOutline, EyeOutline } from "antd-mobile-icons";
@@ -17,13 +17,21 @@ const Login = () => {
 
   const onFinish = async (vals: Record<string, string>) => {
     console.log(vals, "vals");
-    let res = await fetchPost("api/users/reset_password/", vals);
-    let res1 = await fetchPost("api/users/reset_password_confirm/", {});
-    router.push("/home");
+    let res = await fetchPost("/user/login", vals, {
+      "Content-Type": "application/json",
+    });
+    if(res.code === '0'){
+      Toast.show('success')
+      router.push('/home')
+      window.localStorage.setItem('user', JSON.stringify(res.data))
+    }else{
+      Toast.show(res.data)
+    }
+  
   };
 
   return (
-    <div className="w-full h-full relative pt-[116px]">
+    <div className="w-full h-full relative pt-[116px] firstPage">
       <Header />
       <div className="flex justify-center">
         <img
