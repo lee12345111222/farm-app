@@ -17,7 +17,7 @@ export const fetchGet = function (url: any, params: { [x: string]: any }) {
   }
   const data = list.join("&");
   let allUrl = `${baseUrl}/${url}?${data}`;
-  const user = JSON.parse(localStorage.getItem("user") || "");
+  const user = JSON.parse(localStorage.getItem("user") || "{}");
   // debugger
   return fetch(allUrl, {
     headers: {
@@ -43,7 +43,7 @@ export const fetchPost = function (
   for (let key in params) {
     formData.append(key, params[key]);
   }
-  const user = JSON.parse(localStorage.getItem("user") || "");
+  const user = JSON.parse(localStorage.getItem("user") || "{}");
   return fetch(baseUrl + url, {
     body: header ? JSON.stringify(params) : formData,
     method: "POST",

@@ -6,14 +6,21 @@ import { useRouter } from "next/router";
 import { language } from "@/utils/language";
 import { EyeInvisibleOutline, EyeOutline } from "antd-mobile-icons";
 import { fetchPost } from "@/utils/request";
+import { userSlice } from "@/lib/redux/slices/userSlice";
+import { useDispatch } from "@/lib/redux";
 
 const Login = () => {
   const router = useRouter();
   const { locale: activeLocale } = router;
 
   const [visible, setVisible] = useState(false);
+  const dispatch = useDispatch();
 
-  console.log(language, activeLocale);
+ 
+
+  // const user = useSelector(selectUser);
+
+  // console.log(user, "user");
 
   const onFinish = async (vals: Record<string, string>) => {
     console.log(vals, "vals");
@@ -22,13 +29,15 @@ const Login = () => {
     });
     if(res.code === '0'){
       Toast.show('success')
-      router.push('/home')
       window.localStorage.setItem('user', JSON.stringify(res.data))
+      dispatch(userSlice.actions.updateState({user: res.data}))
+      router.push('/home')
     }else{
       Toast.show(res.data)
     }
   
   };
+
 
   return (
     <div className="w-full h-full relative pt-[116px] firstPage">

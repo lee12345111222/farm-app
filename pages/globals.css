@@ -43,6 +43,9 @@ main {
     width: auto !important;
     padding: 1.4rem 0.875rem 0.825rem 0 !important;
 }
+.firstPage .adm-list-item-content-extra {
+    padding-top: 0.7rem !important;
+}
 .firstPage .adm-list-item-content-main {
     padding: 0 !important;
     padding-top: 1.15rem !important;

@@ -8,6 +8,7 @@ import { useRouter } from "next/router";
 import useWebsocket from "@/hooks/useWebsocket";
 import { isFile, isImage, upload } from "@/utils";
 import { baseUrl } from "@/utils/request";
+import { selectUser, useSelector } from "@/lib/redux";
 
 interface Iprops {
   sendMessage: Function;
@@ -16,7 +17,7 @@ interface Iprops {
 const Chat = ({ sendMessage, messagememo }: Iprops) => {
   const router = useRouter();
 
-  const { query } = router;
+  const query = useSelector(selectUser);
 
   const [height, setHeight] = useState("100%");
   const [message, setMessage] = useState<Record<string, any>[]>([

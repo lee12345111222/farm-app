@@ -116,7 +116,7 @@ const News = memo(() => {
       //       avatar: "/user_photo2.png",
       //     },
       //   ])
-      );
+      // );
         } else {
           Toast.show("Network error");
         }

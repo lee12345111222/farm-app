@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import Image from "next/image";
 import Header from "@/components/header";
 import { Form, Input, Button, Radio, Toast } from "antd-mobile";
@@ -11,6 +11,10 @@ import { PasswordInput } from "@/components/passwordInput";
 const Register = () => {
   const router = useRouter();
   const { locale: activeLocale } = router;
+
+  const [send, setSend] = useState(false);
+
+  const [form] = Form.useForm()
   
   const onFinish = async (vals: Record<string, string>) => {
     console.log(vals, "vals");
@@ -31,6 +35,28 @@ const Register = () => {
     // // router.push("/home");
   };
 
+  const handleSend = async() => {
+    const {
+      username,
+      email,
+      phone
+    } = form.getFieldsValue();
+    let vals = {
+      username,
+      email,
+      phone
+    }
+    let res = await fetchPost("/user/get_code_add", vals, {
+      "Content-Type": "application/json",
+    });
+    if(res.code === '0'){
+      Toast.show('send success')
+      setSend(true)
+    }else{
+      Toast.show(res.data)
+    }
+  }
+
   return (
     <div className="w-full h-full relative pt-[116px] firstPage">
       <Header />
@@ -47,6 +73,7 @@ const Register = () => {
           layout="horizontal"
           className="mt-[35px]"
           onFinish={onFinish}
+          form={form}
           footer={
             <div className="mt-[50px] w-full flex justify-center">
               <Button
@@ -125,11 +152,12 @@ const Register = () => {
           <Form.Item
             rules={[{ required: true, message: "The email cannot be empty" }]}
             name="email"
+            extra={send? <a aria-disabled>已发送</a> : <a onClick={handleSend}>发送验证码</a>}
             label={
               <img className="w-[17px] h-[17px]" src="/email.png" alt="email" />
             }
           >
-            <Input placeholder={language[activeLocale || "zh"]?.email} />
+            <Input placeholder={language[activeLocale || "zh"]?.email}  />
           </Form.Item>
           <Form.Item
             rules={[
@@ -142,9 +170,9 @@ const Register = () => {
           </Form.Item>
           <Form.Item
             rules={[
-              { required: true, message: "The farm_code cannot be empty" },
+              { required: true, message: "The code cannot be empty" },
             ]}
-            name="farmCode"
+            name="code"
             label={
               <img
                 className="w-[17px] h-[17px]"

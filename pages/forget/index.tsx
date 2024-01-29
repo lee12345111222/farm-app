@@ -1,7 +1,7 @@
-import React from "react";
+import React, { useState } from "react";
 import Image from "next/image";
 import Header from "@/components/header";
-import { Form, Input, Button, Radio } from "antd-mobile";
+import { Form, Input, Button, Radio, Toast } from "antd-mobile";
 import { useRouter } from "next/router";
 import { language } from "@/utils/language";
 import { CollectMoneyOutline } from "antd-mobile-icons";
@@ -11,13 +11,47 @@ import { PasswordInput } from "@/components/passwordInput";
 const Register = () => {
   const router = useRouter();
   const { locale: activeLocale } = router;
+
+  const [send, setSend] = useState(false);
+
+  const [form] = Form.useForm()
+  
   const onFinish = async (vals: Record<string, string>) => {
     console.log(vals, "vals");
-    let res = await fetchPost("api/users/", vals);
-    let res1 = await fetchPost("api/users/activation/", {});
-    // router.push("/home");
+    if(vals.password !== vals.repassword){
+      return Toast.show('The password and reset password must be the same')
+    }
+    let res = await fetchPost("/user/reset_password", vals, {
+      "Content-Type": "application/json",
+    });
+    if(res.code === '0'){
+      Toast.show('success')
+      router.push('/login')
+    }else{
+      Toast.show(res.data)
+    }
+    console.log(res,'res')
+    // let res1 = await fetchPost("api/users/activation/", {});
+    // // router.push("/home");
   };
 
+  const handleSend = async() => {
+    const {
+      username,
+    } = form.getFieldsValue();
+    let vals = {
+      username,
+    }
+    let res = await fetchPost("/user/get_code_reset", vals, {
+      "Content-Type": "application/json",
+    });
+    if(res.code === '0'){
+      Toast.show('send success')
+      setSend(true)
+    }else{
+      Toast.show(res.data)
+    }
+  }
   return (
     <div className="w-full h-full relative pt-[116px] firstPage">
       <Header />
@@ -31,6 +65,7 @@ const Register = () => {
       </div>
       <div className="">
         <Form
+          form={form}
           layout="horizontal"
           className="mt-[35px]"
           onFinish={onFinish}
@@ -49,12 +84,13 @@ const Register = () => {
         >
           <Form.Item
             rules={[{ required: true, message: "The email cannot be empty" }]}
-            name="email"
+            name="username"
+            extra={send? <a aria-disabled>已发送</a> : <a onClick={handleSend}>发送验证码</a>}
             label={
-              <img className="w-[17px] h-[17px]" src="/email.png" alt="email" />
+              <img className="w-[17px] h-[17px]" src="/nickname.png" alt="nickname" />
             }
           >
-            <Input placeholder={language[activeLocale || "zh"]?.email} />
+            <Input placeholder={language[activeLocale || "zh"]?.username} />
           </Form.Item>
 
           <Form.Item
@@ -91,6 +127,23 @@ const Register = () => {
             {/* <Input placeholder={language[activeLocale || "zh"]?.repassword} /> */}
             <PasswordInput
               placeholder={language[activeLocale || "zh"]?.repassword}
+            />
+          </Form.Item>
+          <Form.Item
+            rules={[
+              { required: true, message: "The code cannot be empty" },
+            ]}
+            name="code"
+            label={
+              <img
+                className="w-[17px] h-[17px]"
+                src="/signincode.png"
+                alt="signincode"
+              />
+            }
+          >
+            <Input
+              placeholder={language[activeLocale || "zh"]?.registrationcode}
             />
           </Form.Item>
         </Form>
