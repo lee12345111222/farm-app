@@ -50,9 +50,8 @@ const useWebsocket = ({ url }: Iprops) => {
   const closeWebSocket = () => {
     ws.current?.close();
   }; // 发送数据
-
+  console.log(readyState, 'readyState')
   const sendMessage = useCallback((str: string) => {
-    console.log(readyState)
     if(readyState.key === 1){
         ws.current?.send(str);
         return true
@@ -60,7 +59,6 @@ const useWebsocket = ({ url }: Iprops) => {
         return false
     }
   },[ ws.current, readyState]);
-
 
   const reconnect = () => {
     try {
