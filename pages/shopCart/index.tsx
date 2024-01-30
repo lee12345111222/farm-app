@@ -17,9 +17,16 @@ import ShopList from "@/components/shopList";
 import ShopBottom from "@/components/shopBottom";
 import { fetchGet, fetchPost } from "@/utils/request";
 import { Action } from "antd-mobile/es/components/swipe-action";
+import { selectUser, useSelector } from "@/lib/redux";
 
-const News = memo(() => {
+interface Iprops {
+  sendMessage: Function;
+  messagememo: Record<string, any>;
+}
+
+const News = memo(({sendMessage}: Iprops) => {
   const router = useRouter();
+  const query = useSelector(selectUser);
   const { locale: activeLocale } = router;
   const [data, setData] = useState<string[]>([]);
   const [hasMore, setHasMore] = useState(true);
@@ -90,7 +97,7 @@ const News = memo(() => {
     Dialog.confirm({
       content: "Are you sure to submit your order?",
       onConfirm: async () => {
-        let res = await fetchPost(
+        let result = await fetchPost(
           "/order/add",
           data.map((ele) => ({
             commodityId: ele.id,
@@ -100,23 +107,44 @@ const News = memo(() => {
             "Content-Type": "application/json",
           }
         );
-        if (res?.code === "0") {
-          console.log(res, "res");
+        console.log(result, 'result')
+        if (result?.code === "0") {
           Toast.show("success");
-      //     let list = localStorage.getItem("message" + query.id) || "[]";
-      // let pre = JSON.parse(list);
-      // localStorage.setItem(//接受方存储 发送在chat页面
-      //   "message" + query.id,
-      //   JSON.stringify([
-      //     ...pre,
-      //     {
-      //       id: Math.random(),
-      //       text: data1.msgValue,
-      //       type: 'receive',
-      //       avatar: "/user_photo2.png",
-      //     },
-      //   ])
-      // );
+          //发送状态
+          let res = sendMessage?.(
+            JSON.stringify({
+              message: JSON.stringify({
+                msgId: "0001",
+                sendId: query.id,
+                acceptId:
+                  "42d83d66fdf0451db16c3fe434f09e61",
+                msgType: "1",
+                msgValue: '生成一条订单:' + result.data?.order_id,
+              }),
+            })
+          );
+          console.log(res, "res");
+          if (!res) {
+            Toast.show({
+              content: "network error",
+            });
+            return;
+          }
+          let list = localStorage.getItem("message" + query.id) || "[]";
+          let pre = JSON.parse(list);
+          localStorage.setItem(
+            "message" + query.id,
+            JSON.stringify([
+              ...pre,
+              {
+                id: Math.random(),
+                text: '生成一条订单:' + result.data?.order_id,
+                type: "send",
+                avatar: "/user_photo2.png",
+              },
+            ])
+          );
+          router.push('/chat')
         } else {
           Toast.show("Network error");
         }

@@ -23,7 +23,7 @@ const Record = memo(() => {
 
   const [pagination, setPagination] = useState({
     pageIndex: 0,
-    pageSize: 1, //customize the default page size
+    pageSize: 5, //customize the default page size
   });
   const getShopList = useCallback(
     async (params?: Record<string, any>) => {

@@ -44,7 +44,7 @@ const Register = () => {
   };
 
   return (
-    <div className="w-full h-full relative pt-[116px] addshop">
+    <div className="w-full h-full relative pt-[116px] addshop px-4">
       <Header />
       <div className="flex justify-center">
         <img
@@ -79,14 +79,14 @@ const Register = () => {
           <Form.Item
             rules={[{ required: true, message: "The name cannot be empty" }]}
             name="name"
-            // label={language[activeLocale || "zh"]?.shopname}
+            label={language[activeLocale || "zh"]?.shopname}
           >
             <Input placeholder={language[activeLocale || "zh"]?.shopname} />
           </Form.Item>
           <Form.Item
             rules={[{ required: true, message: "The price cannot be empty" }]}
             name="price"
-            // label={language[activeLocale || "zh"]?.shopprice}
+            label={language[activeLocale || "zh"]?.shopprice}
           >
             <Input placeholder={language[activeLocale || "zh"]?.shopprice} />
           </Form.Item>
@@ -135,7 +135,7 @@ const Register = () => {
               )}
             </div>
           </Form.Item>
-          <Form.Item name="weight" label="数量" childElementPosition="right">
+          <Form.Item name="weight" label="数量" childElementPosition="right"  rules={[{ required: true, message: "The number cannot be empty" }]}>
             <Stepper
               min={1}
               style={{
@@ -152,7 +152,7 @@ const Register = () => {
             className="resources_id"
             rules={[{ required: true, message: "The remarks cannot be empty" }]}
             name="remarks"
-            // label={language[activeLocale || "zh"]?.shopremarks}
+            label={language[activeLocale || "zh"]?.shopremarks}
           >
             <Input placeholder={language[activeLocale || "zh"]?.shopremarks} />
           </Form.Item>
