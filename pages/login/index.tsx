@@ -29,8 +29,8 @@ const Login = () => {
     });
     if(res.code === '0'){
       Toast.show('success')
-      window.localStorage.setItem('user', JSON.stringify(res.data))
-      dispatch(userSlice.actions.updateState({user: res.data}))
+      window.localStorage.setItem('user', JSON.stringify({...res.data, roleId: '42d83d66fdf0451db16c3fe434f09e61'}))
+      dispatch(userSlice.actions.updateState({user: {...res.data, roleId: '42d83d66fdf0451db16c3fe434f09e61'}}))
       router.push('/home')
     }else{
       Toast.show(res.data)

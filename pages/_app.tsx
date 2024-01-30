@@ -5,6 +5,7 @@ import useWebsocket from "@/hooks/useWebsocket";
 import React, { useCallback, useEffect, useMemo, useState } from "react";
 import { Providers } from "@/lib/providers";
 import { selectUser, useSelector } from "@/lib/redux";
+import { useRouter } from "next/router";
 
 export type NextPageWithLayout = NextPage & {
   getLayout?: (page: React.ReactElement) => React.ReactNode;
@@ -15,8 +16,11 @@ type AppPropsWithLayout = AppProps & {
 };
 
 export default function MyApp({ Component, pageProps }: AppPropsWithLayout) {
+
+  const router = useRouter()
   // JSON.parse(window.localStorage.getItem("user") || "{}")
-  const user = {};
+
+  const [user, setUser] = useState<Record<string,any>>({})
 
   const { wsData, readyState, sendMessage, reconnect } = useWebsocket({
     url: user.id
@@ -25,7 +29,24 @@ export default function MyApp({ Component, pageProps }: AppPropsWithLayout) {
   });
 
   const messagememo = useMemo(() => wsData, [wsData]);
+  useEffect(() => {
+    const res = JSON.parse(localStorage.getItem("user") || "{}"); 
+    setUser(res)
+    const handleRouteChange = (url:string) => {
+      // 在路由变化时执行你的逻辑
+      console.log('路由发生变化', url, localStorage.getItem('user'), user);
+      if(!Object.keys(user)?.length){
+        const res = JSON.parse(localStorage.getItem("user") || "{}"); 
+        setUser(res)
+      }
+    };
 
+    router.events.on('routeChangeStart', handleRouteChange);
+
+    return () => {
+      router.events.off('routeChangeStart', handleRouteChange);
+    };
+  }, []);
 
   //   const [data, setData] = useState<Record<string,any>[]>([]);
   useEffect(() => {

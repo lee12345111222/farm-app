@@ -74,12 +74,13 @@ const Chat = ({ sendMessage, messagememo }: Iprops) => {
           message: JSON.stringify({
             msgId: "0001",
             sendId: query.id,
-            acceptId: query.id === "0001" ? "0002" : "0001",
+            acceptId: '42d83d66fdf0451db16c3fe434f09e61',
             msgType: "1",
             msgValue: v,
           }),
         })
       );
+      console.log(res, 'res')
       if (!res) {
         Toast.show({
           content: "network error",

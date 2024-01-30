@@ -22,12 +22,15 @@ const useWebsocket = ({ url }: Iprops) => {
     try {
       ws.current = new WebSocket(url);
       ws.current.onopen = () => {
+        console.log(ws.current?.readyState, 'ws.current?.readyState')
         setReadyState(stateArr[ws.current?.readyState ?? 0]);
       };
       ws.current.onclose = () => {
+        console.log(ws.current?.readyState, 'ws.current?.readyState onclose')
         setReadyState(stateArr[ws.current?.readyState ?? 0]);
       };
       ws.current.onerror = () => {
+        console.log(ws.current?.readyState, 'ws.current?.readyState onerror')
         setReadyState(stateArr[ws.current?.readyState ?? 0]);
       };
       ws.current.onmessage = (e) => {
@@ -49,13 +52,15 @@ const useWebsocket = ({ url }: Iprops) => {
   }; // 发送数据
 
   const sendMessage = useCallback((str: string) => {
-    if(readyState === 3){
+    console.log(readyState)
+    if(readyState.key === 1){
         ws.current?.send(str);
         return true
     }else{
         return false
     }
-  },[ ws.current]);
+  },[ ws.current, readyState]);
+
 
   const reconnect = () => {
     try {
@@ -75,6 +80,8 @@ const useWebsocket = ({ url }: Iprops) => {
       ws.current?.close();
     };
   }, [ws, url]);
+
+  console.log(readyState, 'readyState')
 
   return {
     wsData,
