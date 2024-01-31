@@ -25,8 +25,9 @@ const ShopList = memo((props: Iprops) => {
   } = props;
   const router = useRouter();
 
-  const handleShopClick = (e: React.MouseEvent) => {
+  const handleShopClick = (e: React.MouseEvent, item: Record<string, any>) => {
     e.stopPropagation();
+    localStorage.setItem("shopDetailItem", JSON.stringify(item));
     router.push("/shopDetail");
   };
 
@@ -34,13 +35,13 @@ const ShopList = memo((props: Iprops) => {
     <ShopItem
       key={idx}
       ele={ele}
-      handleShopClick={handleShopClick}
+      handleShopClick={(e: React.MouseEvent) => handleShopClick(e, ele)}
       addToCart={addToCart}
       deleteProduct={deleteProduct}
     />
   ));
   const shopCartDom = data?.map((ele, idx) => (
-    <div className="px-4 py-4 bg-white rounded-t-xl mb-4 flex items-center" onClick={handleShopClick}>
+    <div key={idx} className="px-4 py-4 bg-white rounded-t-xl mb-4 flex items-center" onClick={e => handleShopClick(e, ele)}>
       <MinusCircleOutline className="w-5 mr-4" fontSize={20} color="#FF0000" onClick={(e: React.MouseEvent) => { e.stopPropagation();handleDelete?.(ele.id)}}/>
       <img
         className="w-20 mr-6"
@@ -74,7 +75,7 @@ export default ShopList;
 
 interface ItemPorps {
   ele: Record<string, any>;
-  handleShopClick: React.MouseEventHandler<HTMLDivElement> | undefined;
+  handleShopClick: (e: React.MouseEvent, v:Record<string, any>) => void;
   addToCart?: (commodityId: string, number: string) => void;
   deleteProduct?: (commodityId: string) => void;
 }
@@ -85,12 +86,12 @@ const ShopItem = ({
   addToCart,
   deleteProduct,
 }: ItemPorps) => {
-  const [number, setNumber] = useState<string>("0");
+  const [number, setNumber] = useState<string>("1");
 
   return (
     <div
       className="px-4 py-4 bg-white rounded-t-xl mb-4 flex"
-      onClick={handleShopClick}
+      onClick={(e: React.MouseEvent) => handleShopClick(e, ele)}
     >
       <img className="w-20 mr-6" src="/news/shop.png" alt="" />
       <div className="flex-1">
@@ -113,7 +114,7 @@ const ShopItem = ({
                 "--input-font-color": "#000",
                 "--border-radius": "6px",
               }}
-              min={0}
+              min={1}
               value={Number(number)}
               onChange={(value) => {
                 console.log(value);

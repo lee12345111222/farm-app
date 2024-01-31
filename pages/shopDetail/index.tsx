@@ -1,4 +1,4 @@
-import React, { memo, useRef } from "react";
+import React, { memo, useRef, useState } from "react";
 import Image from "next/image";
 import Header from "@/components/header";
 import {
@@ -17,6 +17,8 @@ import { language } from "@/utils/language";
 import FooterToolBar from "@/components/footer-tool-bar";
 import ShopList from "@/components/shopList";
 import ShopBottom from "@/components/shopBottom";
+import { useAddOrder } from "../../hooks/useAddOrder";
+import { selectUser, useSelector } from "@/lib/redux";
 
 const colors = ["#ace0ff", "#bcffbd", "#e4fabd", "#ffcfac"];
 
@@ -30,11 +32,22 @@ const items = colors.map((color, index) => (
     </div>
   </Swiper.Item>
 ));
-
-const News = memo(() => {
+interface Iprops {
+  sendMessage: Function;
+  // messagememo: Record<string, any>;
+}
+const News = memo(({sendMessage}: Iprops) => {
+  const query = useSelector(selectUser);
   const router = useRouter();
   const { locale: activeLocale } = router;
   const ref = useRef<SwiperRef>(null);
+
+  const shopItem = JSON.parse(localStorage.getItem("shopDetailItem") || '{}');
+  const data=[shopItem]
+
+  const [number, setNumber] = useState<string>("1");
+
+  const [handleAddOrder] = useAddOrder({query, messagememo, data})
 
   return (
     <div className="w-full min-h-dvh bg-[#F6F9FF] pb-[143px] shopDetail ">
@@ -79,12 +92,12 @@ const News = memo(() => {
         </div>
 
         <div className="font-[PingFang SC-Bold] text-[#000] font-bold text-lg truncate text-center mt-4 pb-4 border-solid border-b border-[#E0E0E0]">
-          A
+          {shopItem.name} | {shopItem.weight}
         </div>
         <div className="font-[PingFang SC, PingFang SC] text-[#708090] font-medium text-lg mt-4 pb-4 border-solid border-b border-[#E0E0E0]">
-          簡介：这是文字这是文字这是文字这是文字这是文字这是文字这是文字这是文字这是文字这是文字
+          簡介：{shopItem.remarks}
         </div>
-        <div className="font-[PingFang SC, PingFang SC] text-[#708090] font-medium text-lg mt-4 pb-5 border-solid border-b border-[#E0E0E0]">
+        {/* <div className="font-[PingFang SC, PingFang SC] text-[#708090] font-medium text-lg mt-4 pb-5 border-solid border-b border-[#E0E0E0]">
           <div className="mb-2.5">重量</div>
           <CapsuleTabs
             defaultActiveKey="fruits"
@@ -99,7 +112,7 @@ const News = memo(() => {
             <CapsuleTabs.Tab title="1kg" key="vegetables"></CapsuleTabs.Tab>
             <CapsuleTabs.Tab title="10kg" key="animals"></CapsuleTabs.Tab>
           </CapsuleTabs>
-        </div>
+        </div> */}
         <div className="flex justify-center mt-5">
           <Stepper
             defaultValue={0}
@@ -116,13 +129,15 @@ const News = memo(() => {
               "--button-background-color": "#F1F1F1",
               "--input-background-color": "#F1F1F1",
             }}
-            onChange={(value) => {
-              console.log(value);
-            }}
+            value={Number(number)}
+              onChange={(value) => {
+                console.log(value);
+                setNumber(value.toString());
+              }}
           />
         </div>
       </div>
-      <ShopBottom />
+      <ShopBottom data={data} handleAddOrder={handleAddOrder}/>
       <FooterToolBar />
     </div>
   );
