@@ -1,7 +1,9 @@
 import React, { useState } from "react";
-import { Popup } from "antd-mobile";
+import { Popup, Toast } from "antd-mobile";
 import { useRouter } from "next/router";
 import { language } from "@/utils/language";
+import { SendOutline } from "antd-mobile-icons";
+import { fetchPost } from "@/utils/request";
 interface IProps {
   visible: boolean;
   open: () => void;
@@ -39,6 +41,19 @@ const SideMenuPopup = (props: IProps) => {
       onClick: () => router.push('/chat?id=0002'),
     },
   ];
+  const handleOut = async() => {
+    let res = await fetchPost("/user/logout", {}, {
+      "Content-Type": "application/json",
+    });
+    if (res?.code === "0") {
+      console.log(res, "res");
+      Toast.show('success')
+      localStorage.removeItem("user");
+      router.replace('/login')
+    } else {
+      Toast.show('Network error')
+    }
+  }
   return (
     <Popup
       visible={visible}
@@ -59,6 +74,13 @@ const SideMenuPopup = (props: IProps) => {
             </div>
           );
         })}
+        <div key={'out'} className="flex mb-[20px] mt-6" onClick={handleOut}>
+              {/* <SendOutline className="w-[20px] h-[20px]" color="#1E84B4"/> */}
+              <div className="w-[20px] h-[20px]"></div>
+              <div className="text-[#708090] text-[20px] ml-[14px]">
+              {language[activeLocale || "zh"]?.logout}
+              </div>
+            </div>
       </div>
     </Popup>
   );

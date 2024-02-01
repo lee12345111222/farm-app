@@ -1,4 +1,4 @@
-import React, { memo, useRef, useState } from "react";
+import React, { memo, useRef, useState, useEffect } from "react";
 import Image from "next/image";
 import Header from "@/components/header";
 import {
@@ -42,12 +42,27 @@ const News = memo(({sendMessage}: Iprops) => {
   const { locale: activeLocale } = router;
   const ref = useRef<SwiperRef>(null);
 
-  const shopItem = JSON.parse(localStorage.getItem("shopDetailItem") || '{}');
-  const data=[shopItem]
+  // let shopItem = {};
 
   const [number, setNumber] = useState<string>("1");
+  const [shopItem, setShopDetailItem] = useState<Record<string,any>>({});
+  const [data, setData] = useState<any[]>([]);
 
-  const [handleAddOrder] = useAddOrder({query, messagememo, data})
+  // let data=[{...shopItem, number}]
+
+  // if (typeof window !== 'undefined') {
+  //   // Perform localStorage action
+  //   shopItem = JSON.parse(localStorage.getItem("shopDetailItem") || '{}')
+  //   data=[{...shopItem, number}]
+  // }
+
+  const [handleAddOrder] = useAddOrder({query, data, sendMessage})
+
+  useEffect(() => {
+    let item = JSON.parse(localStorage.getItem("shopDetailItem") || '{}')
+    setShopDetailItem(item)
+    setData([{...item, number}])
+  },[])
 
   return (
     <div className="w-full min-h-dvh bg-[#F6F9FF] pb-[143px] shopDetail ">

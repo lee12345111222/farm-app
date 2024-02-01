@@ -22,7 +22,7 @@ export default function MyApp({ Component, pageProps }: AppPropsWithLayout) {
   // JSON.parse(window.localStorage.getItem("user") || "{}")
   const [user, setUser] = useState<Record<string, any>>({});
 
-  const { wsData, readyState, sendMessage, reconnect } = useWebsocket({
+  const { wsData, readyState, sendMessage, reconnect, closeWebSocket } = useWebsocket({
     url: user.id
       ? "ws://54.153.241.236:8000/ws/chat/" + user.id + "/" + user.token
       : "", // 此参数为websocket地址
@@ -35,11 +35,18 @@ export default function MyApp({ Component, pageProps }: AppPropsWithLayout) {
     setUser(res);
     const handleRouteChange = (url: string) => {
       // 在路由变化时执行你的逻辑
-      console.log("路由发生了变化", url);
-      const res = JSON.parse(localStorage.getItem("user") || "{}");
-      if (!Object.keys(res)?.length) {
-        setUser(res);
+      console.log("路由发生了变化", url, url.includes("login")||url.includes("register")||url==='/zh'||url==='/');
+      if(url.includes("login")||url.includes("register")||url==='/zh'||url==='/'){
+        closeWebSocket()
+        setUser({})
+      }else{
+        const res1 = JSON.parse(localStorage.getItem("user") || "{}");
+        console.log(res1, 'res1');
+        if (Object.keys(res1)?.length && res1.token !== res.token) {
+          setUser(res1);
+        }
       }
+     
     };
 
     // 监听路由变化
@@ -48,9 +55,10 @@ export default function MyApp({ Component, pageProps }: AppPropsWithLayout) {
     // 清除监听器以避免内存泄漏
     return () => {
       router.events.off("routeChangeStart", handleRouteChange);
+      setUser({})
     };
   }, []);
-
+  console.log(user, "user");
   //   const [data, setData] = useState<Record<string,any>[]>([]);
   useEffect(() => {
     // 接受到socket数据， 进行业务逻辑处理

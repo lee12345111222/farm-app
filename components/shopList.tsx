@@ -1,3 +1,5 @@
+import { selectUser, useSelector } from "@/lib/redux";
+import { baseUrl } from "@/utils/request";
 import { Stepper, InfiniteScroll, Space } from "antd-mobile";
 import { DeleteOutline, MinusCircleOutline } from "antd-mobile-icons";
 import { useRouter } from "next/router";
@@ -45,7 +47,7 @@ const ShopList = memo((props: Iprops) => {
       <MinusCircleOutline className="w-5 mr-4" fontSize={20} color="#FF0000" onClick={(e: React.MouseEvent) => { e.stopPropagation();handleDelete?.(ele.id)}}/>
       <img
         className="w-20 mr-6"
-        src="/news/shop.png"
+        src={baseUrl + "/resources/downloadFile/"+ ele.image}
         alt=""
       />
       <div className="flex-1">
@@ -88,12 +90,14 @@ const ShopItem = ({
 }: ItemPorps) => {
   const [number, setNumber] = useState<string>("1");
 
+  const query = useSelector(selectUser);
+
   return (
     <div
       className="px-4 py-4 bg-white rounded-t-xl mb-4 flex"
       onClick={(e: React.MouseEvent) => handleShopClick(e, ele)}
     >
-      <img className="w-20 mr-6" src="/news/shop.png" alt="" />
+      <img className="w-20 mr-6" src={baseUrl + "/resources/downloadFile/"+ ele.image} alt="" />
       <div className="flex-1">
         <div className="font-[PingFang SC-Medium] text-[#333333] font-medium text-base truncate mt-2 mb-7">
           {ele.name}
@@ -132,14 +136,14 @@ const ShopItem = ({
                 addToCart?.(ele.id, number);
               }}
             />
-            <DeleteOutline
+           {query.admin==='1' && <DeleteOutline
               onClick={(e) => {
                 e.stopPropagation();
                 deleteProduct?.(ele.id);
               }}
               className="w-6 h-6"
               color="var(--adm-color-danger)"
-            />
+            />}
           </Space>
         </div>
       </div>

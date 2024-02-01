@@ -12,14 +12,30 @@ import {
 } from "material-react-table";
 import { fetchGet, fetchPost } from "@/utils/request";
 import { Action } from "antd-mobile/es/components/action-sheet";
+import { DeleteOutline, EyeOutline } from "antd-mobile-icons";
+import { Box, IconButton, Tooltip } from "@mui/material";
+import EditIcon from "@mui/icons-material/Edit";
+import DeleteIcon from "@mui/icons-material/Delete";
+import { selectUser, useSelector } from "@/lib/redux";
 
-const list = [{ name: 123, id: 1 }];
+const list = [{ name: "", id: "" }];
+
+const Status = {
+  未付款: 1,
+  已付款: 2,
+  已发货: 3,
+  已收货: 4,
+  订单正常完成: 20,
+};
 
 const Record = memo(() => {
   const router = useRouter();
   const { locale: activeLocale } = router;
+
+  const query = useSelector(selectUser);
+
   const [data, setData] = useState(list);
-  const [meta, setMeta] = useState({totalNumber: 0})
+  const [meta, setMeta] = useState({ totalNumber: 0 });
 
   const [pagination, setPagination] = useState({
     pageIndex: 0,
@@ -38,17 +54,17 @@ const Record = memo(() => {
         console.log(data, "data");
 
         setData(data.list || []);
-        setMeta(data.page)
+        setMeta(data.page);
       }
     },
     [pagination.pageIndex]
   );
 
   useEffect(() => {
-    getShopList()
-  },[getShopList])
+    getShopList();
+  }, [getShopList]);
 
-  const handleDelete = async (commodityId: string) => {
+  const handleDelete = async (row: Record<string,any>) => {
     Dialog.show({
       content: "Are you sure you want to delete it?",
       closeOnAction: true,
@@ -69,13 +85,7 @@ const Record = memo(() => {
       onAction: async (action: Action, index: number) => {
         console.log(action, index);
         if (action.key === "delete") {
-          let res = await fetchPost(
-            "/cart/del_commodity",
-            { commodityId },
-            {
-              "Content-Type": "application/json",
-            }
-          );
+          let res = await fetchGet("/order/delete/" + row?.original?.id, {});
           if (res?.code === "0") {
             console.log(res, "res");
             Toast.show("success");
@@ -93,20 +103,51 @@ const Record = memo(() => {
         accessorKey: "id", //normal accessorKey
         header: "Id",
         size: 30,
+        enableEditing: false,
       },
       {
         accessorKey: "price", //normal accessorKey
         header: "Price",
         size: 30,
+        enableEditing: false,
       },
       {
         accessorKey: "status", //normal accessorKey
         header: "Status",
         size: 30,
+        editVariant: "select",
+        editSelectOptions: [
+          "未付款",
+          "已付款",
+          "已发货",
+          "已收货",
+          "订单正常完成",
+        ],
       },
     ],
     []
   );
+
+  //UPDATE action
+  const handleSave = async ({ values, table }: any) => {
+    if (values.status === "未付款") {
+      return table.setEditingRow(null); //exit editing mode
+    }
+    console.log(values, "values");
+    const { id, status } = values;
+    let res = await fetchGet(
+      `/order/update/${id}`,
+      {status: Status[status]}
+    );
+    if (res?.code === "0") {
+      console.log(res, "res");
+      Toast.show("success");
+      getShopList();
+    } else {
+      Toast.show("Network error");
+    }
+    table.setEditingRow(null); //exit editing mode
+  };
 
   const table = useMaterialReactTable({
     columns,
@@ -125,31 +166,24 @@ const Record = memo(() => {
       showLastButton: false,
     },
     rowCount: meta?.totalNumber ?? 0,
-    // initialState: { pagination: { pageSize: 1, pageIndex: 0 } },
-    // mrtTheme: (theme) => ({
-    //   baseBackgroundColor: theme.palette.background.default, //change default background color
-    // }),
-    // muiTableBodyRowProps: { hover: false },
-    // muiTableProps: {
-    //   sx: {
-    //     border: "0.5px solid #eee",
-    //     caption: {
-    //       captionSide: "top",
-    //     },
-    //   },
-    // },
-    // muiTableHeadCellProps: {
-    //   sx: {
-    //     border: "0.5px solid #eee",
-    //     fontStyle: "italic",
-    //     fontWeight: "normal",
-    //   },
-    // },
-    // muiTableBodyCellProps: {
-    //   sx: {
-    //     border: "0.5px solid #eee",
-    //   },
-    // },
+    enableEditing: query.admin === '1' ? true : false,
+    editDisplayMode: "modal",
+    onEditingRowSave: handleSave,
+    renderRowActions: ({ row, table }) => (
+      <Box sx={{ display: "flex", gap: "1rem" }}>
+        <Tooltip title="Edit">
+          <IconButton onClick={() => table.setEditingRow(row)}>
+            <EditIcon />
+          </IconButton>
+        </Tooltip>
+        <Tooltip title="Delete">
+          <IconButton color="error" onClick={() => handleDelete(row)}>
+            <DeleteIcon />
+          </IconButton>
+        </Tooltip>
+      </Box>
+    ),
+    positionActionsColumn: "last",
   });
 
   return (

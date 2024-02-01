@@ -30,20 +30,28 @@ const News = memo(({sendMessage}: Iprops) => {
   const { locale: activeLocale } = router;
   const [data, setData] = useState<string[]>([]);
   const [hasMore, setHasMore] = useState(true);
+  const [page, setPage] = useState(1);
 
-  const getShopList = useCallback(async (params?: Record<string, any>) => {
+  const getShopList = async (params?: Record<string, any>) => {
     let res = await fetchGet("/cart/query_page", {
-      page: 1,
+      page,
       size: 10,
       ...params,
     });
     if (res?.code === "0") {
-      const data = res.data?.[0] || {};
+      const list = res.data?.[0] || {};
+      console.log(params, "params", list);
 
-      console.log(data, "data");
-
-      setData(data.list || []);
-      setHasMore(data.page?.totalNumber > data.list?.length);
+      if (params) {
+        setData(list.list || []);
+        setHasMore(list.page?.totalNumber > (list.list || [])?.length);
+      } else {
+        setData(data.concat(list.list || []));
+        setHasMore(
+          list.page?.totalNumber > data.concat(list.list || [])?.length
+        );
+        setPage(page + 1);
+      }
     } else {
       setHasMore(false);
     }
@@ -51,7 +59,7 @@ const News = memo(({sendMessage}: Iprops) => {
     // setData(val => [...val, ...append])
     // setHasMore(append.length > 0)
     console.log(123);
-  }, []);
+  };
 
   const handleDelete = async (commodityId: string) => {
     Dialog.show({
@@ -84,7 +92,7 @@ const News = memo(({sendMessage}: Iprops) => {
           if (res?.code === "0") {
             console.log(res, "res");
             Toast.show("success");
-            getShopList();
+            getShopList({});
           } else {
             Toast.show("Network error");
           }
