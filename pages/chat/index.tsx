@@ -37,7 +37,7 @@ const Chat = ({ sendMessage, messagememo }: Iprops) => {
   const [val, setVal] = useState<string | undefined>();
   const [emijiShow, setEmojiShow] = useState(false);
   //   const [isConnected, fooEvents] = useSocket()
-  const [accept, setAccept] = useState<{ name?: string; id: string }>({});
+  const [accept, setAccept] = useState<{ name?: string; id?: string }>({});
 
   const ref = useRef<HTMLDivElement>(null);
 

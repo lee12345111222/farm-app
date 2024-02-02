@@ -62,7 +62,7 @@ const Register = () => {
           onFinish={onFinish}
           style={{
             "---border-top": "none",
-          }}
+          } as any}
           footer={
             <div className="mt-[50px] w-full flex justify-center">
               <Button

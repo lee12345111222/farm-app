@@ -1,4 +1,4 @@
-import React, { memo, useState } from "react";
+import React, { memo, useMemo, useState } from "react";
 import Image from "next/image";
 import Header from "@/components/header";
 import {
@@ -9,11 +9,15 @@ import {
   Radio,
   Space,
   Divider,
+  Dialog,
 } from "antd-mobile";
 import { useRouter } from "next/router";
 import { language } from "@/utils/language";
 import FooterToolBar from "@/components/footer-tool-bar";
 import PieChart from "@/components/pieChart";
+import CalendarPicker from "@/components/calendarPicker";
+import CalendarDown from "@/components/calendarDown";
+import InputList from "@/components/inputList";
 
 const News = memo(() => {
   const router = useRouter();
@@ -24,34 +28,40 @@ const News = memo(() => {
     { name: language[activeLocale || "zh"]?.medicationrecords },
   ];
 
-  const [active, setActive] = useState("死淘率");
+  const [active, setActive] = useState(0);
+
+  const listObj: Record<number, any> = useMemo(() => {
+    return {
+      0: new Array(4).fill(1).map((ele, idx) => {
+        console.log(language[activeLocale || "zh"][`animalstab${0}name${idx}`]);
+        return {
+          name: language[activeLocale || "zh"][`animalstab${0}name${idx}`],
+          unit: idx===2?language[activeLocale || "zh"].animalstab1name4unit: language[activeLocale || "zh"].nums,
+        };
+      }),
+      1: new Array(5).fill(1).map((ele, idx) => {
+        console.log(language[activeLocale || "zh"]?.[`animalstab${1}name${idx}`])
+        return {
+          name: language[activeLocale || "zh"]?.[`animalstab${1}name${idx}`],
+          unit: language[activeLocale || "zh"]?.[`animalstab${1}name${idx}unit`] || '',
+        };
+      }),
+    };
+  }, [activeLocale]);
 
   const getDom = (title?: string) => (
-    <Dropdown
-      className="rounded-md text-[#708090]"
-      style={{
-        "--adm-font-size-main": "12px",
-      }}
-    >
-      <Dropdown.Item key="sorter" title={title || "泰安雞"}>
-        <div style={{ padding: 12 }}>
-          <Radio.Group defaultValue="default">
-            <Space direction="vertical" block>
-              <Radio block value="default">
-                综合排序
-              </Radio>
-              <Radio block value="nearest">
-                距离最近
-              </Radio>
-              <Radio block value="top-rated">
-                评分最高
-              </Radio>
-            </Space>
-          </Radio.Group>
-        </div>
-      </Dropdown.Item>
-    </Dropdown>
+    <CalendarPicker
+      styles="!text-sm !font-normal"
+      containerStyles="!px-3 !py-1"
+    />
   );
+
+  const handleClose = () => {
+    Dialog.confirm({
+      title: "確認嗎 若確認 批次將從活躍中移至已關閉",
+      onConfirm: async () => {},
+    });
+  };
 
   return (
     <div className="w-full h-screen bg-[#F6F9FF] farm pb-6 overflow-auto relative">
@@ -61,6 +71,19 @@ const News = memo(() => {
       <div className="overflow-hidden px-3 -mt-36 flex justify-center">
         <div className="pb-5 w-[100%] bg-white pl-6 pt-4 pr-5  rounded-2xl relative">
           <Space className="absolute right-3 top-4">
+            <Button
+              size="mini"
+              type="button"
+              // color="primary"
+              fill="solid"
+              color="danger"
+              // style={{
+              //   "--background-color": "#",
+              // }}
+              onClick={handleClose}
+            >
+              關閉
+            </Button>
             <Button
               size="mini"
               type="button"
@@ -157,12 +180,12 @@ const News = memo(() => {
       </div>
       <div className="mx-3 mt-3 pt-3 pb-4 px-3  bg-white  rounded-2xl">
         <div className="h-12 bg-[#B0C4DE] flex justify-between px-1 items-center rounded-lg">
-          {tab.map((ele) => (
+          {tab.map((ele, idx) => (
             <div
               key={ele.name}
-              onClick={() => setActive(ele.name)}
+              onClick={() => setActive(idx)}
               className={`rounded-lg font-[PingFang SC, PingFang SC] font-medium text-[#fff] text-sm w-40 h-9 text-center leading-9 ${
-                active === ele.name ? "bg-[#4682B4]" : ""
+                active === idx ? "bg-[#4682B4]" : ""
               }`}
             >
               {ele.name}
@@ -171,10 +194,16 @@ const News = memo(() => {
         </div>
       </div>
       <div className="mx-3 mt-3">
+        <CalendarDown />
+      </div>
+      <div className="mx-3 mt-2 px-5 bg-white overflow-hidden rounded-lg">
+        <InputList list={listObj?.[active]} unit />
+      </div>
+      {/* <div className="mx-3 mt-3">
         <div className="flex flex-wrap justify-between bg-white rounded-2xl py-3 h-48">
           <PieChart type="doubouleOptions" />
         </div>
-      </div>
+      </div> */}
     </div>
   );
 });

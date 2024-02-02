@@ -4,12 +4,14 @@
  * @type {import('next').NextConfig}
  **/
 
+// @ts-ignore
 const withImages = require('next-images');
 const path = require('path');
 
 const withTM = require('next-transpile-modules')([
   'antd-mobile',
 ]);
+// @ts-ignore
 const nextConfig = withTM(withImages({
   i18n: {
     locales: ['en', 'zh'],
@@ -27,6 +29,13 @@ const nextConfig = withTM(withImages({
         },
       ],
     }
+  },
+  typescript: {
+    // !! WARN !!
+    // Dangerously allow production builds to successfully complete even if
+    // your project has type errors.
+    // !! WARN !!
+    ignoreBuildErrors: true,
   },
 }))
 

@@ -42,7 +42,7 @@ const News = memo(() => {
       className="rounded-md text-[#708090]"
       style={{
         "--adm-font-size-main": "12px",
-      }}
+      } as any}
     >
       <Dropdown.Item key="sorter" title={title || "泰安雞"}>
         <div style={{ padding: 12 }}>

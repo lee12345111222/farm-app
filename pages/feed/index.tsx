@@ -5,6 +5,7 @@ import { useRouter } from "next/router";
 import { language } from "@/utils/language";
 import CalendarPicker from "@/components/calendarPicker";
 import InputList from "@/components/inputList";
+import CalendarDown from "@/components/calendarDown";
 
 // const list = [
 //   { name: "每月混合飼料次數", unit: '次' },
@@ -118,7 +119,7 @@ const News = memo(() => {
         ))}
       </div>
       <div className="mx-3 mt-3">
-        <CalendarPicker />
+        <CalendarDown />
       </div>
       <div className="mx-3 mt-2 px-5 bg-white overflow-hidden rounded-lg">
         <InputList list={listObj?.[active]} unit />

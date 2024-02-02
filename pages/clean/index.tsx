@@ -5,6 +5,7 @@ import { useRouter } from "next/router";
 import { language } from "@/utils/language";
 import CalendarPicker from "@/components/calendarPicker";
 import InputList from "@/components/inputList";
+import CalendarDown from "@/components/calendarDown";
 
 const News = memo(() => {
   const router = useRouter();
@@ -28,8 +29,10 @@ const News = memo(() => {
           styles="top-10"
         />
       </div>
-      
-      <div className="mx-3 mt-2 px-5 bg-white overflow-hidden rounded-lg">
+      <div className="mx-3  mt-2">
+        <CalendarDown />
+      </div>
+      <div className="mx-3 px-5 bg-white overflow-hidden rounded-lg">
       <InputList list ={list} />
 
         {/*  */}

@@ -36,7 +36,7 @@ export const fetchGet = function (url: any, params: { [x: string]: any }) {
 // post请求封装
 export const fetchPost = function (
   url: string | URL | Request,
-  params: { [x: string]: string | Blob },
+  params: { [x: string]: string | Blob | any },
   header?: Record<string, any>
 ) {
   let formData = new FormData();

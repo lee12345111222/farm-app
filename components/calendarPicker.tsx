@@ -3,8 +3,13 @@ import { CalendarPicker, List } from "antd-mobile";
 import { language } from "@/utils/language";
 import { useRouter } from "next/router";
 
+interface Iporps {
+  containerStyles?: string;
+  styles?: string;
+}
 
-export default () => {
+export default (props: Iporps) => {
+  const { containerStyles, styles } = props;
   const router = useRouter();
   const { locale: activeLocale } = router;
   const [val, setVal] = useState<Date | null>();
@@ -12,8 +17,8 @@ export default () => {
 
   return (
     <>
-      <div className="flex bg-[#F3F3F7] justify-between px-4 pt-2 pb-1 items-center  rounded-md" onClick={() => setVisible3(true)}>
-        <div className="font-[PingFang SC, PingFang SC] font-medium text-[#708090] text-sm">
+      <div className={`flex bg-[#F3F3F7] justify-between px-4 pt-2 pb-1 items-center  rounded-md ${containerStyles}`} onClick={() => setVisible3(true)}>
+        <div className={`font-[PingFang SC, PingFang SC] font-medium text-[#708090] text-sm ${styles}`}>
           
           {language[activeLocale || "zh"]?.dateinput}
         </div>

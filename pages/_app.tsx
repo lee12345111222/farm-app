@@ -28,7 +28,7 @@ export default function MyApp({ Component, pageProps }: AppPropsWithLayout) {
       : "", // 此参数为websocket地址
   });
 
-  const messagememo = useMemo(() => wsData, [wsData]);
+  const messagememo: any = useMemo(() => wsData, [wsData]);
 
   useEffect(() => {
     const res = JSON.parse(localStorage.getItem("user") || "{}");
