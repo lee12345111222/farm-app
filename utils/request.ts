@@ -28,10 +28,10 @@ export const fetchGet = function (url: any, params: { [x: string]: any }) {
       return res.json();
     })
     .then(checkLogin)
-    .catch((err) => {
-      console.log(err);
-      return err;
-    });
+    // .catch((err) => {
+    //   console.log(err);
+    //   // return err;
+    // });
 };
 // post请求封装
 export const fetchPost = function (
@@ -56,10 +56,10 @@ export const fetchPost = function (
       return res.json();
     })
     .then(checkLogin)
-    .catch((err) => {
-      console.log(err);
-      return err;
-    });
+    // .catch((err) => {
+    //   console.log(err);
+    //   return err;
+    // });
 };
 // 这个其实写不写都不行
 const fetchAll = function (

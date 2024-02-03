@@ -1,5 +1,57 @@
 import { Dialog, Toast } from "antd-mobile";
 import { fetchPost } from "./request";
+import * as PDFJS from 'pdfjs-dist';
+import pdfjsWorker from 'pdfjs-dist/build/pdf.worker.entry';
+PDFJS.GlobalWorkerOptions.workerSrc = pdfjsWorker;
+
+function urlToBase64(url) {
+  console.log(url, 'url')
+  return fetch(url)
+    .then(response => response.blob())
+    .then(blob => {
+      return new Promise((resolve, reject) => {
+        const reader = new FileReader();
+        reader.onloadend = () => resolve(reader.result);
+        reader.onerror = reject;
+        reader.readAsDataURL(blob);
+      });
+    });
+}
+
+const readFileData = (file) => {
+  return new Promise((resolve, reject) => {
+    const reader = new FileReader();
+    reader.onload = (e) => {
+      resolve(e.target.result);
+    };
+    reader.onerror = (err) => {
+      reject(err);
+    };
+    reader.readAsDataURL(file);
+  });
+};
+
+//param: file -> the input file (e.g. event.target.files[0])
+//return: images -> an array of images encoded in base64 
+export const convertPdfToImages = async (file) => {
+  const images: any = [];
+  const data = await urlToBase64(file);
+  console.log(data, 'data')
+  const pdf = await PDFJS.getDocument(data).promise;
+  const canvas = document.createElement("canvas");
+  for (let i = 0; i < pdf.numPages; i++) {
+    const page = await pdf.getPage(i + 1);
+    const viewport = page.getViewport({ scale: 1 });
+    const context = canvas.getContext("2d");
+    canvas.height = viewport.height;
+    canvas.width = viewport.width;
+    await page.render({ canvasContext: context, viewport: viewport }).promise;
+    images.push(canvas.toDataURL());
+  }
+  canvas.remove();
+  return images;
+}
+
 
 export const upload = (url: string, fn: Function, allowed?:any[]) => {
   //选择文件的 input 元素
@@ -29,7 +81,6 @@ export const upload = (url: string, fn: Function, allowed?:any[]) => {
     if (target.files && target.files[0]) {
       console.log(target.files, "target");
       const file: File = target.files[0];
-
       var fileExtension = file?.name?.split(".").pop().toLowerCase() || "";
       if (!allowedFormats.includes(fileExtension)) {
         // alert('只能上传 ' + allowedFormats.join(', ') + ' 格式的文件');
