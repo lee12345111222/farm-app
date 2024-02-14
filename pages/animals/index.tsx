@@ -1,4 +1,4 @@
-import React, { memo, useMemo, useState } from "react";
+import React, { memo, useCallback, useEffect, useMemo, useState } from "react";
 import Image from "next/image";
 import Header from "@/components/header";
 import {
@@ -10,6 +10,7 @@ import {
   Space,
   Divider,
   Dialog,
+  Toast,
 } from "antd-mobile";
 import { useRouter } from "next/router";
 import { language } from "@/utils/language";
@@ -18,6 +19,14 @@ import PieChart from "@/components/pieChart";
 import CalendarPicker from "@/components/calendarPicker";
 import CalendarDown from "@/components/calendarDown";
 import InputList from "@/components/inputList";
+import { fetchGet, fetchPost } from "@/utils/request";
+import dayjs from "dayjs";
+
+const UrlObj = {
+  0: "/normal/add",
+  1: "/feed/add",
+  2: "/fine/add",
+};
 
 const News = memo(() => {
   const router = useRouter();
@@ -36,23 +45,116 @@ const News = memo(() => {
         console.log(language[activeLocale || "zh"][`animalstab${0}name${idx}`]);
         return {
           name: language[activeLocale || "zh"][`animalstab${0}name${idx}`],
-          unit: idx===2?language[activeLocale || "zh"].animalstab1name4unit: language[activeLocale || "zh"].nums,
+          unit:
+            idx === 2
+              ? language[activeLocale || "zh"].animalstab1name4unit
+              : language[activeLocale || "zh"].nums,
         };
       }),
       1: new Array(5).fill(1).map((ele, idx) => {
-        console.log(language[activeLocale || "zh"]?.[`animalstab${1}name${idx}`])
+        console.log(
+          language[activeLocale || "zh"]?.[`animalstab${1}name${idx}`]
+        );
         return {
           name: language[activeLocale || "zh"]?.[`animalstab${1}name${idx}`],
-          unit: language[activeLocale || "zh"]?.[`animalstab${1}name${idx}unit`] || '',
+          unit:
+            language[activeLocale || "zh"]?.[`animalstab${1}name${idx}unit`] ||
+            "",
         };
       }),
     };
   }, [activeLocale]);
 
+  console.log(listObj, "listObj");
+
+
+  const [listmsg, setListMsg] = useState(listObj);
+
+  const getMsg = useCallback(async (params?: Record<string, any>) => {
+    let res: Record<string, any> = await fetchGet(
+      "/immunization/query_page",
+      {}
+    );
+    if (res?.code === "0") {
+      console.log(res, "data");
+    }
+    // setMsg((pre) => {
+    //   pre[0].val = dayjs().format("DD/MM/YYYY");
+    //   pre[0].disable = true;
+    //   return pre
+    // });
+  }, []);
+
+  useEffect(() => {
+    getMsg();
+  }, [getMsg]);
+
+
+  const handleSubmit = async (obj: Record<string, any>) => {
+    console.log(obj, "res", active);
+    let params: Record<string, any> = {};
+    obj.forEach((ele) => {
+      params[ele.key] = ele.val;
+    });
+    params.time = params.time || dayjs().format("YYYY-MM-DD");
+
+    let res = await fetchPost(UrlObj[active], params, {
+      "Content-Type": "application/json",
+    });
+    if (res?.code === "0") {
+      console.log(res, "res");
+      Toast.show("success");
+    } else {
+      Toast.show("Network error");
+    }
+  };
+
+  const [msg, setMsg] = useState<Record<string, any>>({});
+  const [initMsg, setInitMsg] = useState<Record<string, any>>({});
+
+  const getFarmMsg = useCallback(async (params?: Record<string, any>) => {
+    let res = JSON.parse(localStorage.getItem("animal") || "{}");
+    for (let item in res) {
+      console.log(item);
+      res[item] = res[item] || "";
+    }
+    setMsg(res);
+    setInitMsg(res);
+  }, []);
+
+  useEffect(() => {
+    getFarmMsg();
+  }, [getFarmMsg]);
+
+  const saveFarmMsg = useCallback(async () => {
+    let res = await fetchPost(
+      "/chicken/update",
+      { ...msg },
+      {
+        "Content-Type": "application/json",
+      }
+    );
+    if (res?.code === "0") {
+      console.log(res, "res");
+      Toast.show("success");
+    } else {
+      Toast.show("Network error");
+    }
+  }, [msg]);
+
+  const handleChangeVal = (key: string, val: string) => {
+    setMsg((pre) => ({
+      ...pre,
+      [key]: val,
+    }));
+  };
+
   const getDom = (title?: string) => (
     <CalendarPicker
+      onConfirm={(val) => handleChangeVal("incubationDate", val)}
       styles="!text-sm !font-normal"
       containerStyles="!px-3 !py-1"
+      title={title}
     />
   );
 
@@ -63,8 +165,9 @@ const News = memo(() => {
     });
   };
 
+  console.log(msg, "msg");
   return (
-    <div className="w-full h-screen bg-[#F6F9FF] farm pb-6 overflow-auto relative">
+    <div className="w-full h-screen bg-[#F6F9FF] pb-6 overflow-auto relative">
       <div className="bg-[url('/home_slices/bg.png')] bg-cover h-64">
         <Header home back title="雞群A" />
       </div>
@@ -92,10 +195,16 @@ const News = memo(() => {
               style={{
                 "--background-color": "#4682B4",
               }}
+              onClick={saveFarmMsg}
             >
               保存
             </Button>
-            <Button size="mini" type="reset" fill="solid">
+            <Button
+              size="mini"
+              type="reset"
+              fill="solid"
+              onClick={() => setMsg(initMsg)}
+            >
               重設
             </Button>
           </Space>
@@ -106,6 +215,8 @@ const News = memo(() => {
             <Input
               className="font-medium underline -mt-1"
               defaultValue="xxx"
+              onChange={(val) => handleChangeVal("batchName", val)}
+              value={msg.batchName}
               style={{
                 "--color": "#708090",
                 fontSize: 14,
@@ -117,6 +228,9 @@ const News = memo(() => {
             <Input
               className="font-medium underline -mt-1"
               defaultValue="xxx"
+              onChange={(val) => handleChangeVal("breedingQuota", val)}
+              value={msg.id}
+              disabled
               style={{
                 "--color": "#708090",
                 fontSize: 14,
@@ -127,7 +241,7 @@ const News = memo(() => {
             <div className="font-[PingFang SC, PingFang SC] font-medium text-[#708090] text-sm">
               {language[activeLocale || "zh"]?.incubationdate}:
             </div>
-            <div className="w-30 ml-2">{getDom("11/11/2023")}</div>
+            <div className="w-30 ml-2">{getDom(msg.incubationDate)}</div>
           </div>
           <div className="flex items-center mb-6">
             <div className="font-[PingFang SC, PingFang SC] font-medium text-[#708090] text-sm flex-shrink-0">
@@ -136,6 +250,8 @@ const News = memo(() => {
             <Input
               className="font-medium underline -mt-1 !w-10 ml-2"
               defaultValue="2045"
+              onChange={(val) => handleChangeVal("chickenSeedlingNumber", val)}
+              value={msg.chickenSeedlingNumber}
               style={{
                 "--color": "#708090",
                 fontSize: 14,
@@ -153,6 +269,8 @@ const News = memo(() => {
             <Input
               className="font-medium underline -mt-1 ml-2"
               defaultValue="xxx"
+              onChange={(val) => handleChangeVal("vaccineManufacturers", val)}
+              value={msg.vaccineManufacturers}
               style={{
                 "--color": "#708090",
                 fontSize: 14,
@@ -197,7 +315,7 @@ const News = memo(() => {
         <CalendarDown />
       </div>
       <div className="mx-3 mt-2 px-5 bg-white overflow-hidden rounded-lg">
-        <InputList list={listObj?.[active]} unit />
+        <InputList list={listmsg?.[active]} onSubmit={handleSubmit} unit />
       </div>
       {/* <div className="mx-3 mt-3">
         <div className="flex flex-wrap justify-between bg-white rounded-2xl py-3 h-48">

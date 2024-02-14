@@ -28,7 +28,7 @@ const SideMenuPopup = (props: IProps) => {
     {
       img: "/home_slices/news.png",
       label: language[activeLocale || "zh"]?.latestnews,
-      onClick: () => () => router.push('/news'),
+      onClick: () => router.push('/news'),
     },
     {
       img: "/home_slices/table.png",

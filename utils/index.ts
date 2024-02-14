@@ -36,7 +36,7 @@ const readFileData = (file) => {
 export const convertPdfToImages = async (file) => {
   const images: any = [];
   const data = await urlToBase64(file);
-  console.log(data, 'data')
+  console.log(data, 'data', file)
   const pdf = await PDFJS.getDocument(data).promise;
   const canvas = document.createElement("canvas");
   for (let i = 0; i < pdf.numPages; i++) {

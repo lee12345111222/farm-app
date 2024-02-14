@@ -1,16 +1,46 @@
-import React from "react";
+import React, { useState } from "react";
 import { Button, Input, Space } from "antd-mobile";
+import { useEffect } from "react";
 
 interface Iprops {
-  list: Record<string, any>;
+  list: Record<string, any>[];
   unit?: boolean;
+  onChange?: (v: Record<string, any>) => void;
+  onSubmit?: (v: Record<string, any>) => void;
 }
 
-const InputList = ({ list = [], unit = false }: Iprops) => {
+const InputList = ({ list = [], unit = false, onChange, onSubmit }: Iprops) => {
+  const [msg, setMsg] = useState<Record<string, any>[]>([]);
+  const [initMsg, setInitMsg] = useState<Record<string, any>[]>([]);
+
+  useEffect(() => {
+    if (list?.length) {
+      console.log("list", list);
+      list.forEach((ele) => {
+        if (!ele.val) {
+          ele.val = "";
+        }
+      });
+      setMsg([...list]);
+      setInitMsg([...list]);
+    }
+  }, [list]);
+
+  const handleChange = (key, val) => {
+    console.log(key, val, "val");
+    let res = JSON.parse(JSON.stringify(msg));
+    res[key].val = val;
+    setMsg(res);
+  };
+
+  const handleSubmit = () => {
+    onSubmit?.(msg);
+  };
+  console.log(msg, "msg", list, initMsg);
   return (
     <>
-      {list.map(
-        (ele: Record<string, string>, idx: React.Key | null | undefined) => (
+      {msg.map(
+        (ele: Record<string, any>, idx: React.Key | null | undefined) => (
           <div
             key={idx}
             className="flex pt-6 pb-4 justify-between items-center border-b border-[#D7E8FE]"
@@ -20,6 +50,9 @@ const InputList = ({ list = [], unit = false }: Iprops) => {
             </div>
             <Input
               placeholder="xx"
+              onChange={(val) => handleChange(idx, val)}
+              value={ele.val}
+              disabled={ele.disable}
               style={{
                 "--text-align": "right",
                 "--color": "#708090",
@@ -35,6 +68,7 @@ const InputList = ({ list = [], unit = false }: Iprops) => {
       )}
       <Space className="mt-3 w-[100%] justify-center">
         <Button
+          onClick={handleSubmit}
           type="button"
           color="primary"
           fill="solid"
@@ -44,7 +78,14 @@ const InputList = ({ list = [], unit = false }: Iprops) => {
         >
           保存
         </Button>
-        <Button type="reset" fill="solid">
+        <Button
+          type="reset"
+          fill="solid"
+          onClick={() => {
+            let res = [...initMsg];
+            setMsg(res);
+          }}
+        >
           重設
         </Button>
       </Space>

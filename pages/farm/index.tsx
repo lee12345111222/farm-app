@@ -1,4 +1,4 @@
-import React, { memo } from "react";
+import React, { memo, useCallback, useEffect, useState } from "react";
 import Image from "next/image";
 import Header from "@/components/header";
 import {
@@ -9,15 +9,54 @@ import {
   Radio,
   Space,
   Divider,
+  Toast,
 } from "antd-mobile";
 import { useRouter } from "next/router";
 import { language } from "@/utils/language";
 import FooterToolBar from "@/components/footer-tool-bar";
+import { selectUser, useSelector } from "@/lib/redux";
 import PieChart from "@/components/pieChart";
+import { fetchGet, fetchPost } from "@/utils/request";
+const TypeList = ["-", "泰安雞", "嘉美雞", "雪鳳凰", "其他"];
+const HomeList = ["開放式", "封閉式"];
 
 const News = memo(() => {
   const router = useRouter();
   const { locale: activeLocale } = router;
+  const query = useSelector(selectUser);
+
+  const [msg, setMsg] = useState<Record<string, any>>({});
+  const [initMsg, setInitMsg] = useState<Record<string, any>>({});
+
+  const getFarmMsg = useCallback(async (params?: Record<string, any>) => {
+    let res: Record<string, any> = await fetchGet("/farm/query", {});
+    if (res?.code === "0") {
+      console.log(res, "data");
+      setMsg(res.data);
+      setInitMsg(res.data);
+    }
+  }, []);
+
+  useEffect(() => {
+    getFarmMsg();
+  }, [getFarmMsg]);
+
+  const saveFarmMsg = useCallback(async () => {
+    let res = await fetchPost(
+      "/farm/add",
+      { ...msg, chickenSeedlingsBatch: "1" },
+      {
+        "Content-Type": "application/json",
+      }
+    );
+    if (res?.code === "0") {
+      console.log(res, "res");
+      Toast.show("success");
+    } else {
+      Toast.show("Network error");
+    }
+  }, [msg]);
+
   const list = [
     {
       name: language[activeLocale || "zh"]?.immunityname,
@@ -37,33 +76,14 @@ const News = memo(() => {
     },
   ];
 
-  const getDom = (title?: string) => (
-    <Dropdown
-      className="rounded-md text-[#708090]"
-      style={{
-        "--adm-font-size-main": "12px",
-      } as any}
-    >
-      <Dropdown.Item key="sorter" title={title || "泰安雞"}>
-        <div style={{ padding: 12 }}>
-          <Radio.Group defaultValue="default">
-            <Space direction="vertical" block>
-              <Radio block value="default">
-                综合排序
-              </Radio>
-              <Radio block value="nearest">
-                距离最近
-              </Radio>
-              <Radio block value="top-rated">
-                评分最高
-              </Radio>
-            </Space>
-          </Radio.Group>
-        </div>
-      </Dropdown.Item>
-    </Dropdown>
-  );
+  const handleChangeVal = (key: string, val: string) => {
+    setMsg((pre) => ({
+      ...pre,
+      [key]: val,
+    }));
+  };
 
+  console.log(msg, "msg");
   return (
     <div className="w-full h-screen bg-[#F6F9FF] farm pb-6 overflow-auto relative">
       <div className="bg-[url('/news/farmbg.png')] bg-cover h-[51%] ">
@@ -83,15 +103,21 @@ const News = memo(() => {
                 style={{
                   "--background-color": "#4682B4",
                 }}
+                onClick={saveFarmMsg}
               >
                 保存
               </Button>
-              <Button size="mini" type="reset" fill="solid">
+              <Button
+                size="mini"
+                type="reset"
+                fill="solid"
+                onClick={() => setMsg(initMsg)}
+              >
                 重設
               </Button>
             </Space>
             <div className="font-[PingFang SC, PingFang SC] font-medium text-[#708090] text-lg mb-4">
-              {language[activeLocale || "zh"]?.farmhello}
+              {language[activeLocale || "zh"]?.farmhello.replace('Ronald',query.username)}
             </div>
             <div className="font-[PingFang SC, PingFang SC] font-medium text-[#708090] text-sm mb-4 flex">
               <span className="flex-shrink-0">
@@ -101,6 +127,8 @@ const News = memo(() => {
               <Input
                 className="font-medium underline ml-2 w-1 -mt-1"
                 defaultValue="XXX"
+                onChange={(val) => handleChangeVal("breedingQuota", val)}
+                value={msg.breedingQuota}
                 style={{
                   "--color": "#708090",
                   fontSize: 14,
@@ -112,14 +140,30 @@ const News = memo(() => {
                 {language[activeLocale || "zh"]?.chickentype}
               </div>
               <div className="justify-between flex flex-1">
-                {new Array(3).fill(1).map((ele, idx) => getDom())}
+                {new Array(3)
+                  .fill(1)
+                  .map((ele, idx) =>
+                    getDom(
+                      msg["chickenSeedlingsType" + (idx + 1)],
+                      "chickenSeedlingsType" + (idx + 1),
+                      TypeList,
+                      handleChangeVal
+                    )
+                  )}
               </div>
             </div>
             <div className="flex items-center mb-4 flex-1 justify-between ">
               <div className="font-[PingFang SC, PingFang SC] font-medium text-[#708090] text-sm">
                 {language[activeLocale || "zh"]?.cooptype}
               </div>
-              <div className="tablePage flex-1">{getDom("開放式")}</div>
+              <div className="tablePage flex-1">
+                {getDom(
+                  msg["breedingMethods"],
+                  "breedingMethods",
+                  HomeList,
+                  handleChangeVal
+                )}
+              </div>
             </div>
             <div className="flex items-center flex-1 justify-between">
               <div className="font-[PingFang SC, PingFang SC] font-medium text-[#708090] text-sm flex-shrink-0 flex">
@@ -127,6 +171,10 @@ const News = memo(() => {
                 <Input
                   className="font-medium underline ml-2 !w-8 flex-grow-0 -mt-1"
                   defaultValue="xxx"
+                  value={msg.chickenSeedlingsNumber1}
+                  onChange={(val) =>
+                    handleChangeVal("chickenSeedlingsNumber1", val)
+                  }
                   style={{
                     "--color": "#708090",
                     fontSize: 14,
@@ -139,6 +187,10 @@ const News = memo(() => {
                 <Input
                   className="font-medium underline ml-2 !w-8 flex-grow-0 -mt-1"
                   defaultValue="xxx"
+                  value={msg.chickenSeedlingsNumber2}
+                  onChange={(val) =>
+                    handleChangeVal("chickenSeedlingsNumber2", val)
+                  }
                   style={{
                     "--color": "#708090",
                     fontSize: 14,
@@ -151,6 +203,10 @@ const News = memo(() => {
                 <Input
                   className="font-medium underline ml-2 !w-8 flex-grow-0 -mt-1"
                   defaultValue="xxx"
+                  value={msg.chickenSeedlingsNumber3}
+                  onChange={(val) =>
+                    handleChangeVal("chickenSeedlingsNumber3", val)
+                  }
                   style={{
                     "--color": "#708090",
                     fontSize: 14,
@@ -205,3 +261,39 @@ const News = memo(() => {
 });
 
 export default News;
+
+const getDom = (
+  title?: string,
+  key?: string,
+  val?: any[],
+  onChange?: (key: string, val: string) => void
+) => {
+  console.log(title, key, val, "val");
+  return (
+    <Dropdown
+      className="rounded-md text-[#708090]"
+      style={
+        {
+          "--adm-font-size-main": "12px",
+        } as any
+      }
+    >
+      <Dropdown.Item key="sorter" title={title|| '-'}>
+        <div style={{ padding: 12 }}>
+          <Radio.Group
+            value={title}
+            onChange={(val: string) => onChange?.(key, val)}
+          >
+            <Space direction="vertical" block>
+              {val?.map((ele) => (
+                <Radio block value={ele}>
+                  {ele}
+                </Radio>
+              ))}
+            </Space>
+          </Radio.Group>
+        </div>
+      </Dropdown.Item>
+    </Dropdown>
+  );
+};

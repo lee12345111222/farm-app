@@ -1,11 +1,19 @@
-import React, { memo, use, useRef, useState } from "react";
+import React, {
+  memo,
+  use,
+  useCallback,
+  useEffect,
+  useRef,
+  useState,
+} from "react";
 import Header from "@/components/header";
 
 import { useRouter } from "next/router";
 import { language } from "@/utils/language";
 import CalendarPicker from "@/components/calendarPicker";
-import { ActionSheet, Dialog, Input, Toast } from "antd-mobile";
+import { ActionSheet, Dialog, InfiniteScroll, Input, Toast } from "antd-mobile";
 import { Action } from "antd-mobile/es/components/action-sheet";
+import { fetchGet, fetchPost } from "@/utils/request";
 
 const list = [
   {
@@ -37,7 +45,98 @@ const News = memo(() => {
 
   const [visible, setVisible] = useState(false);
   const [captcha, setCaptcha] = useState<string>();
-  const ref= useRef<any>();
+  const [page, setPage] = useState(1);
+  const [msg, setMsg] = useState<Record<string, any>[]>(list);
+  const [data, setData] = useState<Record<string, any>[]>([]);
+  const [hasMore, setHasMore] = useState(true);
+
+  const [page2, setPage2] = useState(1);
+  const [data2, setData2] = useState<Record<string, any>[]>([]);
+  const [hasMore2, setHasMore2] = useState(true);
+  const ref = useRef<any>();
+
+  const getMsg = async (params?: Record<string, any>) => {
+    let res: Record<string, any> = await fetchGet(
+      "/chicken/query_page",
+      {
+        page,
+        size: 10,
+        ...params,
+      }
+    );
+    // if (res?.code === "0") {
+    //   console.log(res, "data");
+    //   let val = [...msg]
+    //   val[0].right =
+
+    // }
+    if (res?.code === "0") {
+      const list = res.data?.[0] || {};
+      console.log(params, "params", list, res);
+
+      if (params) {
+        setData(list.list || []);
+        setHasMore(list.page?.totalNumber > (list.list || [])?.length);
+      } else {
+        setData(data.concat(list.list || []));
+        setHasMore(
+          list.page?.totalNumber > data.concat(list.list || [])?.length
+        );
+        setPage(page + 1);
+      }
+    } else {
+      setHasMore(false);
+    }
+  };
+  const getMsg2 = async (params?: Record<string, any>) => {
+    let res: Record<string, any> = await fetchGet(
+      "/chicken/query_page",
+      {
+        page: page2,
+        size: 10,
+
+        ...params,
+      }
+    );
+    if (res?.code === "0") {
+      const list = res.data?.[0] || {};
+      console.log(params, "params", list, res);
+
+      if (params) {
+        setData2(list.list || []);
+        setHasMore2(list.page?.totalNumber > (list.list || [])?.length);
+      } else {
+        setData2(data.concat(list.list || []));
+        setHasMore2(
+          list.page?.totalNumber > data.concat(list.list || [])?.length
+        );
+        setPage2(page + 1);
+      }
+    } else {
+      setHasMore(false);
+    }
+  };
+
+  // useEffect(() => {
+  //   getMsg();
+  // }, [getMsg]);
+
+  const handleSubmit = async (batchName: string) => {
+    let res = await fetchPost(
+      "/chicken/add",
+      { batchName },
+      {
+        "Content-Type": "application/json",
+      }
+    );
+    if (res?.code === "0") {
+      console.log(res, "res");
+      getMsg({ page: 1 });
+      Toast.show("success");
+    } else {
+      Toast.show("Network error");
+    }
+  };
 
   const modalInputClick = () => {
     Dialog.confirm({
@@ -46,17 +145,17 @@ const News = memo(() => {
         <div className="px-3">
           <Input
             onChange={(v) => {
-              ref.current = v
+              ref.current = v;
             }}
             placeholder="input"
           />
         </div>
       ),
       onConfirm: async () => {
-        console.log(captcha, ref.current);
-        Toast.show({
-          content: "提交成功",
-        });
+        handleSubmit(ref.current);
+        // Toast.show({
+        //   content: "提交成功",
+        // });
       },
     });
   };
@@ -84,7 +183,7 @@ const News = memo(() => {
         </div>
       </div>
       <div className="mx-3 mt-3 bg-white overflow-hidden rounded-lg">
-        {list.map((ele) => (
+        {list.map((ele, idx) => (
           <div key={ele.left} className="mb-3">
             <div
               className="flex justify-between items-center h-11 bg-[#4682B4] px-5"
@@ -96,22 +195,34 @@ const News = memo(() => {
               <div className="font-[PingFang SC, PingFang SC] font-medium text-sm text-white">
                 {ele.left}
               </div>
-              <img src="/news/down-white.png" className="w-3 h-2" alt="" />
+              {/* <img src="/news/down-white.png" className="w-3 h-2" alt="" /> */}
+              <div></div>
             </div>
-            {ele.right.map((elem,idx) => (
-              <div
-                key={idx}
-                onClick={() => {console.log(123);router.push('/animals')}}
-                className="flex px-5 py-5 justify-between items-center border-b border-[#D7E8FE]"
-              >
-                <div className="font-[PingFang SC, PingFang SC] font-medium text-[#708090] text-sm">
-                  {elem.name}
+            <div className="max-h-40 overflow-auto">
+              {(idx === 0 ? data : data2).map((elem, idx) => (
+                <div
+                  key={idx}
+                  onClick={() => {
+                    console.log(123);
+                    router.push("/animals");
+                    localStorage.setItem("animal", JSON.stringify(elem));
+                  }}
+                  className="flex px-5 py-5 justify-between items-center border-b border-[#D7E8FE]"
+                >
+                  <div className="font-[PingFang SC, PingFang SC] font-medium text-[#708090] text-sm">
+                    {elem.batchName}
+                  </div>
+                  <div className="font-[PingFang SC, PingFang SC] font-medium text-[#4682B4] text-xs">
+                    {elem.incubationDate || "-"}
+                  </div>
                 </div>
-                <div className="font-[PingFang SC, PingFang SC] font-medium text-[#4682B4] text-xs">
-                  {elem.unit}
-                </div>
-              </div>
-            ))}
+              ))}
+              <InfiniteScroll
+                threshold={1}
+                loadMore={() => (idx === 0 ? getMsg() : getMsg2())}
+                hasMore={idx === 0 ? hasMore : hasMore2}
+              />
+            </div>
           </div>
         ))}
       </div>
