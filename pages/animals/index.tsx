@@ -23,9 +23,16 @@ import { fetchGet, fetchPost } from "@/utils/request";
 import dayjs from "dayjs";
 
 const UrlObj = {
-  0: "/normal/add",
-  1: "/feed/add",
-  2: "/fine/add",
+  0: "/obituary/add",
+  1: "/medication/add",
+};
+const TimeUrlObj = {
+  0: "/obituary/query_date",
+  1: "/medication/query_date",
+};
+const MsgUrlObj = {
+  0: "/obituary/query_page?page=1&size=10",
+  1: "/medication/query_page?page=1&size=10",
 };
 
 const News = memo(() => {
@@ -40,63 +47,113 @@ const News = memo(() => {
   const [active, setActive] = useState(0);
 
   const listObj: Record<number, any> = useMemo(() => {
+    const data0 = [
+      "chickenSeedlingNumber",
+      "chickenSeedlingAge",
+      "deathNumber",
+      "eliminateNumber",
+      "chickenFlockId",
+      "incubationDate",
+    ];
+    const data1 = [
+      "chickenFlockId",
+      "medicationName",
+      "medicationDose",
+      "medicationMeasure",
+      "usageDuration",
+    ];
     return {
-      0: new Array(4).fill(1).map((ele, idx) => {
-        console.log(language[activeLocale || "zh"][`animalstab${0}name${idx}`]);
-        return {
-          name: language[activeLocale || "zh"][`animalstab${0}name${idx}`],
-          unit:
-            idx === 2
-              ? language[activeLocale || "zh"].animalstab1name4unit
-              : language[activeLocale || "zh"].nums,
-        };
-      }),
-      1: new Array(5).fill(1).map((ele, idx) => {
-        console.log(
-          language[activeLocale || "zh"]?.[`animalstab${1}name${idx}`]
-        );
-        return {
-          name: language[activeLocale || "zh"]?.[`animalstab${1}name${idx}`],
-          unit:
-            language[activeLocale || "zh"]?.[`animalstab${1}name${idx}unit`] ||
-            "",
-        };
-      }),
+      0: [
+        ...data0.map((ele, idx) => {
+          console.log(
+            language[activeLocale || "zh"][`animalstab${0}name${idx}`]
+          );
+          return {
+            name: language[activeLocale || "zh"][`animalstab${0}name${idx}`],
+            unit:
+              idx === 2
+                ? language[activeLocale || "zh"].animalstab1name4unit
+                : language[activeLocale || "zh"].nums,
+            key: ele,
+            val: "",
+            hide: idx === 4 || idx === 5,
+          };
+        }),
+        { name: "", key: "dataTime", hide: true },
+      ],
+      1: [
+        ...data1.map((ele, idx) => {
+          console.log(
+            language[activeLocale || "zh"]?.[`animalstab${1}name${idx}`]
+          );
+          return {
+            name: language[activeLocale || "zh"]?.[`animalstab${1}name${idx}`],
+            unit:
+              language[activeLocale || "zh"]?.[
+                `animalstab${1}name${idx}unit`
+              ] || "",
+            key: ele,
+            val: "",
+          };
+        }),
+        { name: "", key: "dataTime", hide: true },
+      ],
     };
   }, [activeLocale]);
 
   console.log(listObj, "listObj");
 
-
+  const [dateList, setDateList] = useState([]);
   const [listmsg, setListMsg] = useState(listObj);
+  const [activeTime, setActiveTime] = useState("");
 
-  const getMsg = useCallback(async (params?: Record<string, any>) => {
-    let res: Record<string, any> = await fetchGet(
-      "/immunization/query_page",
-      {}
-    );
-    if (res?.code === "0") {
-      console.log(res, "data");
-    }
-    // setMsg((pre) => {
-    //   pre[0].val = dayjs().format("DD/MM/YYYY");
-    //   pre[0].disable = true;
-    //   return pre
-    // });
-  }, []);
+  const getDateList = useCallback(
+    async (params?: Record<string, any>) => {
+      let res: Record<string, any> = await fetchGet(TimeUrlObj[active], {});
+      if (res?.code === "0") {
+        setDateList(res.data || []);
+      }
+    },
+    [active]
+  );
+
+  const getMsg = useCallback(
+    async (params?: Record<string, any>) => {
+      let res: Record<string, any> = await fetchPost(
+        MsgUrlObj[active],
+        params,
+        {
+          "Content-Type": "application/json",
+        }
+      );
+      if (res?.code === "0") {
+        let obj = res.data?.[0]?.list?.[0] || {};
+        console.log(res, "data");
+        setListMsg((pre) => {
+          pre[active] = pre?.[active]?.map((ele) => {
+            ele.val = obj[ele.key];
+            return ele;
+          });
+          console.log(pre, "pre", pre[active]);
+          return {...pre};
+        });
+      }
+    },
+    [active]
+  );
 
   useEffect(() => {
-    getMsg();
-  }, [getMsg]);
-
+    getMsg({ dataTime: dayjs().format("YYYY-MM-DD") });
+    getDateList();
+  }, [getMsg, getDateList]);
 
   const handleSubmit = async (obj: Record<string, any>) => {
-    console.log(obj, "res", active);
+    console.log(obj, "res");
     let params: Record<string, any> = {};
     obj.forEach((ele) => {
       params[ele.key] = ele.val;
     });
-    params.time = params.time || dayjs().format("YYYY-MM-DD");
+    params.dataTime = params.dataTime || dayjs().format("YYYY-MM-DD");
 
     let res = await fetchPost(UrlObj[active], params, {
       "Content-Type": "application/json",
@@ -104,6 +161,7 @@ const News = memo(() => {
     if (res?.code === "0") {
       console.log(res, "res");
       Toast.show("success");
+      getDateList();
     } else {
       Toast.show("Network error");
     }
@@ -112,7 +170,7 @@ const News = memo(() => {
   const [msg, setMsg] = useState<Record<string, any>>({});
   const [initMsg, setInitMsg] = useState<Record<string, any>>({});
 
-  const getFarmMsg = useCallback(async (params?: Record<string, any>) => {
+  const getFarmMsg = useCallback(async (params?: Record<string, any>) => {//获取农场信息，之前漏了接口，应该通过id查询todo
     let res = JSON.parse(localStorage.getItem("animal") || "{}");
     for (let item in res) {
       console.log(item);
@@ -137,10 +195,31 @@ const News = memo(() => {
     if (res?.code === "0") {
       console.log(res, "res");
       Toast.show("success");
+      fetchBatch()
     } else {
       Toast.show("Network error");
     }
   }, [msg]);
+
+  const fetchBatch = async () => {
+    let res: Record<string, any> = await fetchGet(
+      "/chicken/query/" + msg.id,
+      {}
+    );
+    if (res?.code === "0") {
+      console.log(res, "res");
+      let obj = res.data||{};
+      localStorage.setItem('animal',JSON.stringify(obj))
+      // for (let item in obj) {
+      //   console.log(item);
+      //   obj[item] = obj[item] || "";
+      // }
+      // setMsg(obj);
+      // setInitMsg(obj);
+    } else {
+      Toast.show("Network error");
+    }
+  };
 
   const handleChangeVal = (key: string, val: string) => {
     setMsg((pre) => ({
@@ -161,7 +240,15 @@ const News = memo(() => {
   const handleClose = () => {
     Dialog.confirm({
       title: "確認嗎 若確認 批次將從活躍中移至已關閉",
-      onConfirm: async () => {},
+      onConfirm: async () => {
+        let res = await fetchGet("/chicken/close/" + msg.id, {});
+        if (res?.code === "0") {
+          console.log(res, "res");
+          Toast.show("success");
+        } else {
+          Toast.show("Network error");
+        }
+      },
     });
   };
 
@@ -248,7 +335,7 @@ const News = memo(() => {
               {language[activeLocale || "zh"]?.chickentotal}:
             </div>
             <Input
-              className="font-medium underline -mt-1 !w-10 ml-2"
+              className="font-medium underline -mt-1 !w-20 ml-2"
               defaultValue="2045"
               onChange={(val) => handleChangeVal("chickenSeedlingNumber", val)}
               value={msg.chickenSeedlingNumber}
@@ -301,7 +388,10 @@ const News = memo(() => {
           {tab.map((ele, idx) => (
             <div
               key={ele.name}
-              onClick={() => setActive(idx)}
+              onClick={() => {
+                setActive(idx);
+                setActiveTime("");
+              }}
               className={`rounded-lg font-[PingFang SC, PingFang SC] font-medium text-[#fff] text-sm w-40 h-9 text-center leading-9 ${
                 active === idx ? "bg-[#4682B4]" : ""
               }`}
@@ -312,7 +402,15 @@ const News = memo(() => {
         </div>
       </div>
       <div className="mx-3 mt-3">
-        <CalendarDown />
+        <CalendarDown
+          dateList={dateList}
+          title={activeTime}
+          onChange={(v) => {
+            console.log(v);
+            setActiveTime(v);
+            getMsg({ page: 1, dataTime: v });
+          }}
+        />
       </div>
       <div className="mx-3 mt-2 px-5 bg-white overflow-hidden rounded-lg">
         <InputList list={listmsg?.[active]} onSubmit={handleSubmit} unit />

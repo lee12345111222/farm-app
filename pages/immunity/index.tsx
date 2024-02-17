@@ -13,7 +13,7 @@ import { Toast } from "antd-mobile";
 const News = memo(() => {
   const router = useRouter();
   const { locale: activeLocale } = router;
-  
+
   const list: Record<string, any>[] = useMemo(
     () => [
       {
@@ -55,51 +55,67 @@ const News = memo(() => {
   );
 
   const [msg, setMsg] = useState(list);
+  const [dateList, setDateList] = useState([]);
+  const [activeTime, setActiveTime] = useState("");
 
-  const getMsg = useCallback(async (params?: Record<string, any>) => {
+  const getDateList = useCallback(async (params?: Record<string, any>) => {
     let res: Record<string, any> = await fetchGet(
-      "/immunization/query_page",
+      "/immunization/query_date",
       {}
     );
     if (res?.code === "0") {
-      console.log(res, "data");
-   
+      setDateList(res.data || []);
     }
-    setMsg((pre) => {
-      pre[0].val = dayjs().format("DD/MM/YYYY");
-      pre[0].disable = true;
-      return pre
-    });
   }, []);
 
-  useEffect(() => {
-    getMsg();
-  }, [getMsg]);
-
-  console.log(msg, 'msg1')
-
-  const handleSubmit = async( obj: Record<string, any>) => {
-    console.log(obj , 'res')
-   let params = {}
-   obj.forEach(ele => {
-    params[ele.key] = ele.val
-   })
-
-    let res = await fetchPost(
-      "/immunization/add",
+  const getMsg = useCallback(async (params?: Record<string, any>) => {
+    let res: Record<string, any> = await fetchPost(
+      "/immunization/query_page?page=1&size=1",
       params,
       {
         "Content-Type": "application/json",
       }
     );
     if (res?.code === "0") {
+      let obj = res.data?.[0]?.list?.[0] || {};
+      console.log(res, "data", obj);
+      setMsg((pre) => {
+        pre = pre.map((ele) => {
+          ele.val = obj[ele.key];
+          return ele;
+        });
+        console.log(pre);
+        return pre;
+      });
+    }
+  }, []);
+
+  useEffect(() => {
+    getMsg({dataTime: dayjs().format("YYYY-MM-DD")});
+    getDateList();
+  }, [getMsg, getDateList]);
+
+  console.log(msg, "msg1");
+
+  const handleSubmit = async (obj: Record<string, any>) => {
+    console.log(obj, "res");
+    let params: Record<string, any> = {};
+    obj.forEach((ele) => {
+      params[ele.key] = ele.val;
+    });
+    params.dataTime = params.dataTime || dayjs().format("YYYY-MM-DD");
+
+    let res = await fetchPost("/immunization/add", params, {
+      "Content-Type": "application/json",
+    });
+    if (res?.code === "0") {
       console.log(res, "res");
       Toast.show("success");
+      getDateList()
     } else {
       Toast.show("Network error");
     }
-
-  }
+  };
 
   return (
     <div className="w-full h-screen bg-white pb-6 overflow-auto relative">
@@ -111,7 +127,15 @@ const News = memo(() => {
         />
       </div>
       <div className="mx-3  mt-2">
-        <CalendarDown />
+        <CalendarDown
+          dateList={dateList}
+          title={activeTime}
+          onChange={(v) => {
+            console.log(v);
+            setActiveTime(v);
+            getMsg({ page: 1, dataTime: v });
+          }}
+        />
       </div>
       <div className="mx-3 px-5 bg-white overflow-hidden rounded-lg">
         <InputList onSubmit={handleSubmit} list={msg} />

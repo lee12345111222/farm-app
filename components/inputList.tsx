@@ -40,7 +40,7 @@ const InputList = ({ list = [], unit = false, onChange, onSubmit }: Iprops) => {
   return (
     <>
       {msg.map(
-        (ele: Record<string, any>, idx: React.Key | null | undefined) => (
+        (ele: Record<string, any>, idx: React.Key | null | undefined) => !ele.hide&&(
           <div
             key={idx}
             className="flex pt-6 pb-4 justify-between items-center border-b border-[#D7E8FE]"

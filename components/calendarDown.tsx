@@ -2,9 +2,16 @@ import React, { useState } from "react";
 import { CalendarPicker, Dropdown, List, Radio, Space } from "antd-mobile";
 import { language } from "@/utils/language";
 import { useRouter } from "next/router";
+import dayjs from "dayjs";
 
+interface Iprops {
+  title?: string;
+  dateList?: string[];
+  onChange?: (v: string) => void;
+}
 
-export default () => {
+export default (props: Iprops) => {
+  const { title, onChange, dateList } = props;
   const router = useRouter();
   const { locale: activeLocale } = router;
   const [val, setVal] = useState<Date | null>();
@@ -30,30 +37,42 @@ export default () => {
         }}
       /> */}
       <Dropdown
-      className="rounded-md text-[#708090] tablePage"
-      style={{
-        "--adm-font-size-main": "14px",
-        '--adm-color-background': '#F3F3F7',
-      } as any}
-    >
-      <Dropdown.Item key="sorter" title={language[activeLocale || "zh"]?.dateinput}>
-        <div style={{ padding: 12 }}>
-          <Radio.Group defaultValue="default">
-            <Space direction="vertical" block>
-              <Radio block value="default">
-                2022
-              </Radio>
-              <Radio block value="nearest">
-                2021
-              </Radio>
-              <Radio block value="top-rated">
-                2020
-              </Radio>
-            </Space>
-          </Radio.Group>
-        </div>
-      </Dropdown.Item>
-    </Dropdown>
+        className="rounded-md text-[#708090] tablePage"
+        style={
+          {
+            "--adm-font-size-main": "14px",
+            "--adm-color-background": "#F3F3F7",
+          } as any
+        }
+      >
+        <Dropdown.Item
+          key="sorter"
+          title={title || language[activeLocale || "zh"]?.dateinput}
+        >
+          <div style={{ padding: 12 }}>
+            <Radio.Group
+              defaultValue="default"
+              value={title}
+              onChange={(val: string) => onChange?.(val)}
+            >
+              <Space direction="vertical" block>
+                {/* <Radio
+                  block
+                  value={''}
+                  key={dayjs().format("YYYY-MM-DD")}
+                >
+                  {dayjs().format("YYYY-MM-DD")}
+                </Radio> */}
+                {dateList.map((ele) => (
+                  <Radio block value={ele} key={ele}>
+                    {ele}
+                  </Radio>
+                ))}
+              </Space>
+            </Radio.Group>
+          </div>
+        </Dropdown.Item>
+      </Dropdown>
     </>
   );
 };

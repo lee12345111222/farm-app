@@ -56,12 +56,16 @@ const News = memo(() => {
   const ref = useRef<any>();
 
   const getMsg = async (params?: Record<string, any>) => {
-    let res: Record<string, any> = await fetchGet(
-      "/chicken/query_page",
+    let res: Record<string, any> = await fetchPost(
+      `/chicken/query_page?page=${params?.page || page2}&size=10`,
       {
-        page,
-        size: 10,
+        // page,
+        // size: 10,
+        status: 1,
         ...params,
+      },
+      {
+        "Content-Type": "application/json",
       }
     );
     // if (res?.code === "0") {
@@ -77,6 +81,7 @@ const News = memo(() => {
       if (params) {
         setData(list.list || []);
         setHasMore(list.page?.totalNumber > (list.list || [])?.length);
+        setPage(1);
       } else {
         setData(data.concat(list.list || []));
         setHasMore(
@@ -89,13 +94,16 @@ const News = memo(() => {
     }
   };
   const getMsg2 = async (params?: Record<string, any>) => {
-    let res: Record<string, any> = await fetchGet(
-      "/chicken/query_page",
+    let res: Record<string, any> = await fetchPost(
+      `/chicken/query_page?page=${params?.page || page2}&size=10`,
       {
-        page: page2,
-        size: 10,
-
+        // page: page2,
+        // size: 10,
+        status: 0,
         ...params,
+      },
+      {
+        "Content-Type": "application/json",
       }
     );
     if (res?.code === "0") {
@@ -105,6 +113,7 @@ const News = memo(() => {
       if (params) {
         setData2(list.list || []);
         setHasMore2(list.page?.totalNumber > (list.list || [])?.length);
+        setPage2(1);
       } else {
         setData2(data.concat(list.list || []));
         setHasMore2(

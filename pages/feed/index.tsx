@@ -15,6 +15,16 @@ const UrlObj = {
   1: "/feed/add",
   2: "/fine/add",
 };
+const TimeUrlObj = {
+  0: "/normal/query_date",
+  1: "/feed/query_date",
+  2: "/fine/query_date",
+};
+const MsgUrlObj = {
+  0: "/normal/query_page?page=1&size=1",
+  1: "/feed/query_page?page=1&size=1",
+  2: "/fine/query_page?page=1&size=1",
+};
 
 const News = memo(() => {
   const router = useRouter();
@@ -80,6 +90,7 @@ const News = memo(() => {
       key: "feedTowerClearNumber",
       val: "",
     },
+    { name: "", key: "dataTime", hide: true },
   ];
 
   const listObj: Record<number, any> = useMemo(() => {
@@ -92,22 +103,28 @@ const News = memo(() => {
       "chickenCockFineFeedDosage",
     ];
     return {
-      0: data0.map((ele, idx) => {
-        console.log(language[activeLocale || "zh"][`feedtab${0}name${idx}`]);
-        return {
-          name: language[activeLocale || "zh"][`feedtab${0}name${idx}`],
+      0: [
+        ...data0.map((ele, idx) => {
+          console.log(language[activeLocale || "zh"][`feedtab${0}name${idx}`]);
+          return {
+            name: language[activeLocale || "zh"][`feedtab${0}name${idx}`],
+            unit: activeLocale === "zh" ? "次" : "",
+            key: ele,
+            val: "",
+          };
+        }),
+        { name: "", key: "dataTime", hide: true },
+      ],
+      1: list,
+      2: [
+        ...data0.map((ele, idx) => ({
+          name: language[activeLocale || "zh"]?.[`feedtab${2}name${idx}`],
           unit: activeLocale === "zh" ? "次" : "",
           key: ele,
           val: "",
-        };
-      }),
-      1: list,
-      2: data0.map((ele, idx) => ({
-        name: language[activeLocale || "zh"]?.[`feedtab${2}name${idx}`],
-        unit: activeLocale === "zh" ? "次" : "",
-        key: ele,
-        val: "",
-      })),
+        })),
+        { name: "", key: "dataTime", hide: true },
+      ],
     };
   }, [activeLocale, list]);
   console.log(listObj, "listObj");
@@ -116,34 +133,58 @@ const News = memo(() => {
 
   const [msg, setMsg] = useState(listObj);
 
-  const getMsg = useCallback(async (params?: Record<string, any>) => {
-    let res: Record<string, any> = await fetchGet(
-      "/immunization/query_page",
-      {}
-    );
-    if (res?.code === "0") {
-      console.log(res, "data");
-    }
-    // setMsg((pre) => {
-    //   pre[0].val = dayjs().format("DD/MM/YYYY");
-    //   pre[0].disable = true;
-    //   return pre
-    // });
-  }, []);
+  const [dateList, setDateList] = useState([]);
+  const [activeTime, setActiveTime] = useState("");
+
+  const getDateList = useCallback(
+    async (params?: Record<string, any>) => {
+      let res: Record<string, any> = await fetchGet(TimeUrlObj[active], {});
+      if (res?.code === "0") {
+        setDateList(res.data || []);
+      }
+    },
+    [active]
+  );
+
+  const getMsg = useCallback(
+    async (params?: Record<string, any>) => {
+      let res: Record<string, any> = await fetchPost(
+        MsgUrlObj[active],
+        params,
+        {
+          "Content-Type": "application/json",
+        }
+      );
+      if (res?.code === "0") {
+        let obj = res.data?.[0]?.list?.[0] || {};
+        console.log(res, "data");
+        setMsg((pre) => {
+          pre[active] = pre?.[active]?.map((ele) => {
+            ele.val = obj[ele.key];
+            return ele;
+          });
+          console.log(pre, "pre", pre[active]);
+          return {...pre};
+        });
+      }
+    },
+    [active]
+  );
 
   useEffect(() => {
-    getMsg();
-  }, [getMsg]);
+    getMsg({ dataTime: dayjs().format("YYYY-MM-DD") });
+    getDateList();
+  }, [getMsg, getDateList]);
 
   console.log(msg, "msg1");
 
   const handleSubmit = async (obj: Record<string, any>) => {
-    console.log(obj, "res", active);
+    console.log(obj, "res");
     let params: Record<string, any> = {};
     obj.forEach((ele) => {
       params[ele.key] = ele.val;
     });
-    params.time = params.time || dayjs().format("YYYY-MM-DD");
+    params.dataTime = params.dataTime || dayjs().format("YYYY-MM-DD");
 
     let res = await fetchPost(UrlObj[active], params, {
       "Content-Type": "application/json",
@@ -151,6 +192,7 @@ const News = memo(() => {
     if (res?.code === "0") {
       console.log(res, "res");
       Toast.show("success");
+      getDateList();
     } else {
       Toast.show("Network error");
     }
@@ -169,7 +211,7 @@ const News = memo(() => {
         {tab.map((ele, idx) => (
           <div
             key={ele.name}
-            onClick={() => setActive(idx)}
+            onClick={() => {setActive(idx);setActiveTime('')}}
             className={`rounded-lg font-[PingFang SC, PingFang SC] font-medium text-[#fff] text-sm w-28 h-9 text-center leading-9 ${
               active === idx ? "bg-[#4682B4]" : ""
             }`}
@@ -179,7 +221,15 @@ const News = memo(() => {
         ))}
       </div>
       <div className="mx-3 mt-3">
-        <CalendarDown />
+        <CalendarDown
+          dateList={dateList}
+          title={activeTime}
+          onChange={(v) => {
+            console.log(v);
+            setActiveTime(v);
+            getMsg({ page: 1, dataTime: v });
+          }}
+        />
       </div>
       <div className="mx-3 mt-2 px-5 bg-white overflow-hidden rounded-lg">
         <InputList list={msg?.[active]} onSubmit={handleSubmit} unit />

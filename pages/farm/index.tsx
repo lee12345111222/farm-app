@@ -10,6 +10,7 @@ import {
   Space,
   Divider,
   Toast,
+  SpinLoading,
 } from "antd-mobile";
 import { useRouter } from "next/router";
 import { language } from "@/utils/language";
@@ -27,14 +28,51 @@ const News = memo(() => {
 
   const [msg, setMsg] = useState<Record<string, any>>({});
   const [initMsg, setInitMsg] = useState<Record<string, any>>({});
+  const [load, setLoad] = useState(false);
+
+  const [isOnline, setIsOnline] = useState(true);
+  useEffect(() => {
+    if (
+      typeof window !== "undefined" &&
+      "ononline" in window &&
+      "onoffline" in window
+    ) {
+      setIsOnline(window.navigator.onLine);
+      if (!window.ononline) {
+        window.addEventListener("online", () => {
+          setIsOnline(true);
+        });
+      }
+      if (!window.onoffline) {
+        window.addEventListener("offline", () => {
+          setIsOnline(false);
+        });
+      }
+    }
+  }, []);
+
+  useEffect(() => {
+    if (
+      typeof window !== "undefined" &&
+      "serviceWorker" in navigator &&
+      window.workbox !== undefined &&
+      isOnline
+    ) {
+      window.addEventListener("load", function () {
+        navigator.serviceWorker.register("/service-worker.js");
+      });
+    }
+  }, [isOnline, router.route]);
 
   const getFarmMsg = useCallback(async (params?: Record<string, any>) => {
+    setLoad(true);
     let res: Record<string, any> = await fetchGet("/farm/query", {});
     if (res?.code === "0") {
       console.log(res, "data");
       setMsg(res.data);
       setInitMsg(res.data);
     }
+    setLoad(false);
   }, []);
 
   useEffect(() => {
@@ -116,105 +154,116 @@ const News = memo(() => {
                 重設
               </Button>
             </Space>
-            <div className="font-[PingFang SC, PingFang SC] font-medium text-[#708090] text-lg mb-4">
-              {language[activeLocale || "zh"]?.farmhello.replace('Ronald',query.username)}
-            </div>
-            <div className="font-[PingFang SC, PingFang SC] font-medium text-[#708090] text-sm mb-4 flex">
-              <span className="flex-shrink-0">
-                {language[activeLocale || "zh"]?.farmquota}
-              </span>
-              {/* <span className="font-bold underline ml-2">100</span> */}
-              <Input
-                className="font-medium underline ml-2 w-1 -mt-1"
-                defaultValue="XXX"
-                onChange={(val) => handleChangeVal("breedingQuota", val)}
-                value={msg.breedingQuota}
-                style={{
-                  "--color": "#708090",
-                  fontSize: 14,
-                }}
-              />
-            </div>
-            <div className="flex items-center mb-3 ">
-              <div className="font-[PingFang SC, PingFang SC] font-medium text-[#708090] text-sm">
-                {language[activeLocale || "zh"]?.chickentype}
+            {load ? (
+              <div className="flex items-center justify-center">
+                <SpinLoading />
               </div>
-              <div className="justify-between flex flex-1">
-                {new Array(3)
-                  .fill(1)
-                  .map((ele, idx) =>
-                    getDom(
-                      msg["chickenSeedlingsType" + (idx + 1)],
-                      "chickenSeedlingsType" + (idx + 1),
-                      TypeList,
-                      handleChangeVal
-                    )
+            ) : (
+              <>
+                <div className="font-[PingFang SC, PingFang SC] font-medium text-[#708090] text-lg mb-4">
+                  {language[activeLocale || "zh"]?.farmhello.replace(
+                    "Ronald",
+                    query.username
                   )}
-              </div>
-            </div>
-            <div className="flex items-center mb-4 flex-1 justify-between ">
-              <div className="font-[PingFang SC, PingFang SC] font-medium text-[#708090] text-sm">
-                {language[activeLocale || "zh"]?.cooptype}
-              </div>
-              <div className="tablePage flex-1">
-                {getDom(
-                  msg["breedingMethods"],
-                  "breedingMethods",
-                  HomeList,
-                  handleChangeVal
-                )}
-              </div>
-            </div>
-            <div className="flex items-center flex-1 justify-between">
-              <div className="font-[PingFang SC, PingFang SC] font-medium text-[#708090] text-sm flex-shrink-0 flex">
-                {language[activeLocale || "zh"]?.small}:{" "}
-                <Input
-                  className="font-medium underline ml-2 !w-8 flex-grow-0 -mt-1"
-                  defaultValue="xxx"
-                  value={msg.chickenSeedlingsNumber1}
-                  onChange={(val) =>
-                    handleChangeVal("chickenSeedlingsNumber1", val)
-                  }
-                  style={{
-                    "--color": "#708090",
-                    fontSize: 14,
-                  }}
-                />{" "}
-                {language[activeLocale || "zh"]?.nums}
-              </div>
-              <div className="font-[PingFang SC, PingFang SC] font-medium text-[#708090] text-sm  flex-shrink-0 flex">
-                {language[activeLocale || "zh"]?.medium}:{" "}
-                <Input
-                  className="font-medium underline ml-2 !w-8 flex-grow-0 -mt-1"
-                  defaultValue="xxx"
-                  value={msg.chickenSeedlingsNumber2}
-                  onChange={(val) =>
-                    handleChangeVal("chickenSeedlingsNumber2", val)
-                  }
-                  style={{
-                    "--color": "#708090",
-                    fontSize: 14,
-                  }}
-                />{" "}
-                {language[activeLocale || "zh"]?.nums}
-              </div>
-              <div className="font-[PingFang SC, PingFang SC] font-medium text-[#708090] text-sm  flex-shrink-0 flex">
-                {language[activeLocale || "zh"]?.big}:{" "}
-                <Input
-                  className="font-medium underline ml-2 !w-8 flex-grow-0 -mt-1"
-                  defaultValue="xxx"
-                  value={msg.chickenSeedlingsNumber3}
-                  onChange={(val) =>
-                    handleChangeVal("chickenSeedlingsNumber3", val)
-                  }
-                  style={{
-                    "--color": "#708090",
-                    fontSize: 14,
-                  }}
-                />{" "}
-                {language[activeLocale || "zh"]?.nums}
-              </div>
-            </div>
+                </div>
+                <div className="font-[PingFang SC, PingFang SC] font-medium text-[#708090] text-sm mb-4 flex">
+                  <span className="flex-shrink-0">
+                    {language[activeLocale || "zh"]?.farmquota}
+                  </span>
+                  {/* <span className="font-bold underline ml-2">100</span> */}
+                  <Input
+                    className="font-medium underline ml-2 w-1 -mt-1"
+                    defaultValue="XXX"
+                    onChange={(val) => handleChangeVal("breedingQuota", val)}
+                    value={msg.breedingQuota}
+                    style={{
+                      "--color": "#708090",
+                      fontSize: 14,
+                    }}
+                  />
+                </div>
+                <div className="flex items-center mb-3 ">
+                  <div className="font-[PingFang SC, PingFang SC] font-medium text-[#708090] text-sm">
+                    {language[activeLocale || "zh"]?.chickentype}
+                  </div>
+                  <div className="justify-between flex flex-1">
+                    {new Array(3)
+                      .fill(1)
+                      .map((ele, idx) =>
+                        getDom(
+                          msg["chickenSeedlingsType" + (idx + 1)],
+                          "chickenSeedlingsType" + (idx + 1),
+                          TypeList,
+                          handleChangeVal
+                        )
+                      )}
+                  </div>
+                </div>
+                <div className="flex items-center mb-4 flex-1 justify-between ">
+                  <div className="font-[PingFang SC, PingFang SC] font-medium text-[#708090] text-sm">
+                    {language[activeLocale || "zh"]?.cooptype}
+                  </div>
+                  <div className="tablePage flex-1">
+                    {getDom(
+                      msg["breedingMethods"],
+                      "breedingMethods",
+                      HomeList,
+                      handleChangeVal
+                    )}
+                  </div>
+                </div>
+                <div className="flex items-center flex-1 justify-between">
+                  <div className="font-[PingFang SC, PingFang SC] font-medium text-[#708090] text-sm flex-shrink-0 flex">
+                    {language[activeLocale || "zh"]?.small}:{" "}
+                    <Input
+                      className="font-medium underline ml-2 !w-8 flex-grow-0 -mt-1"
+                      defaultValue="xxx"
+                      value={msg.chickenSeedlingsNumber1}
+                      onChange={(val) =>
+                        handleChangeVal("chickenSeedlingsNumber1", val)
+                      }
+                      style={{
+                        "--color": "#708090",
+                        fontSize: 14,
+                      }}
+                    />{" "}
+                    {language[activeLocale || "zh"]?.nums}
+                  </div>
+                  <div className="font-[PingFang SC, PingFang SC] font-medium text-[#708090] text-sm  flex-shrink-0 flex">
+                    {language[activeLocale || "zh"]?.medium}:{" "}
+                    <Input
+                      className="font-medium underline ml-2 !w-8 flex-grow-0 -mt-1"
+                      defaultValue="xxx"
+                      value={msg.chickenSeedlingsNumber2}
+                      onChange={(val) =>
+                        handleChangeVal("chickenSeedlingsNumber2", val)
+                      }
+                      style={{
+                        "--color": "#708090",
+                        fontSize: 14,
+                      }}
+                    />{" "}
+                    {language[activeLocale || "zh"]?.nums}
+                  </div>
+                  <div className="font-[PingFang SC, PingFang SC] font-medium text-[#708090] text-sm  flex-shrink-0 flex">
+                    {language[activeLocale || "zh"]?.big}:{" "}
+                    <Input
+                      className="font-medium underline ml-2 !w-8 flex-grow-0 -mt-1"
+                      defaultValue="xxx"
+                      value={msg.chickenSeedlingsNumber3}
+                      onChange={(val) =>
+                        handleChangeVal("chickenSeedlingsNumber3", val)
+                      }
+                      style={{
+                        "--color": "#708090",
+                        fontSize: 14,
+                      }}
+                    />{" "}
+                    {language[activeLocale || "zh"]?.nums}
+                  </div>
+                </div>
+              </>
+            )}
           </div>
         </div>
       </div>
@@ -278,7 +327,7 @@ const getDom = (
         } as any
       }
     >
-      <Dropdown.Item key="sorter" title={title|| '-'}>
+      <Dropdown.Item key="sorter" title={title || "-"}>
         <div style={{ padding: 12 }}>
           <Radio.Group
             value={title}

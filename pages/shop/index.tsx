@@ -32,12 +32,12 @@ const News = memo(() => {
   const [name, setName] = useState("");
 
   const getShopList = async (params?: Record<string, any>) => {
-    let res = await fetchGet("/commodity/query_page", {
-      page,
+    let res = await fetchPost("/commodity/query_page?page="+page+'&size=10', {
       name,
-      size: 10,
       type: activeKey,
       ...params,
+    },{
+      "Content-Type": "application/json",
     });
     if (res?.code === "0") {
       const list = res.data?.[0] || {};
