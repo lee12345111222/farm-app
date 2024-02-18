@@ -23,40 +23,51 @@ main {
     --border-color: #4682b4 !important;
     --border-radius: 0.5rem !important;
 }
+
 .primary-outline-button {
     --background-color: #fff !important;
     --text-color: #708090 !important;
     --border-color: #708090 !important;
-    --border-radius: 0.5rem !important;;
+    --border-radius: 0.5rem !important;
+    ;
 }
+
 .firstPage .adm-list-body {
     border-top: none !important;
     border-bottom-color: #a0a0a0 !important;
 }
+
 .firstPage .adm-list {
     padding: 0px 27px !important;
 }
+
 .firstPage .adm-list-item {
     padding-left: 0 !important;
 }
+
 .firstPage .adm-list-item-content-prefix {
     width: auto !important;
     padding: 1.4rem 0.875rem 0.825rem 0 !important;
 }
+
 .firstPage .adm-list-item-content-extra {
     padding-top: 0.7rem !important;
 }
+
 .firstPage .adm-list-item-content-main {
     padding: 0 !important;
     padding-top: 1.15rem !important;
 }
+
 .firstPage .adm-list-item-content {
     border-top-color: #a0a0a0 !important;
     padding-top: 1.25rem !important;
 }
+
 .addshop .resources_id .adm-list-item-content {
-    border: none!important;
+    border: none !important;
 }
+
 .firstPage .adm-list-item:first-of-type .adm-list-item-content {
     padding-top: 0 !important;
 }
@@ -66,9 +77,11 @@ main {
     font-size: 18px !important;
     font-weight: 300;
 }
+
 .firstPage .adm-form-footer {
     padding: 0 !important;
 }
+
 .home-cards-wrapper {
     transform: translateY(-1.3125rem);
     display: flex;
@@ -83,11 +96,13 @@ main {
     border-radius: 15px;
     margin-bottom: 12px;
 }
+
 @media all and (max-width: 375px) {
     .home-cards-wrapper {
         transform: translateY(-3.5rem);
     }
 }
+
 .home-center-icon {
     width: 52.5px;
     height: 52.5px;
@@ -95,45 +110,63 @@ main {
     border-radius: 50%;
     @apply flex items-center justify-center;
 }
+
 .home-center-icon-wrapper {
     transform: translateY(-2rem);
 }
+
 .footer-tool-wrapper {
     margin-right: 1.6875rem;
 }
+
 .first-tool-wrapper {
     margin-right: 2.4375rem;
 }
-.shop .adm-tabs-header{
+
+.shop .adm-tabs-header {
     border-bottom-width: 0;
 }
-.shopDetail .adm-capsule-tabs-header, .shopDetail .adm-capsule-tabs-tab-wrapper{
+
+.shopDetail .adm-capsule-tabs-header,
+.shopDetail .adm-capsule-tabs-tab-wrapper {
     padding: 0;
 }
-.shopDetail .adm-capsule-tabs-tab-list{
+
+.shopDetail .adm-capsule-tabs-tab-list {
     justify-content: space-between;
 }
-.shopDetail .adm-capsule-tabs-tab-wrapper{
+
+.shopDetail .adm-capsule-tabs-tab-wrapper {
     width: 31%;
     flex-grow: 0;
 }
-.shopDetail .adm-capsule-tabs-tab{
+
+.shopDetail .adm-capsule-tabs-tab {
     border-radius: 10px;
 }
-.tablePage .adm-dropdown-item-title{
+
+.tablePage .adm-dropdown-item-title {
     justify-content: space-between;
     width: 100%;
 }
-.tablePage .adm-dropdown-item .adm-dropdown-item-title-arrow{
+
+.tablePage .adm-dropdown-item .adm-dropdown-item-title-arrow {
     font-size: 12px;
 }
-.farm .adm-dropdown{
+
+.farm .adm-dropdown {
     background-color: #F3F3F7;
     border: 1px solid #E3E3E3;
 }
-.farm .adm-dropdown-item .adm-dropdown-item-title{
+
+.farm .adm-dropdown-item .adm-dropdown-item-title {
     padding: 2px 5px;
 }
-.farm-content .adm-dropdown-item .adm-dropdown-item-title{
+
+.farm-content .adm-dropdown-item .adm-dropdown-item-title {
     padding: 11px 14px;
+}
+
+.MuiBox-root .css-1walhad-MuiButtonBase-root-MuiButton-root {
+    background-color: #1976d2!important;
 }

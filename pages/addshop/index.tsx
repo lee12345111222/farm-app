@@ -38,7 +38,7 @@ const Register = () => {
 
   const handleUpload = () => {
     upload("/resources/add", (name: string, filetype: string) => {
-      form.setFieldValue("resources_id", name);
+      form.setFieldValue("resourcesId", name);
       setUrl(name);
     });
   };
@@ -117,7 +117,7 @@ const Register = () => {
               "--align-items": "center",
               justifyContent: "space-between",
             }}
-            name="resources_id"
+            name="resourcesId"
             childElementPosition="right"
             label={language[activeLocale || "zh"]?.shopresources_id}
           >

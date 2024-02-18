@@ -33,10 +33,10 @@ const News = memo(({sendMessage}: Iprops) => {
   const [page, setPage] = useState(1);
 
   const getShopList = async (params?: Record<string, any>) => {
-    let res = await fetchGet("/cart/query_page", {
-      page,
-      size: 10,
+    let res:Record<string, any> = await fetchPost("/cart/query_page?page="+page+'&size=10', {
       ...params,
+    },{
+      "Content-Type": "application/json",
     });
     if (res?.code === "0") {
       const list = res.data?.[0] || {};
@@ -45,6 +45,7 @@ const News = memo(({sendMessage}: Iprops) => {
       if (params) {
         setData(list.list || []);
         setHasMore(list.page?.totalNumber > (list.list || [])?.length);
+        setPage(1)
       } else {
         setData(data.concat(list.list || []));
         setHasMore(
@@ -105,7 +106,7 @@ const News = memo(({sendMessage}: Iprops) => {
     Dialog.confirm({
       content: "Are you sure to submit your order?",
       onConfirm: async () => {
-        let result = await fetchPost(
+        let result:Record<string,any> = await fetchPost(
           "/order/add",
           data.map((ele) => ({
             commodityId: ele.id,
@@ -127,7 +128,7 @@ const News = memo(({sendMessage}: Iprops) => {
                 acceptId:
                   "42d83d66fdf0451db16c3fe434f09e61",
                 msgType: "1",
-                msgValue: '生成一条订单:' + result.data?.order_id,
+                msgValue: '生成一条订单:' + result.data?.orderId,
               }),
             })
           );
@@ -146,7 +147,7 @@ const News = memo(({sendMessage}: Iprops) => {
               ...pre,
               {
                 id: Math.random(),
-                text: '生成一条订单:' + result.data?.order_id,
+                text: '生成一条订单:' + result.data?.orderId,
                 type: "send",
                 avatar: "/user_photo2.png",
               },

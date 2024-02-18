@@ -5,8 +5,9 @@ import { Form, Input, Button, InfiniteScroll, Toast } from "antd-mobile";
 import { useRouter } from "next/router";
 import { language } from "@/utils/language";
 import FooterToolBar from "@/components/footer-tool-bar";
-import { fetchGet, fetchPost } from "@/utils/request";
+import { baseUrl, fetchGet, fetchPost } from "@/utils/request";
 import { ActionModal } from "@/components/actionModal";
+import { selectUser, useSelector } from "@/lib/redux";
 
 const Json = [
   { type: "input", key: "title", lable: "标题", required: true },
@@ -18,17 +19,24 @@ const Json = [
 const News = memo(() => {
   const router = useRouter();
   const { locale: activeLocale } = router;
+  const query = useSelector(selectUser);
 
   const [page, setPage] = useState(1);
   const [data, setData] = useState<Record<string, any>[]>([]);
   const [hasMore, setHasMore] = useState(true);
   const [newData, setNewData] = useState<Record<string, any>>({});
-  const [visible, setVisible] = useState(true);
+  const [visible, setVisible] = useState(false);
 
   const getLatest = async (params?: Record<string, any>) => {
-    let res: Record<string, any> = await fetchGet("/notice/query_latest", {
-      ...params,
-    });
+    let res: Record<string, any> = await fetchPost(
+      "/notice/query_latest",
+      {
+        ...params,
+      },
+      {
+        "Content-Type": "application/json",
+      }
+    );
     if (res?.code === "0") {
       setNewData(res.data);
     } else {
@@ -37,11 +45,15 @@ const News = memo(() => {
   };
 
   const getNewsList = async (params?: Record<string, any>) => {
-    let res: Record<string, any> = await fetchGet("/notice/query_page_month", {
-      page,
-      size: 10,
-      ...params,
-    });
+    let res: Record<string, any> = await fetchPost(
+      `/notice/query_page?page=${page}&size=10`,
+      {
+        ...params,
+      },
+      {
+        "Content-Type": "application/json",
+      }
+    );
     if (res?.code === "0") {
       const list: Record<string, any> = res.data?.[0] || {};
       console.log(params, "params", list);
@@ -49,6 +61,7 @@ const News = memo(() => {
       if (params) {
         setData(list.list || []);
         setHasMore(list.page?.totalNumber > (list.list || [])?.length);
+        setPage(1);
       } else {
         setData(data.concat(list.list || []));
         setHasMore(
@@ -65,17 +78,21 @@ const News = memo(() => {
     getLatest();
   }, []);
 
-  const handleAdd = async(params) => {
+  const handleAdd = async (params) => {
     let res = await fetchPost("/notice/add", params, {
       "Content-Type": "application/json",
     });
-    if(res.code === '0'){
-      Toast.show('success')
-      getNewsList({page: 1})
-    }else{
-      Toast.show(res.data)
+    if (res.code === "0") {
+      Toast.show("success");
+      getNewsList({ page: 1 });
+    } else {
+      Toast.show(res.data);
     }
-  }
+  };
+
+  const handleClick = (msgTime) => {
+    router.push("/news/detail?msgTime=" + msgTime);
+  };
 
   return (
     <div className="w-full min-h-dvh bg-[#F6F9FF] ">
@@ -88,10 +105,35 @@ const News = memo(() => {
       />
       <div className="bg-[url('/home_slices/bg.png')] bg-cover h-64">
         <Header home={true} />
+        {query.admin === "1" ? (
+          <Button
+            size="mini"
+            type="button"
+            color="primary"
+            fill="solid"
+            className="top-16 left-3"
+            style={{
+              "--background-color": "#4682B4",
+            }}
+            onClick={() => setVisible(true)}
+          >
+            新增
+          </Button>
+        ) : null}
       </div>
       <div className="px-6 mt-[-57px] pb-[143px]">
-        <div className="h-24 bg-white rounded-t-2xl flex items-center pl-6">
-          <img src="/user_photo.png" alt="" className="w-14" />
+        <div
+          className="h-24 bg-white rounded-t-2xl flex items-center pl-6"
+          onClick={() => handleClick(newData.msgTime)}
+        >
+          <img
+            src={
+              baseUrl + "/resources/downloadFile/" + newData.resourcesId ||
+              "/user_photo.png"
+            }
+            alt=""
+            className="w-14"
+          />
           <div className="ml-5 py-1 w-full">
             <div className="font-[PingFang SC-Bold] font-blod text-[#708090] text-2xl leading-7">
               {/* {language[activeLocale || "zh"]?.latestnews} */}
@@ -102,6 +144,29 @@ const News = memo(() => {
             </div>
           </div>
         </div>
+        {data.map((ele, idx) => (
+          <div
+            className="pb-4 bg-white rounded-2xl mt-[40px]"
+            onClick={() => router.push("/news/detail")}
+            key={idx}
+          >
+            <img
+              src={
+                baseUrl + "/resources/downloadFile/" + ele.image ||
+                "/home_slices/bg.png"
+              }
+              alt=""
+              className="rounded-t-2xl w-full h-20 object-cover"
+            />
+            <div className="w-full px-6 flex font-[PingFang SC-Bold] font-blod text-[#708090] text-2xl leading-4 mt-4">
+              <span className="mr-2">{ele.title}</span>
+              <span>{ele.msgTime}</span>
+            </div>
+            <div className="w-full px-6 font-[PingFang SC-Medium] font-medium text-[#708090] text-1xl leading-4 mt-2.5">
+              {ele.text}
+            </div>
+          </div>
+        ))}
         {/* {new Array(5).fill(1).map((ele, idx) => (
           <div
             className="pb-4 bg-white rounded-2xl mt-[40px]"

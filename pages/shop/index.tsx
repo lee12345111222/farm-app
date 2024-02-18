@@ -32,7 +32,7 @@ const News = memo(() => {
   const [name, setName] = useState("");
 
   const getShopList = async (params?: Record<string, any>) => {
-    let res = await fetchPost("/commodity/query_page?page="+page+'&size=10', {
+    let res:Record<string, any> = await fetchPost("/commodity/query_page?page="+page+'&size=10', {
       name,
       type: activeKey,
       ...params,
@@ -40,12 +40,13 @@ const News = memo(() => {
       "Content-Type": "application/json",
     });
     if (res?.code === "0") {
-      const list = res.data?.[0] || {};
+      const list:Record<string, any> = res.data?.[0] || {};
       console.log(params, "params", list);
 
       if (params) {
         setData(list.list || []);
         setHasMore(list.page?.totalNumber > (list.list || [])?.length);
+        setPage(1)
       } else {
         setData(data.concat(list.list || []));
         setHasMore(

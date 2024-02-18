@@ -43,13 +43,17 @@ const Record = memo(() => {
   });
   const getShopList = useCallback(
     async (params?: Record<string, any>) => {
-      let res = await fetchGet("/order/query_page", {
-        page: pagination.pageIndex + 1,
-        size: pagination.pageSize,
-        ...params,
-      });
+      let res: Record<string, any> = await fetchPost(
+        `/order/query_page?page=${pagination.pageIndex + 1}&size=${pagination.pageSize}`,
+        {
+          ...params,
+        },
+        {
+          "Content-Type": "application/json",
+        }
+      );
       if (res?.code === "0") {
-        const data = res.data?.[0] || {};
+        const data: Record<string, any> = res.data?.[0] || {};
 
         console.log(data, "data");
 
@@ -64,7 +68,7 @@ const Record = memo(() => {
     getShopList();
   }, [getShopList]);
 
-  const handleDelete = async (row: Record<string,any>) => {
+  const handleDelete = async (row: Record<string, any>) => {
     Dialog.show({
       content: "Are you sure you want to delete it?",
       closeOnAction: true,
@@ -135,10 +139,7 @@ const Record = memo(() => {
     }
     console.log(values, "values");
     const { id, status } = values;
-    let res = await fetchGet(
-      `/order/update/${id}`,
-      {status: Status[status]}
-    );
+    let res = await fetchGet(`/order/update/${id}`, { status: Status[status] });
     if (res?.code === "0") {
       console.log(res, "res");
       Toast.show("success");
@@ -166,7 +167,7 @@ const Record = memo(() => {
       showLastButton: false,
     },
     rowCount: meta?.totalNumber ?? 0,
-    enableEditing: query.admin === '1' ? true : false,
+    enableEditing: query.admin === "1" ? true : false,
     editDisplayMode: "modal",
     onEditingRowSave: handleSave,
     renderRowActions: ({ row, table }) => (
