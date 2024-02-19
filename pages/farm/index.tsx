@@ -18,6 +18,8 @@ import FooterToolBar from "@/components/footer-tool-bar";
 import { selectUser, useSelector } from "@/lib/redux";
 import PieChart from "@/components/pieChart";
 import { fetchGet, fetchPost } from "@/utils/request";
+import { QuestionChart } from "@/components/questionChat";
+import { ObituaryChart } from "@/components/obituaryChart";
 const TypeList = ["-", "泰安雞", "嘉美雞", "雪鳳凰", "其他"];
 const HomeList = ["開放式", "封閉式"];
 
@@ -267,7 +269,15 @@ const News = memo(() => {
           </div>
         </div>
       </div>
-      <div className="mx-3 -mt-6 px-5 py-4 rounded-md bg-white">
+      <div className="flex items-center justify-between -mt-6 py-4 rounded-md bg-white mx-3">
+        <div className="flex-1 h-20">
+          <QuestionChart />
+        </div>
+        <div className="flex-1 h-20">
+          <ObituaryChart />
+        </div>
+      </div>
+      <div className="mx-3 mt-4 px-5 py-4 rounded-md bg-white">
         <div className="tablePage farm-content">
           {getDom(`${language[activeLocale || "zh"]?.batch}A`)}
         </div>

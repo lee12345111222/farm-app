@@ -18,42 +18,51 @@ const SideMenuPopup = (props: IProps) => {
     {
       img: "/home_slices/mysquare.png",
       label: language[activeLocale || "zh"]?.myfarm,
-      onClick: () => router.push('/farm'),
+      onClick: () => router.push("/farm"),
     },
     {
       img: "/home_slices/medicine.png",
       label: language[activeLocale || "zh"]?.buymedications,
-      onClick: () => router.push('/shop'),
+      onClick: () => router.push("/shop"),
     },
     {
       img: "/home_slices/news.png",
       label: language[activeLocale || "zh"]?.latestnews,
-      onClick: () => router.push('/news'),
+      onClick: () => router.push("/news"),
     },
     {
       img: "/home_slices/table.png",
       label: language[activeLocale || "zh"]?.usefulforms,
-      onClick: () => router.push('/table'),
+      onClick: () => router.push("/table"),
     },
     {
       img: "/home_slices/connectus.png",
       label: language[activeLocale || "zh"]?.contactus,
-      onClick: () => router.push('/chat?id=0002'),
+      onClick: () => router.push("/chat?id=0002"),
+    },
+    {
+      img: "/home_slices/table.png",
+      label: language[activeLocale || "zh"]?.questionnaire,
+      onClick: () => router.push("/questionnaire"),
     },
   ];
-  const handleOut = async() => {
-    let res = await fetchPost("/user/logout", {}, {
-      "Content-Type": "application/json",
-    });
+  const handleOut = async () => {
+    let res = await fetchPost(
+      "/user/logout",
+      {},
+      {
+        "Content-Type": "application/json",
+      }
+    );
     if (res?.code === "0") {
       console.log(res, "res");
-      Toast.show('success')
+      Toast.show("success");
       localStorage.removeItem("user");
-      router.replace('/login')
+      router.replace("/login");
     } else {
-      Toast.show('Network error')
+      Toast.show("Network error");
     }
-  }
+  };
   return (
     <Popup
       visible={visible}
@@ -66,7 +75,11 @@ const SideMenuPopup = (props: IProps) => {
       <div className="pt-[59px] pl-[43.5px]">
         {menus.map((menu) => {
           return (
-            <div key={menu.label} className="flex items-center mb-[20px]" onClick={menu.onClick}>
+            <div
+              key={menu.label}
+              className="flex items-center mb-[20px]"
+              onClick={menu.onClick}
+            >
               <img className="w-[20px] h-[20px]" src={menu.img} alt="" />
               <div className="text-[#708090] text-[20px] ml-[14px]">
                 {menu.label}
@@ -74,13 +87,13 @@ const SideMenuPopup = (props: IProps) => {
             </div>
           );
         })}
-        <div key={'out'} className="flex mb-[20px] mt-6" onClick={handleOut}>
-              {/* <SendOutline className="w-[20px] h-[20px]" color="#1E84B4"/> */}
-              <div className="w-[20px] h-[20px]"></div>
-              <div className="text-[#708090] text-[20px] ml-[14px]">
-              {language[activeLocale || "zh"]?.logout}
-              </div>
-            </div>
+        <div key={"out"} className="flex mb-[20px] mt-6" onClick={handleOut}>
+          {/* <SendOutline className="w-[20px] h-[20px]" color="#1E84B4"/> */}
+          <div className="w-[20px] h-[20px]"></div>
+          <div className="text-[#708090] text-[20px] ml-[14px]">
+            {language[activeLocale || "zh"]?.logout}
+          </div>
+        </div>
       </div>
     </Popup>
   );

@@ -132,7 +132,7 @@ const News = memo(() => {
               "/user_photo.png"
             }
             alt=""
-            className="w-14"
+            className="w-14 rounded"
           />
           <div className="ml-5 py-1 w-full">
             <div className="font-[PingFang SC-Bold] font-blod text-[#708090] text-2xl leading-7">

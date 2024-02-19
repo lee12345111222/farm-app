@@ -16,6 +16,7 @@ import { language } from "@/utils/language";
 import { AddOutline, CollectMoneyOutline } from "antd-mobile-icons";
 import { baseUrl, fetchPost } from "@/utils/request";
 import { upload } from "@/utils";
+import { selectUser, useSelector } from "@/lib/redux";
 
 const Arr = [
   { label: "A", len: 7 },
@@ -29,18 +30,53 @@ const Register = () => {
   const router = useRouter();
   const { locale: activeLocale } = router;
 
+  const query = useSelector(selectUser);
+
+  console.log(query,'query')
+
   const [url, setUrl] = useState("");
 
   const [form] = Form.useForm();
 
   const onFinish = async (vals: Record<string, string>) => {
     console.log(vals, "vals");
-    let res = await fetchPost("/commodity/add", vals, {
+    let res = 0;
+    for (let key in vals) {
+      if (key.includes("questionA")) {
+        //sectionA 5分
+        if (vals[key] === "yes") {
+          res += 5;
+        }
+      } else if (key.includes("questionB")) {
+        if (vals[key] === "yes") {
+          res += 4;
+        }
+      } else if (key.includes("questionC")) {
+        if (vals[key] === "yes") {
+          res += 3;
+        }
+      } else if (key.includes("questionD")) {
+        if (vals[key] === "yes") {
+          res += 2;
+        }
+      } else if (key.includes("questionE")) {
+        if (vals[key] === "yes") {
+          res += 1;
+        }
+      }
+    }
+    let result: Record<string, string> = await fetchPost("/score/add", {
+      totalScore: res,
+      farmId: query.id
+    }, {
       "Content-Type": "application/json",
     });
     console.log(res, "res");
-    if (res?.code === "0") {
+    if (result?.code === "0") {
       Toast.show("success");
+      router.back();
+    }else{
+      Toast.show(result?.data||"network error");
     }
   };
 
@@ -51,7 +87,6 @@ const Register = () => {
         <Form
           layout="vertical"
           form={form}
-          className="mt-[35px]"
           onFinish={onFinish}
           style={
             {
@@ -66,60 +101,52 @@ const Register = () => {
                 fill="solid"
                 className="w-[321px] !h-[46px] !mb-[31px] primary-solid-button"
               >
-                {language[activeLocale || "zh"]?.addshop}
+                {language[activeLocale || "zh"]?.submit}
               </Button>
             </div>
           }
         >
           {Arr.map((ele, idx) => {
             return (
-              <Form.Item
-                key={idx}
-                name={ele.label}
-                label={language[activeLocale || "zh"][`question${ele.label}`]}
-                rules={[
-                  { required: true, message: "The type cannot be empty" },
-                ]}
-                childElementPosition="right"
-                style={{
-                  "--align-items": "center",
-                }}
-              >
-                {new Array(ele.len).fill(1).map((ele, idx) => (
-                  <Radio.Group key={idx}>
-                    <Radio value={`question${ele.label}${idx}`}>
-                      {
-                        language[activeLocale || "zh"]?.[
+              <>
+                <Form.Header>
+                  {language[activeLocale || "zh"][`question${ele.label}`]}
+                </Form.Header>
+                {new Array(ele.len).fill(1).map((elem, idx) => {
+                  console.log(
+                    language[activeLocale || "zh"][
+                      `question${ele.label}${idx}`
+                    ],
+                    `question${ele.label}${idx}`,
+                    elem
+                  );
+                  return (
+                    <Form.Item
+                      key={idx}
+                      name={`question${ele.label}${idx}`}
+                      label={
+                        language[activeLocale || "zh"][
                           `question${ele.label}${idx}`
                         ]
                       }
-                    </Radio>
-                  </Radio.Group>
-                ))}
-              </Form.Item>
+                      rules={[{ required: true, message: "cannot be empty" }]}
+                      childElementPosition="right"
+                      style={{
+                        "--align-items": "center",
+                      }}
+                    >
+                      <Radio.Group>
+                        <Space>
+                          <Radio value="yes">yes</Radio>
+                          <Radio value="no">no</Radio>
+                        </Space>
+                      </Radio.Group>
+                    </Form.Item>
+                  );
+                })}
+              </>
             );
           })}
-          <Form.Item
-            name="type"
-            label={language[activeLocale || "zh"]?.shptype}
-            rules={[{ required: true, message: "The type cannot be empty" }]}
-            childElementPosition="right"
-            style={{
-              "--align-items": "center",
-            }}
-          >
-            {/* //0:口服.1:疫苗 */}
-            <Radio.Group>
-              <Space>
-                <Radio value="0">
-                  {language[activeLocale || "zh"]?.takeorally}
-                </Radio>
-                <Radio value="1">
-                  {language[activeLocale || "zh"]?.vaccine}
-                </Radio>
-              </Space>
-            </Radio.Group>
-          </Form.Item>
         </Form>
       </div>
     </div>

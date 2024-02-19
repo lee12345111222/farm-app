@@ -502,10 +502,11 @@ const Obj = {
 };
 interface Iporps {
   type: "line" | "bar" | "pie" | "doubouleOptions";
+  options?: Record<string,any>
 }
-const PieChart = memo(({ type='line' }: Iporps) => {
+const PieChart = memo(({ type='line', options }: Iporps) => {
   return (
-    <ReactECharts className="w-[100%] !h-[100%]" option={Obj[type]} />
+    <ReactECharts className="w-[100%] !h-[100%]" option={options || Obj[type]} />
   );
 });
 export default PieChart;
