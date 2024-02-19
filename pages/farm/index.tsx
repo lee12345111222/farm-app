@@ -31,7 +31,7 @@ const News = memo(() => {
   const [msg, setMsg] = useState<Record<string, any>>({});
   const [initMsg, setInitMsg] = useState<Record<string, any>>({});
   const [load, setLoad] = useState(false);
-
+  const [batchList, setBatchList] = useState([])
   const [isOnline, setIsOnline] = useState(true);
   useEffect(() => {
     if (
@@ -80,6 +80,24 @@ const News = memo(() => {
   useEffect(() => {
     getFarmMsg();
   }, [getFarmMsg]);
+  
+  useEffect(() => {
+    getBatch();
+  }, []);
+
+  const getBatch = async (params?: Record<string, any>) => {
+    let res: Record<string, any> = await fetchGet(
+      "/farm/query_batch",
+      {
+        ...params,
+      },
+    );
+    if (res?.code === "0") {
+      setBatchList(res.data)
+    } else {
+      setBatchList([]);
+    }
+  };
 
   const saveFarmMsg = useCallback(async () => {
     let res = await fetchPost(
@@ -122,6 +140,7 @@ const News = memo(() => {
       [key]: val,
     }));
   };
+  
 
   console.log(msg, "msg");
   return (
@@ -269,7 +288,7 @@ const News = memo(() => {
           </div>
         </div>
       </div>
-      <div className="flex items-center justify-between -mt-6 py-4 rounded-md bg-white mx-3">
+      <div className="flex items-center justify-between -mt-6 pt-4 rounded-md bg-white mx-3">
         <div className="flex-1 h-20">
           <QuestionChart />
         </div>
@@ -279,7 +298,9 @@ const News = memo(() => {
       </div>
       <div className="mx-3 mt-4 px-5 py-4 rounded-md bg-white">
         <div className="tablePage farm-content">
-          {getDom(`${language[activeLocale || "zh"]?.batch}A`)}
+          {getDom(`${language[activeLocale || "zh"]?.batch}A`, "breedingMethods",
+                      batchList.map(ele => ele.batchName),
+                      handleChangeVal)}
         </div>
         <div className="flex mt-4 items-center justify-between">
           {new Array(3).fill(1).map((ele, idx) => (

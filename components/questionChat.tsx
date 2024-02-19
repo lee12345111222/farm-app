@@ -20,6 +20,9 @@ export const QuestionChart = memo(() => {
       let opt = {
         title: {
             text: '問卷',
+            textStyle: {
+              fontSize: 12
+            }
         },
         xAxis: {
           type: "category",

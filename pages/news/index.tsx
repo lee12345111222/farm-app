@@ -78,6 +78,7 @@ const News = memo(() => {
     getLatest();
   }, []);
 
+
   const handleAdd = async (params) => {
     let res = await fetchPost("/notice/add", params, {
       "Content-Type": "application/json",
@@ -147,7 +148,7 @@ const News = memo(() => {
         {data.map((ele, idx) => (
           <div
             className="pb-4 bg-white rounded-2xl mt-[40px]"
-            onClick={() => router.push("/news/detail")}
+            onClick={() => handleClick(ele.msgTime)}
             key={idx}
           >
             <img
