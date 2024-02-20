@@ -19,6 +19,9 @@ const nextConfig = withTM(
     sassOptions: {
       includePaths: [path.join(__dirname, "styles")],
     },
+    env: {
+      APP_ENV: process.env.APP_ENV
+    },
     async rewrites() {
       return {
         fallback: [

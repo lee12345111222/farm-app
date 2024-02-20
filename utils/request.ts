@@ -1,4 +1,4 @@
-export const baseUrl = "/base";
+export const baseUrl = process.env.NODE_ENV === 'production' ? "" : "/base";
 
 const checkLogin = (res: { data: string; code: string }) => {
   console.log(res, "res");
@@ -27,11 +27,11 @@ export const fetchGet = function (url: any, params: { [x: string]: any }) {
     .then((res) => {
       return res.json();
     })
-    .then(checkLogin)
-    // .catch((err) => {
-    //   console.log(err);
-    //   // return err;
-    // });
+    .then(checkLogin);
+  // .catch((err) => {
+  //   console.log(err);
+  //   // return err;
+  // });
 };
 // post请求封装
 export const fetchPost = function (
@@ -55,11 +55,11 @@ export const fetchPost = function (
     .then((res) => {
       return res.json();
     })
-    .then(checkLogin)
-    // .catch((err) => {
-    //   console.log(err);
-    //   return err;
-    // });
+    .then(checkLogin);
+  // .catch((err) => {
+  //   console.log(err);
+  //   return err;
+  // });
 };
 // 这个其实写不写都不行
 const fetchAll = function (
