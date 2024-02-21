@@ -109,7 +109,13 @@ const News = memo(() => {
 
   const getDateList = useCallback(
     async (params?: Record<string, any>) => {
-      let res: Record<string, any> = await fetchGet(TimeUrlObj[active], {});
+      let res: Record<string, any> = await fetchPost(
+        TimeUrlObj[active],
+        {},
+        {
+          "Content-Type": "application/json",
+        }
+      );
       if (res?.code === "0") {
         setDateList(res.data || []);
       }
@@ -119,9 +125,10 @@ const News = memo(() => {
 
   const getMsg = useCallback(
     async (params?: Record<string, any>) => {
+      let obj = JSON.parse(localStorage.getItem("animal") || "{}");
       let res: Record<string, any> = await fetchPost(
         MsgUrlObj[active],
-        params,
+        { ...params, chickenId: obj.id },
         {
           "Content-Type": "application/json",
         }
@@ -135,7 +142,7 @@ const News = memo(() => {
             return ele;
           });
           console.log(pre, "pre", pre[active]);
-          return {...pre};
+          return { ...pre };
         });
       }
     },
@@ -170,7 +177,8 @@ const News = memo(() => {
   const [msg, setMsg] = useState<Record<string, any>>({});
   const [initMsg, setInitMsg] = useState<Record<string, any>>({});
 
-  const getFarmMsg = useCallback(async (params?: Record<string, any>) => {//获取农场信息，之前漏了接口，应该通过id查询todo
+  const getFarmMsg = useCallback(async (params?: Record<string, any>) => {
+    //获取农场信息，之前漏了接口，应该通过id查询todo
     let res = JSON.parse(localStorage.getItem("animal") || "{}");
     for (let item in res) {
       console.log(item);
@@ -195,7 +203,7 @@ const News = memo(() => {
     if (res?.code === "0") {
       console.log(res, "res");
       Toast.show("success");
-      fetchBatch()
+      fetchBatch();
     } else {
       Toast.show("Network error");
     }
@@ -208,8 +216,8 @@ const News = memo(() => {
     );
     if (res?.code === "0") {
       console.log(res, "res");
-      let obj = res.data||{};
-      localStorage.setItem('animal',JSON.stringify(obj))
+      let obj = res.data || {};
+      localStorage.setItem("animal", JSON.stringify(obj));
       // for (let item in obj) {
       //   console.log(item);
       //   obj[item] = obj[item] || "";
