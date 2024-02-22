@@ -161,6 +161,7 @@ const News = memo(() => {
       params[ele.key] = ele.val;
     });
     params.dataTime = params.dataTime || dayjs().format("YYYY-MM-DD");
+    params.chickenFlockId = msg.id
 
     let res = await fetchPost(UrlObj[active], params, {
       "Content-Type": "application/json",
