@@ -1,4 +1,4 @@
-import React, { memo, useCallback, useEffect, useState } from "react";
+import React, { memo, useCallback, useEffect, useRef, useState } from "react";
 import Image from "next/image";
 import Header from "@/components/header";
 import {
@@ -11,6 +11,7 @@ import {
   Divider,
   Toast,
   SpinLoading,
+  DropdownRef,
 } from "antd-mobile";
 import { useRouter } from "next/router";
 import { language } from "@/utils/language";
@@ -20,6 +21,7 @@ import PieChart from "@/components/pieChart";
 import { fetchGet, fetchPost } from "@/utils/request";
 import { QuestionChart } from "@/components/questionChat";
 import { ObituaryChart } from "@/components/obituaryChart";
+import { ElsePieChart } from "@/components/elsePieChart";
 const TypeList = ["-", "泰安雞", "嘉美雞", "雪鳳凰", "其他"];
 const HomeList = ["開放式", "封閉式"];
 
@@ -33,6 +35,51 @@ const News = memo(() => {
   const [load, setLoad] = useState(false);
   const [batchList, setBatchList] = useState([]);
   const [isOnline, setIsOnline] = useState(true);
+  const ref: React.Ref<DropdownRef> = useRef();
+
+  const getDom = (
+    title?: string,
+    key?: string,
+    val?: any[],
+    onChange?: (key: string, val: string, idx?: React.Key) => void,
+    valIndex?: boolean
+  ) => {
+    console.log(title, key, val, "val");
+    return (
+      <Dropdown
+        className="rounded-md text-[#708090]"
+        ref={ref}
+        closeOnClickAway
+        style={
+          {
+            "--adm-font-size-main": "12px",
+          } as any
+        }
+      >
+        <Dropdown.Item key="sorter" title={title || "-"}>
+          <div style={{ padding: 12 }}>
+            <Radio.Group
+              value={valIndex ? val[title] : title}//下标的值特殊处理
+              onChange={(val: string) => {
+                onChange?.(key, val);
+                // ref.current?.close();
+                // console.log(ref.current);
+              }}
+            >
+              <Space direction="vertical" block>
+                {val?.map((ele, idx) => (
+                  <Radio block value={valIndex ? idx : ele}>
+                    {ele}
+                  </Radio>
+                ))}
+              </Space>
+            </Radio.Group>
+          </div>
+        </Dropdown.Item>
+      </Dropdown>
+    );
+  };
+
   useEffect(() => {
     if (
       typeof window !== "undefined" &&
@@ -138,7 +185,7 @@ const News = memo(() => {
     }));
   };
 
-  console.log(msg, "msg");
+  console.log(msg.batchIdx, "msg", batchList);
   return (
     <div className="w-full h-screen bg-[#F6F9FF] farm pb-6 overflow-auto relative">
       <div className="bg-[url('/news/farmbg.png')] bg-cover h-[51%] ">
@@ -148,7 +195,7 @@ const News = memo(() => {
           styles="top-8"
         />
         <div className="overflow-hidden">
-          <div className="mt-20 h-52 w-[84%] bg-white pl-6 pt-4 pr-5 rounded-md relative">
+          <div className="mt-16 h-52 w-[86%] bg-white pl-6 pt-4 pr-5 rounded-md relative">
             <Space className="absolute right-3 top-4">
               <Button
                 size="mini"
@@ -289,35 +336,25 @@ const News = memo(() => {
           <QuestionChart />
         </div>
         <div className="flex-1 h-20">
-          <ObituaryChart />
+          <ElsePieChart />
         </div>
       </div>
       <div className="mx-3 mt-4 px-5 py-4 rounded-md bg-white">
         <div className="tablePage farm-content">
           {getDom(
-            `${language[activeLocale || "zh"]?.batch}A`,
-            "breedingMethods",
+            `${batchList[msg.batchIdx || 0]?.batchName}`,
+            "batchIdx",
             batchList.map((ele) => ele.batchName),
-            handleChangeVal
+            (key, val) => handleChangeVal(key, val),
+            true
           )}
         </div>
         <div className="flex mt-4 items-center justify-between">
-          {new Array(2).fill(1).map((ele, idx) => (
-            <>
-              <div className="" key={idx}>
-                <div className="flex-1 h-20">
-                  <ObituaryChart chickenId={'4edc1ff1b11647b981b252fa3a88c107'}/>
-                </div>
-                {/* <div className="w-16 h-11">
-                  <PieChart type="pie" />
-                </div>
-                <div className="font-[PingFang SC, PingFang SC] font-normal text-[#708090] text-sm mt-3">
-                  form{idx + 1}
-                </div> */}
-              </div>
-              {idx !== 1 && <Divider direction="vertical" className="!h-12" />}
-            </>
-          ))}
+          <div className="flex-1 h-20">
+            <ObituaryChart chickenId={batchList[msg.batchIdx || 0]?.id} />
+          </div>
+
+          <Divider direction="vertical" className="!h-12" />
         </div>
       </div>
       <div className="mx-3 mt-3 px-5 rounded-md bg-white overflow-hidden">
@@ -343,39 +380,3 @@ const News = memo(() => {
 });
 
 export default News;
-
-const getDom = (
-  title?: string,
-  key?: string,
-  val?: any[],
-  onChange?: (key: string, val: string) => void
-) => {
-  console.log(title, key, val, "val");
-  return (
-    <Dropdown
-      className="rounded-md text-[#708090]"
-      style={
-        {
-          "--adm-font-size-main": "12px",
-        } as any
-      }
-    >
-      <Dropdown.Item key="sorter" title={title || "-"}>
-        <div style={{ padding: 12 }}>
-          <Radio.Group
-            value={title}
-            onChange={(val: string) => onChange?.(key, val)}
-          >
-            <Space direction="vertical" block>
-              {val?.map((ele) => (
-                <Radio block value={ele}>
-                  {ele}
-                </Radio>
-              ))}
-            </Space>
-          </Radio.Group>
-        </div>
-      </Dropdown.Item>
-    </Dropdown>
-  );
-};

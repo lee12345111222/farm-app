@@ -17,6 +17,7 @@ import { Box, IconButton, Tooltip } from "@mui/material";
 import EditIcon from "@mui/icons-material/Edit";
 import DeleteIcon from "@mui/icons-material/Delete";
 import { selectUser, useSelector } from "@/lib/redux";
+import dayjs from "dayjs";
 
 const list = [{ farmName: "", id: "" }];
 
@@ -44,7 +45,9 @@ const Record = memo(() => {
   const getShopList = useCallback(
     async (params?: Record<string, any>) => {
       let res: Record<string, any> = await fetchPost(
-        `/farmOtherAttributes/query_page?page=${pagination.pageIndex + 1}&size=${pagination.pageSize}`,
+        `/farmOtherAttributes/query_page?page=${
+          pagination.pageIndex + 1
+        }&size=${pagination.pageSize}`,
         {
           ...params,
         },
@@ -60,10 +63,10 @@ const Record = memo(() => {
         data.list = data.list?.map((item: Record<string, any>) => {
           item = {
             ...item,
-            ...item.farmOtherAttributes?.[0]
-          }
-          return item
-        })
+            ...item.farmOtherAttributes?.[0],
+          };
+          return item;
+        });
 
         setData(data.list || []);
         setMeta(data.page);
@@ -143,13 +146,23 @@ const Record = memo(() => {
   );
 
   //UPDATE action
-  const handleSave = async ({ values, table }: any) => {
-    if (values.status === "未付款") {
-      return table.setEditingRow(null); //exit editing mode
-    }
-    console.log(values, "values");
-    const { id, status } = values;
-    let res = await fetchGet(`/order/update/${id}`, { status: Status[status] });
+  const handleSave = async ({ row, values, table }: any) => {
+    const {
+      farmId = row.original.id,
+      dataTime = dayjs().format("YYYY-MM-DD"),
+      sensitive,
+      intermediate,
+      resistant,
+    } = values;
+    console.log({ farmId, dataTime, sensitive, intermediate, resistant }, "values");
+
+    let res = await fetchPost(
+      `/farmOtherAttributes/add`,
+      { farmId, dataTime, sensitive, intermediate, resistant },
+      {
+        "Content-Type": "application/json",
+      }
+    );
     if (res?.code === "0") {
       console.log(res, "res");
       Toast.show("success");
@@ -187,11 +200,11 @@ const Record = memo(() => {
             <EditIcon />
           </IconButton>
         </Tooltip>
-        <Tooltip title="Delete">
+        {/* <Tooltip title="Delete">
           <IconButton color="error" onClick={() => handleDelete(row)}>
             <DeleteIcon />
           </IconButton>
-        </Tooltip>
+        </Tooltip> */}
       </Box>
     ),
     positionActionsColumn: "last",
@@ -203,34 +216,7 @@ const Record = memo(() => {
         <Header logo />
       </div>
       <div className="px-4">
-        <Dropdown
-          className="rounded-xl"
-          style={{
-            "--adm-font-size-main": "18px",
-            "--adm-color-light": "#000",
-          }}
-        >
-          <Dropdown.Item
-            key="sorter"
-            title={language[activeLocale || "zh"]?.select}
-          >
-            <div style={{ padding: 12 }}>
-              <Radio.Group defaultValue="default">
-                <Space direction="vertical" block>
-                  <Radio block value="default">
-                    综合排序
-                  </Radio>
-                  <Radio block value="nearest">
-                    距离最近
-                  </Radio>
-                  <Radio block value="top-rated">
-                    评分最高
-                  </Radio>
-                </Space>
-              </Radio.Group>
-            </div>
-          </Dropdown.Item>
-        </Dropdown>
+        {/*  */}
         <div className="rounded-xl mt-4 px-2 py-2 bg-white relative z-0">
           <MaterialReactTable table={table} />
         </div>

@@ -2,8 +2,9 @@ import React, { useState } from "react";
 import { Popup, Toast } from "antd-mobile";
 import { useRouter } from "next/router";
 import { language } from "@/utils/language";
-import { SendOutline } from "antd-mobile-icons";
+import { FillinOutline, SendOutline } from "antd-mobile-icons";
 import { fetchPost } from "@/utils/request";
+import { selectUser, useSelector } from "@/lib/redux";
 interface IProps {
   visible: boolean;
   open: () => void;
@@ -14,6 +15,7 @@ const SideMenuPopup = (props: IProps) => {
   const { visible, close } = props;
   const router = useRouter();
   const { locale: activeLocale } = router;
+  const query = useSelector(selectUser);
   const menus = [
     {
       img: "/home_slices/mysquare.png",
@@ -87,6 +89,19 @@ const SideMenuPopup = (props: IProps) => {
             </div>
           );
         })}
+        {query.admin === "1" && (
+          <div
+            key={"out"}
+            className="flex mb-[20px] mt-6"
+            onClick={() => router.push("/adminTable")}
+          >
+            <FillinOutline className="w-[20px] h-[20px]" color="#1E84B4" />
+            {/* <div className="w-[20px] h-[20px]"></div> */}
+            <div className="text-[#708090] text-[20px] ml-[14px]">
+              AST PROFILE
+            </div>
+          </div>
+        )}
         <div key={"out"} className="flex mb-[20px] mt-6" onClick={handleOut}>
           {/* <SendOutline className="w-[20px] h-[20px]" color="#1E84B4"/> */}
           <div className="w-[20px] h-[20px]"></div>
