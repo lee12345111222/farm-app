@@ -31,7 +31,7 @@ const News = memo(() => {
   const [msg, setMsg] = useState<Record<string, any>>({});
   const [initMsg, setInitMsg] = useState<Record<string, any>>({});
   const [load, setLoad] = useState(false);
-  const [batchList, setBatchList] = useState([])
+  const [batchList, setBatchList] = useState([]);
   const [isOnline, setIsOnline] = useState(true);
   useEffect(() => {
     if (
@@ -80,20 +80,17 @@ const News = memo(() => {
   useEffect(() => {
     getFarmMsg();
   }, [getFarmMsg]);
-  
+
   useEffect(() => {
     getBatch();
   }, []);
 
   const getBatch = async (params?: Record<string, any>) => {
-    let res: Record<string, any> = await fetchGet(
-      "/farm/query_batch",
-      {
-        ...params,
-      },
-    );
+    let res: Record<string, any> = await fetchGet("/farm/query_batch", {
+      ...params,
+    });
     if (res?.code === "0") {
-      setBatchList(res.data)
+      setBatchList(res.data);
     } else {
       setBatchList([]);
     }
@@ -140,7 +137,6 @@ const News = memo(() => {
       [key]: val,
     }));
   };
-  
 
   console.log(msg, "msg");
   return (
@@ -298,22 +294,28 @@ const News = memo(() => {
       </div>
       <div className="mx-3 mt-4 px-5 py-4 rounded-md bg-white">
         <div className="tablePage farm-content">
-          {getDom(`${language[activeLocale || "zh"]?.batch}A`, "breedingMethods",
-                      batchList.map(ele => ele.batchName),
-                      handleChangeVal)}
+          {getDom(
+            `${language[activeLocale || "zh"]?.batch}A`,
+            "breedingMethods",
+            batchList.map((ele) => ele.batchName),
+            handleChangeVal
+          )}
         </div>
         <div className="flex mt-4 items-center justify-between">
-          {new Array(3).fill(1).map((ele, idx) => (
+          {new Array(2).fill(1).map((ele, idx) => (
             <>
-              <div className="text-center" key={idx}>
-                <div className="w-16 h-11">
+              <div className="" key={idx}>
+                <div className="flex-1 h-20">
+                  <ObituaryChart chickenId={'4edc1ff1b11647b981b252fa3a88c107'}/>
+                </div>
+                {/* <div className="w-16 h-11">
                   <PieChart type="pie" />
                 </div>
                 <div className="font-[PingFang SC, PingFang SC] font-normal text-[#708090] text-sm mt-3">
                   form{idx + 1}
-                </div>
+                </div> */}
               </div>
-              {idx !== 2 && <Divider direction="vertical" className="!h-12" />}
+              {idx !== 1 && <Divider direction="vertical" className="!h-12" />}
             </>
           ))}
         </div>
