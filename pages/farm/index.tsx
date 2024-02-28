@@ -147,7 +147,7 @@ const News = memo(() => {
   const saveFarmMsg = useCallback(async () => {
     let res = await fetchPost(
       "/farm/add",
-      { ...msg, chicken_seedlings_batch: "1" },
+      { ...msg },
       {
         "Content-Type": "application/json",
       }
