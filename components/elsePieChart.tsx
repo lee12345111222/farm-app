@@ -20,24 +20,21 @@ export const ElsePieChart = memo(() => {
     console.log(timeRes, "time");
     let res: Record<string, any> = await fetchPost(
       "/farmOtherAttributes/query_info",
-      { farmId: query.id },
+      { farmId: query.id, dataTime: timeRes.data?.[0] },
       {
         "Content-Type": "application/json",
       }
     );
     if (res.code === "0") {
-      console.log(res, "res");
-      const data = res?.data || [];
+      console.log(res, "res23");
+      const data = res?.data || {};
       let opt = {
         title: {
-          text: "Referer of a Website",
-          subtext: "Fake Data",
-          left: "center",
+          text: "Ast",
           show: false,
         },
         tooltip: {
           trigger: "item",
-          show: false,
         },
         legend: {
           orient: "vertical",
@@ -50,13 +47,11 @@ export const ElsePieChart = memo(() => {
             type: "pie",
             radius: "100%",
             data: [
-              { value: 1048, name: "" },
-              { value: 735, name: "" },
-              { value: 580, name: "" },
-              { value: 484, name: "" },
-              { value: 300, name: "" },
+              { value: data.intermediate, name: "intermediate" },
+              { value: data.resistant, name: "resistant" },
+              { value: data.sensitive, name: "sensitive" },
             ],
-            labelLine: { show: false },
+            // labelLine: { show: false },
             emphasis: {
               itemStyle: {
                 shadowBlur: 10,

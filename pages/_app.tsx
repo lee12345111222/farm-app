@@ -26,7 +26,7 @@ export default function MyApp({ Component, pageProps }: AppPropsWithLayout) {
   const { wsData, readyState, sendMessage, reconnect, closeWebSocket } =
     useWebsocket({
       url: user.id
-        ? "ws://54.153.241.236:8000/ws/chat/" + user.id + "/" + user.token
+        ? "ws://13.236.118.105:8000/ws/chat/" + user.id + "/" + user.token
         : "", // 此参数为websocket地址
     });
 

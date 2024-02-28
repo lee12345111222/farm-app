@@ -59,11 +59,12 @@ const Record = memo(() => {
         let data: Record<string, any> = res.data?.[0] || {};
 
         console.log(data, "data");
-
         data.list = data.list?.map((item: Record<string, any>) => {
+          let len = item.farmOtherAttributes?.length;
+          len = len > 0 ? len - 1 : 0;
           item = {
             ...item,
-            ...item.farmOtherAttributes?.[0],
+            ...item.farmOtherAttributes?.[len],
           };
           return item;
         });
@@ -147,14 +148,18 @@ const Record = memo(() => {
 
   //UPDATE action
   const handleSave = async ({ row, values, table }: any) => {
+    console.log(row, 'row')
     const {
-      farmId = row.original.id,
+      farmId = row.original.farmId || row.original.id,
       dataTime = dayjs().format("YYYY-MM-DD"),
       sensitive,
       intermediate,
       resistant,
     } = values;
-    console.log({ farmId, dataTime, sensitive, intermediate, resistant }, "values");
+    console.log(
+      { farmId, dataTime, sensitive, intermediate, resistant },
+      "values"
+    );
 
     let res = await fetchPost(
       `/farmOtherAttributes/add`,
