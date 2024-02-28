@@ -5,30 +5,32 @@ import { Form, Input, Button } from "antd-mobile";
 import FooterToolBar from "@/components/footer-tool-bar";
 import { useRouter } from "next/router";
 import { language } from "@/utils/language";
+import { selectUser, useSelector } from "@/lib/redux";
 
 const Home = () => {
   const router = useRouter();
   const { locale: activeLocale } = router;
+  const query = useSelector(selectUser);
   const menus = [
     {
       img: "/home_slices/mysquare.png",
       label: language[activeLocale || "zh"]?.myfarm,
-      onClick: () => router.push('/farm'),
+      onClick: () => router.push("/farm"),
     },
     {
       img: "/home_slices/medicine.png",
       label: language[activeLocale || "zh"]?.buymedications,
-      onClick: () => router.push('/shop'),
+      onClick: () => router.push("/shop"),
     },
     {
       img: "/home_slices/news.png",
       label: language[activeLocale || "zh"]?.latestnews,
-      onClick: () => router.push('/news'),
+      onClick: () => router.push("/news"),
     },
     {
       img: "/home_slices/table.png",
       label: language[activeLocale || "zh"]?.usefulforms,
-      onClick: () => router.push('/table'),
+      onClick: () => router.push("/table"),
     },
     {
       img: "/home_slices/connectus.png",
@@ -41,7 +43,10 @@ const Home = () => {
       <div className="relative bg-[url('/home_slices/bg.png')] bg-cover h-[38%]">
         <Header home logo />
         <div className="absolute top-[118px] left-[30px] text-white text-[19px]">
-          {language[activeLocale || "zh"]?.goodnight}
+          {language[activeLocale || "zh"]?.goodnight.replace(
+            "Ronald",
+            query.username
+          )}
         </div>
       </div>
       <div className="home-cards-wrapper">

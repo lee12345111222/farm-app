@@ -12,6 +12,7 @@ import {
   Toast,
   SpinLoading,
   DropdownRef,
+  Popover,
 } from "antd-mobile";
 import { useRouter } from "next/router";
 import { language } from "@/utils/language";
@@ -59,7 +60,7 @@ const News = memo(() => {
         <Dropdown.Item key="sorter" title={title || "-"}>
           <div style={{ padding: 12 }}>
             <Radio.Group
-              value={valIndex ? val[title] : title}//下标的值特殊处理
+              value={valIndex ? val[title] : title} //下标的值特殊处理
               onChange={(val: string) => {
                 onChange?.(key, val);
                 // ref.current?.close();
@@ -146,7 +147,7 @@ const News = memo(() => {
   const saveFarmMsg = useCallback(async () => {
     let res = await fetchPost(
       "/farm/add",
-      { ...msg, chickenSeedlingsBatch: "1" },
+      { ...msg, chicken_seedlings_batch: "1" },
       {
         "Content-Type": "application/json",
       }
@@ -278,7 +279,13 @@ const News = memo(() => {
                 </div>
                 <div className="flex items-center flex-1 justify-between">
                   <div className="font-[PingFang SC, PingFang SC] font-medium text-[#708090] text-sm flex-shrink-0 flex">
-                    {language[activeLocale || "zh"]?.small}:{" "}
+                    <Popover
+                      content={msg.chickenSeedlingsNumber1}
+                      trigger="click"
+                      placement="top"
+                    >
+                      <span>{language[activeLocale || "zh"]?.small}:</span>
+                    </Popover>
                     <Input
                       className="font-medium underline ml-2 !w-8 flex-grow-0 -mt-1"
                       defaultValue="xxx"
@@ -294,7 +301,13 @@ const News = memo(() => {
                     {language[activeLocale || "zh"]?.nums}
                   </div>
                   <div className="font-[PingFang SC, PingFang SC] font-medium text-[#708090] text-sm  flex-shrink-0 flex">
-                    {language[activeLocale || "zh"]?.medium}:{" "}
+                    <Popover
+                      content={msg.chickenSeedlingsNumber2}
+                      trigger="click"
+                      placement="top"
+                    >
+                      <span>{language[activeLocale || "zh"]?.medium}:</span>
+                    </Popover>
                     <Input
                       className="font-medium underline ml-2 !w-8 flex-grow-0 -mt-1"
                       defaultValue="xxx"
@@ -310,7 +323,13 @@ const News = memo(() => {
                     {language[activeLocale || "zh"]?.nums}
                   </div>
                   <div className="font-[PingFang SC, PingFang SC] font-medium text-[#708090] text-sm  flex-shrink-0 flex">
-                    {language[activeLocale || "zh"]?.big}:{" "}
+                    <Popover
+                      content={msg.chickenSeedlingsNumber3}
+                      trigger="click"
+                      placement="top"
+                    >
+                      <span>{language[activeLocale || "zh"]?.big}:</span>
+                    </Popover>
                     <Input
                       className="font-medium underline ml-2 !w-8 flex-grow-0 -mt-1"
                       defaultValue="xxx"

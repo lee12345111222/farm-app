@@ -12,7 +12,7 @@ const imgs = {
   },
 };
 
-const SideMenu = (props: { home?: boolean }) => {
+const SideMenu = (props: { home?: boolean;disableMenu?:boolean }) => {
   const [visible, setVisible] = useState(false);
   const isHome = props.home ? "home" : "default";
   return (
@@ -28,7 +28,7 @@ const SideMenu = (props: { home?: boolean }) => {
         className="w-[18.5px] h-[14.5px]"
         src={imgs["menu"]?.[isHome]}
         alt="menu"
-        onClick={() => setVisible(true)}
+        onClick={() => !props.disableMenu && setVisible(true)}
       />
       <SideMenuPopup
         visible={visible}

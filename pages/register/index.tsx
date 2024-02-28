@@ -59,7 +59,7 @@ const Register = () => {
 
   return (
     <div className="w-full h-full relative pt-[116px] firstPage">
-      <Header />
+      <Header disableMenu />
       <div className="flex justify-center">
         <img
           src="/logo.png"

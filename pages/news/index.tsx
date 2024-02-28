@@ -86,6 +86,7 @@ const News = memo(() => {
     if (res.code === "0") {
       Toast.show("success");
       getNewsList({ page: 1 });
+      getLatest();
     } else {
       Toast.show(res.data);
     }
@@ -105,14 +106,14 @@ const News = memo(() => {
         onOk={handleAdd}
       />
       <div className="bg-[url('/home_slices/bg.png')] bg-cover h-64">
-        <Header home={true} />
+        <Header logo home={true} />
         {query.admin === "1" ? (
           <Button
             size="mini"
             type="button"
             color="primary"
             fill="solid"
-            className="top-16 left-3"
+            className="top-16 left-16"
             style={{
               "--background-color": "#4682B4",
             }}

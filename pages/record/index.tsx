@@ -44,7 +44,9 @@ const Record = memo(() => {
   const getShopList = useCallback(
     async (params?: Record<string, any>) => {
       let res: Record<string, any> = await fetchPost(
-        `/order/query_page?page=${pagination.pageIndex + 1}&size=${pagination.pageSize}`,
+        `/order/query_page?page=${pagination.pageIndex + 1}&size=${
+          pagination.pageSize
+        }`,
         {
           ...params,
         },
@@ -139,7 +141,13 @@ const Record = memo(() => {
     }
     console.log(values, "values");
     const { id, status } = values;
-    let res = await fetchGet(`/order/update/${id}`, { status: Status[status] });
+    let res = await fetchPost(
+      `/order/update/${id}`,
+      { status: Status[status].toString() },
+      {
+        "Content-Type": "application/json",
+      }
+    );
     if (res?.code === "0") {
       console.log(res, "res");
       Toast.show("success");
@@ -193,7 +201,7 @@ const Record = memo(() => {
         <Header logo />
       </div>
       <div className="px-4">
-        <Dropdown
+        {/* <Dropdown
           className="rounded-xl"
           style={{
             "--adm-font-size-main": "18px",
@@ -220,8 +228,8 @@ const Record = memo(() => {
               </Radio.Group>
             </div>
           </Dropdown.Item>
-        </Dropdown>
-        <div className="rounded-xl mt-4 px-2 py-2 bg-white relative z-0">
+        </Dropdown> */}
+        <div className="rounded-xl  px-2 py-2 bg-white relative z-0">
           <MaterialReactTable table={table} />
         </div>
         {/* <img src="/news/table.png" className="w-[100%] mt-4" alt="" /> */}

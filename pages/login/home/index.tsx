@@ -12,7 +12,7 @@ const Home = () => {
     return (
         <div className="w-full h-full  firstPage">
             <div className="relative bg-[url('/background.png')] bg-cover h-[56.5%]">
-                <Header />
+                <Header disableMenu />
             </div>
 
             <div className="p-[27px] pt-[27.5px]">

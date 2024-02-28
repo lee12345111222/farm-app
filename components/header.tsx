@@ -8,9 +8,10 @@ interface IHeader {
   back?: boolean;
   title?: string;
   styles?: string;
+  disableMenu?: boolean;
 }
 const Header = (props: IHeader) => {
-  const { logo, home, back, title, styles } = props;
+  const { logo, home, back, title, styles, disableMenu } = props;
   const router = useRouter();
   return (
     <div
@@ -42,7 +43,7 @@ const Header = (props: IHeader) => {
           {title}
         </span>
       ) : null}
-      <Menu home={home} />
+      <Menu home={home} disableMenu={disableMenu} />
     </div>
   );
 };

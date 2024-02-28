@@ -32,21 +32,25 @@ const News = memo(() => {
   const [name, setName] = useState("");
 
   const getShopList = async (params?: Record<string, any>) => {
-    let res:Record<string, any> = await fetchPost("/commodity/query_page?page="+page+'&size=10', {
-      name,
-      type: activeKey,
-      ...params,
-    },{
-      "Content-Type": "application/json",
-    });
+    let res: Record<string, any> = await fetchPost(
+      "/commodity/query_page?page=" + page + "&size=10",
+      {
+        name,
+        type: activeKey,
+        ...params,
+      },
+      {
+        "Content-Type": "application/json",
+      }
+    );
     if (res?.code === "0") {
-      const list:Record<string, any> = res.data?.[0] || {};
+      const list: Record<string, any> = res.data?.[0] || {};
       console.log(params, "params", list);
 
       if (params) {
         setData(list.list || []);
         setHasMore(list.page?.totalNumber > (list.list || [])?.length);
-        setPage(1)
+        setPage(1);
       } else {
         setData(data.concat(list.list || []));
         setHasMore(
@@ -83,7 +87,7 @@ const News = memo(() => {
       onAction: async (action: Action, index: number) => {
         console.log(action, index);
         if (action.key === "delete") {
-          let res = await fetchGet("/commodity/delete", { id: commodityId });
+          let res = await fetchGet("/commodity/delete/" + commodityId, {});
           if (res?.code === "0") {
             console.log(res, "res");
             Toast.show("success");
