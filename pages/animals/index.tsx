@@ -56,11 +56,24 @@ const News = memo(() => {
       "incubationDate",
     ];
     const data1 = [
-      "chickenFlockId",
-      "medicationName",
-      "medicationDose",
-      "medicationMeasure",
-      "usageDuration",
+      {
+        key: "chickenFlockId",
+        type: "select",
+        data: [
+          "阿莫西林​",
+          "恩諾沙星",
+          "氟苯尼考​",
+          "泰樂菌素",
+          "氨丙啉",
+          "替米考星",
+          "地克珠利",
+          "多維礦物質",
+        ],
+      },
+      { key: "medicationName" },
+      { key: "medicationDose" },
+      { key: "medicationMeasure" },
+      { key: "usageDuration" },
     ];
     return {
       0: [
@@ -74,7 +87,7 @@ const News = memo(() => {
               idx === 2
                 ? language[activeLocale || "zh"].animalstab1name4unit
                 : language[activeLocale || "zh"].nums,
-            key: ele,
+
             val: "",
             hide: idx === 4 || idx === 5,
           };
@@ -83,16 +96,15 @@ const News = memo(() => {
       ],
       1: [
         ...data1.map((ele, idx) => {
-          console.log(
-            language[activeLocale || "zh"]?.[`animalstab${1}name${idx}`]
-          );
           return {
             name: language[activeLocale || "zh"]?.[`animalstab${1}name${idx}`],
             unit:
               language[activeLocale || "zh"]?.[
                 `animalstab${1}name${idx}unit`
               ] || "",
-            key: ele,
+            key: ele.key,
+            type: ele?.type,
+            data: ele?.data,
             val: "",
           };
         }),
@@ -161,7 +173,7 @@ const News = memo(() => {
       params[ele.key] = ele.val;
     });
     params.dataTime = params.dataTime || dayjs().format("YYYY-MM-DD");
-    params.chickenId = msg.id
+    params.chickenId = msg.id;
 
     let res = await fetchPost(UrlObj[active], params, {
       "Content-Type": "application/json",

@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import { Button, Input, Space } from "antd-mobile";
 import { useEffect } from "react";
+import Select from "./select";
 
 interface Iprops {
   list: Record<string, any>[];
@@ -40,31 +41,42 @@ const InputList = ({ list = [], unit = false, onChange, onSubmit }: Iprops) => {
   return (
     <>
       {msg.map(
-        (ele: Record<string, any>, idx: React.Key | null | undefined) => !ele.hide&&(
-          <div
-            key={idx}
-            className="flex pt-6 pb-4 justify-between items-center border-b border-[#D7E8FE]"
-          >
-            <div className="font-[PingFang SC, PingFang SC] font-medium text-[#708090] text-sm flex-shrink-0 w-48 mr-1">
-              {ele.name}
-            </div>
-            <Input
-              placeholder="xx"
-              onChange={(val) => handleChange(idx, val)}
-              value={ele.val}
-              disabled={ele.disable}
-              style={{
-                "--text-align": "right",
-                "--color": "#708090",
-              }}
-            />
-            {unit ? (
-              <div className="font-[PingFang SC, PingFang SC] font-medium text-[#708090] text-sm ml-1 flex-shrink-0">
-                {ele.unit}
+        (ele: Record<string, any>, idx: React.Key | null | undefined) =>
+          !ele.hide && (
+            <div
+              key={idx}
+              className="flex pt-6 pb-4 justify-between items-center border-b border-[#D7E8FE]"
+            >
+              <div className="font-[PingFang SC, PingFang SC] font-medium text-[#708090] text-sm flex-shrink-0 w-48 mr-1">
+                {ele.name}
               </div>
-            ) : null}
-          </div>
-        )
+              {ele.type === "select" ? (
+                <Select
+                  title={ele.val}
+                  idx={idx}
+                  val={ele.data || []}
+                  handleChange
+                />
+              ) : (
+                <Input
+                  placeholder="xx"
+                  onChange={(val) => handleChange(idx, val)}
+                  value={ele.val}
+                  disabled={ele.disable}
+                  style={{
+                    "--text-align": "right",
+                    "--color": "#708090",
+                  }}
+                />
+              )}
+
+              {unit ? (
+                <div className="font-[PingFang SC, PingFang SC] font-medium text-[#708090] text-sm ml-1 flex-shrink-0">
+                  {ele.unit}
+                </div>
+              ) : null}
+            </div>
+          )
       )}
       <Space className="mt-3 w-[100%] justify-center">
         <Button
