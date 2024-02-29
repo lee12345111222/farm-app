@@ -31,10 +31,11 @@ export const ElsePieChart = memo(() => {
       let opt = {
         title: {
           text: "Ast",
-          show: false,
+          // show: false,
         },
         tooltip: {
           trigger: "item",
+          // show: false,
         },
         legend: {
           orient: "vertical",
@@ -51,7 +52,11 @@ export const ElsePieChart = memo(() => {
               { value: data.resistant, name: "resistant" },
               { value: data.sensitive, name: "sensitive" },
             ],
-            // labelLine: { show: false },
+            label: {
+              show: false,
+              position: 'inside'
+            },
+            labelLine: { show: false },
             emphasis: {
               itemStyle: {
                 shadowBlur: 10,
