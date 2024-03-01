@@ -102,9 +102,9 @@ const News = memo(() => {
               language[activeLocale || "zh"]?.[
                 `animalstab${1}name${idx}unit`
               ] || "",
-            key: ele.key,
-            type: ele?.type,
-            data: ele?.data,
+            // key: ele.key,
+            // type: ele?.type,
+            // data: ele?.data,
             val: "",
           };
         }),

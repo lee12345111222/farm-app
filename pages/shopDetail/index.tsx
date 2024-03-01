@@ -19,24 +19,15 @@ import ShopList from "@/components/shopList";
 import ShopBottom from "@/components/shopBottom";
 import { useAddOrder } from "../../hooks/useAddOrder";
 import { selectUser, useSelector } from "@/lib/redux";
+import { baseUrl } from "@/utils/request";
 
 const colors = ["#ace0ff", "#bcffbd", "#e4fabd", "#ffcfac"];
 
-const items = colors.map((color, index) => (
-  <Swiper.Item key={index}>
-    <div
-      className="flex justify-center items-center text-white w-[198px] h-44 "
-      style={{ background: color }}
-    >
-      <img src="/news/shop.png" className="w-[100%]" alt="" />
-    </div>
-  </Swiper.Item>
-));
 interface Iprops {
   sendMessage: Function;
   // messagememo: Record<string, any>;
 }
-const News = memo(({sendMessage}: Iprops) => {
+const News = memo(({ sendMessage }: Iprops) => {
   const query = useSelector(selectUser);
   const router = useRouter();
   const { locale: activeLocale } = router;
@@ -45,7 +36,7 @@ const News = memo(({sendMessage}: Iprops) => {
   // let shopItem = {};
 
   const [number, setNumber] = useState<string>("1");
-  const [shopItem, setShopDetailItem] = useState<Record<string,any>>({});
+  const [shopItem, setShopDetailItem] = useState<Record<string, any>>({});
   const [data, setData] = useState<any[]>([]);
 
   // let data=[{...shopItem, number}]
@@ -56,13 +47,27 @@ const News = memo(({sendMessage}: Iprops) => {
   //   data=[{...shopItem, number}]
   // }
 
-  const [handleAddOrder] = useAddOrder({query, data, sendMessage})
+  const [handleAddOrder] = useAddOrder({ query, data, sendMessage });
 
   useEffect(() => {
-    let item = JSON.parse(localStorage.getItem("shopDetailItem") || '{}')
-    setShopDetailItem(item)
-    setData([{...item, number}])
-  },[])
+    let item = JSON.parse(localStorage.getItem("shopDetailItem") || "{}");
+    setShopDetailItem(item);
+    setData([{ ...item, number }]);
+  }, []);
+  const items = colors.map((color, index) => (
+    <Swiper.Item key={index}>
+      <div
+        className="flex justify-center items-center text-white w-[198px] h-44 "
+        style={{ background: color }}
+      >
+        <img
+          src={baseUrl + "/resources/downloadFile/" + shopItem.image}
+          className="w-[100%]"
+          alt=""
+        />
+      </div>
+    </Swiper.Item>
+  ));
 
   return (
     <div className="w-full min-h-dvh bg-[#F6F9FF] pb-[143px] shopDetail ">
@@ -109,7 +114,7 @@ const News = memo(({sendMessage}: Iprops) => {
         <div className="font-[PingFang SC-Bold] text-[#000] font-bold text-lg truncate text-center mt-4 pb-4 border-solid border-b border-[#E0E0E0]">
           {shopItem.name} | {shopItem.weight}
         </div>
-        <div className="font-[PingFang SC, PingFang SC] text-[#708090] font-medium text-lg mt-4 pb-4 border-solid border-b border-[#E0E0E0]">
+        <div className="break-words font-[PingFang SC, PingFang SC] text-[#708090] font-medium text-lg mt-4 pb-4 border-solid border-b border-[#E0E0E0]">
           簡介：{shopItem.remarks}
         </div>
         {/* <div className="font-[PingFang SC, PingFang SC] text-[#708090] font-medium text-lg mt-4 pb-5 border-solid border-b border-[#E0E0E0]">
@@ -145,14 +150,14 @@ const News = memo(({sendMessage}: Iprops) => {
               "--input-background-color": "#F1F1F1",
             }}
             value={Number(number)}
-              onChange={(value) => {
-                console.log(value);
-                setNumber(value.toString());
-              }}
+            onChange={(value) => {
+              console.log(value);
+              setNumber(value.toString());
+            }}
           />
         </div>
       </div>
-      <ShopBottom data={data} handleAddOrder={handleAddOrder}/>
+      <ShopBottom data={data} handleAddOrder={handleAddOrder} />
       <FooterToolBar />
     </div>
   );

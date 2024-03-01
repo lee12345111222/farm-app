@@ -189,14 +189,14 @@ const News = memo(() => {
   console.log(msg.batchIdx, "msg", batchList);
   return (
     <div className="w-full h-screen bg-[#F6F9FF] farm pb-6 overflow-auto relative">
-      <div className="bg-[url('/news/farmbg.png')] bg-cover h-[51%] ">
+      <div className="bg-[url('/news/farmbg.png')] bg-cover h-80 ">
         <Header
           back
           title={language[activeLocale || "zh"]?.myfarm}
           styles="top-8"
         />
         <div className="overflow-hidden">
-          <div className="mt-16 h-52 w-[86%] bg-white pl-6 pt-4 pr-5 rounded-md relative">
+          <div className="mt-16 h-52 w-[92%] bg-white pl-6 pt-4 pr-5 rounded-md relative">
             <Space className="absolute right-3 top-4">
               <Button
                 size="mini"
@@ -287,7 +287,7 @@ const News = memo(() => {
                       <span>{language[activeLocale || "zh"]?.small}:</span>
                     </Popover>
                     <Input
-                      className="font-medium underline ml-2 !w-8 flex-grow-0 -mt-1"
+                      className="font-medium underline ml-2 !w-10 flex-grow-0 -mt-1"
                       defaultValue="xxx"
                       value={msg.chickenSeedlingsNumber1}
                       onChange={(val) =>
@@ -309,7 +309,7 @@ const News = memo(() => {
                       <span>{language[activeLocale || "zh"]?.medium}:</span>
                     </Popover>
                     <Input
-                      className="font-medium underline ml-2 !w-8 flex-grow-0 -mt-1"
+                      className="font-medium underline ml-2 !w-10 flex-grow-0 -mt-1"
                       defaultValue="xxx"
                       value={msg.chickenSeedlingsNumber2}
                       onChange={(val) =>
@@ -331,7 +331,7 @@ const News = memo(() => {
                       <span>{language[activeLocale || "zh"]?.big}:</span>
                     </Popover>
                     <Input
-                      className="font-medium underline ml-2 !w-8 flex-grow-0 -mt-1"
+                      className="font-medium underline ml-2 !w-10 flex-grow-0 -mt-1"
                       defaultValue="xxx"
                       value={msg.chickenSeedlingsNumber3}
                       onChange={(val) =>

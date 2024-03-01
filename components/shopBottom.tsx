@@ -17,7 +17,7 @@ const ShopBottom = (props: Iporps) => {
           {language[activeLocale || "zh"]?.price}:
         </span>
         <span className="font-[PingFang SC, PingFang SC] text-[#4682B4] font-medium text-xl truncate">
-          ￥
+          HKD:
           {
             data.reduce((pre,cur) => pre+(cur.price * cur.number),0)
           }

@@ -26,15 +26,21 @@ export const ElsePieChart = memo(() => {
       }
     );
     if (res.code === "0") {
-      console.log(res, "res23");
       const data = res?.data || {};
+      const total = Number(data.intermediate) + Number(data.resistant) + Number(data.sensitive);
+      console.log(data,total, "res23");
+
       let opt = {
         title: {
           text: "Ast",
           // show: false,
+          textStyle: {
+            fontSize: 12,
+          },
         },
         tooltip: {
           trigger: "item",
+          valueFormatter: val => parseInt(((val/total)*100).toString())+'%',
           // show: false,
         },
         legend: {

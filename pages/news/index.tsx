@@ -1,13 +1,14 @@
 import React, { memo, useEffect, useState } from "react";
 import Image from "next/image";
 import Header from "@/components/header";
-import { Form, Input, Button, InfiniteScroll, Toast } from "antd-mobile";
+import { Form, Input, Button, InfiniteScroll, Toast, Dialog } from "antd-mobile";
 import { useRouter } from "next/router";
 import { language } from "@/utils/language";
 import FooterToolBar from "@/components/footer-tool-bar";
 import { baseUrl, fetchGet, fetchPost } from "@/utils/request";
 import { ActionModal } from "@/components/actionModal";
 import { selectUser, useSelector } from "@/lib/redux";
+import { Action } from "antd-mobile/es/components/action-sheet";
 
 const Json = [
   { type: "input", key: "title", lable: "标题", required: true },
@@ -78,7 +79,6 @@ const News = memo(() => {
     getLatest();
   }, []);
 
-
   const handleAdd = async (params) => {
     let res = await fetchPost("/notice/add", params, {
       "Content-Type": "application/json",
@@ -90,6 +90,40 @@ const News = memo(() => {
     } else {
       Toast.show(res.data);
     }
+  };
+  const handleDelete = async (row: Record<string, any>) => {
+    Dialog.show({
+      content: "Are you sure you want to delete it?",
+      closeOnAction: true,
+      actions: [
+        [
+          {
+            key: "cancel",
+            text: "cancel",
+          },
+          {
+            key: "delete",
+            text: "delete",
+            bold: true,
+            danger: true,
+          },
+        ],
+      ],
+      onAction: async (action: Action, index: number) => {
+        console.log(action, index);
+        if (action.key === "delete") {
+          let res = await fetchGet("notice/delete/" + row?.id, {});
+          if (res?.code === "0") {
+            console.log(res, "res");
+            Toast.show("success");
+            getNewsList({ page: 1 });
+            getLatest();
+          } else {
+            Toast.show("Network error");
+          }
+        }
+      },
+    });
   };
 
   const handleClick = (msgTime) => {
@@ -148,10 +182,22 @@ const News = memo(() => {
         </div>
         {data.map((ele, idx) => (
           <div
-            className="pb-4 bg-white rounded-2xl mt-[40px]"
+            className="pb-4 bg-white rounded-2xl mt-[40px] relative"
             onClick={() => handleClick(ele.msgTime)}
             key={idx}
           >
+            {query.admin === "1" ? (
+              <Button
+                size="mini"
+                type="button"
+                color="danger"
+                fill="solid"
+                className="top-2 right-2 !absolute"
+                onClick={(e) => {e.stopPropagation();handleDelete(ele)}}
+              >
+                删除
+              </Button>
+            ) : null}
             <img
               src={
                 baseUrl + "/resources/downloadFile/" + ele.image ||

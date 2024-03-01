@@ -43,15 +43,27 @@ const ShopList = memo((props: Iprops) => {
     />
   ));
   const shopCartDom = data?.map((ele, idx) => (
-    <div key={idx} className="px-4 py-4 bg-white rounded-t-xl mb-4 flex items-center" onClick={e => handleShopClick(e, ele)}>
-      <MinusCircleOutline className="w-5 mr-4" fontSize={20} color="#FF0000" onClick={(e: React.MouseEvent) => { e.stopPropagation();handleDelete?.(ele.id)}}/>
+    <div
+      key={idx}
+      className="px-4 py-4 bg-white rounded-t-xl mb-4 flex items-center"
+      onClick={(e) => handleShopClick(e, ele)}
+    >
+      <MinusCircleOutline
+        className="w-5 mr-4"
+        fontSize={20}
+        color="#FF0000"
+        onClick={(e: React.MouseEvent) => {
+          e.stopPropagation();
+          handleDelete?.(ele.id);
+        }}
+      />
       <img
         className="w-20 mr-6"
-        src={baseUrl + "/resources/downloadFile/"+ ele.image}
+        src={baseUrl + "/resources/downloadFile/" + ele.image}
         alt=""
       />
       <div className="flex-1">
-        <div className="font-[PingFang SC, PingFang SC] text-[#000] font-medium text-lg truncate mt-2 mb-6">
+        <div className="font-[PingFang SC, PingFang SC] text-[#000] font-medium text-lg truncate mt-2 mb-6 w-48">
           {ele.name}
         </div>
         <div className="flex justify-between items-center">
@@ -59,7 +71,7 @@ const ShopList = memo((props: Iprops) => {
             x{ele.number}
           </span>
           <span className="font-[PingFang SC, PingFang SC] text-[#4682B4] font-bold text-xl truncate">
-            ￥{ele.price}
+            HKD:{ele.price}
           </span>
         </div>
       </div>
@@ -77,7 +89,7 @@ export default ShopList;
 
 interface ItemPorps {
   ele: Record<string, any>;
-  handleShopClick: (e: React.MouseEvent, v:Record<string, any>) => void;
+  handleShopClick: (e: React.MouseEvent, v: Record<string, any>) => void;
   addToCart?: (commodityId: string, number: string) => void;
   deleteProduct?: (commodityId: string) => void;
 }
@@ -97,9 +109,13 @@ const ShopItem = ({
       className="px-4 py-4 bg-white rounded-t-xl mb-4 flex"
       onClick={(e: React.MouseEvent) => handleShopClick(e, ele)}
     >
-      <img className="w-20 mr-6" src={baseUrl + "/resources/downloadFile/"+ ele.image} alt="" />
+      <img
+        className="w-20 mr-6"
+        src={baseUrl + "/resources/downloadFile/" + ele.image}
+        alt=""
+      />
       <div className="flex-1">
-        <div className="font-[PingFang SC-Medium] text-[#333333] font-medium text-base truncate mt-2 mb-7">
+        <div className="font-[PingFang SC-Medium] text-[#333333] font-medium text-base truncate mt-2 mb-7 w-48">
           {ele.name}
         </div>
         <div className="flex justify-between items-center">
@@ -136,14 +152,16 @@ const ShopItem = ({
                 addToCart?.(ele.id, number);
               }}
             />
-           {query.admin==='1' && <DeleteOutline
-              onClick={(e) => {
-                e.stopPropagation();
-                deleteProduct?.(ele.id);
-              }}
-              className="w-6 h-6"
-              color="var(--adm-color-danger)"
-            />}
+            {query.admin === "1" && (
+              <DeleteOutline
+                onClick={(e) => {
+                  e.stopPropagation();
+                  deleteProduct?.(ele.id);
+                }}
+                className="w-6 h-6"
+                color="var(--adm-color-danger)"
+              />
+            )}
           </Space>
         </div>
       </div>
