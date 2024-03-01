@@ -51,12 +51,14 @@ const InputList = ({ list = [], unit = false, onChange, onSubmit }: Iprops) => {
                 {ele.name}
               </div>
               {ele.type === "select" ? (
-                <Select
-                  title={ele.val}
-                  idx={idx}
-                  val={ele.data || []}
-                  handleChange
-                />
+                <div className={`text-right select${idx}`}>
+                  <Select
+                    title={ele.val}
+                    idx={idx}
+                    val={ele.data || []}
+                    onChange={handleChange}
+                  />
+                </div>
               ) : (
                 <Input
                   placeholder="xx"
@@ -70,7 +72,7 @@ const InputList = ({ list = [], unit = false, onChange, onSubmit }: Iprops) => {
                 />
               )}
 
-              {unit ? (
+              {ele.unit ? (
                 <div className="font-[PingFang SC, PingFang SC] font-medium text-[#708090] text-sm ml-1 flex-shrink-0">
                   {ele.unit}
                 </div>

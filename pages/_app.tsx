@@ -76,7 +76,7 @@ export default function MyApp({ Component, pageProps }: AppPropsWithLayout) {
   useEffect(() => {
     // 接受到socket数据， 进行业务逻辑处理
     if (Object.keys(messagememo).length !== 0) {
-      console.log(messagememo);
+      console.log(typeof messagememo, 'messagememo');
       const data1 = JSON.parse(messagememo.message);
       console.log(data1.msgValue + "\n");
       let list = localStorage.getItem("message" + user.id) || "[]";

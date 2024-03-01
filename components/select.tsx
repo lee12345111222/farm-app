@@ -3,9 +3,9 @@ import { Dropdown, DropdownRef, Radio, Space } from "antd-mobile";
 
 interface Iporps {
   title?: string;
-  idx?: string | number;
+  idx?: React.Key;
   val?: any[];
-  onChange?: (key: string | number, val: string, idx?: React.Key) => void;
+  onChange?: (key: React.Key, val: string, idx?: React.Key) => void;
   valIndex?: boolean;
 }
 
@@ -18,6 +18,16 @@ export default (props: Iporps) => {
       <Dropdown
         className="rounded-md text-[#708090]"
         ref={ref}
+        getContainer={() => {
+          let dom = document.querySelector(`.select${idx}`);
+          console.log(idx, 'idx', document.querySelector(`.select1`))
+          return document.querySelector(`.select1`)
+          // return dom
+          //   ? idx > 1
+          //     ? document.querySelector(`.select1`)
+          //     : dom
+          //   : null;
+        }}
         closeOnClickAway
         style={
           {

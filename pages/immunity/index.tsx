@@ -20,35 +20,80 @@ const News = memo(() => {
         name: language[activeLocale || "zh"]?.immunizationdate,
         key: "periodValidity",
       },
-      { name: language[activeLocale || "zh"]?.vaccinename, key: "vaccineName" },
+      {
+        name: language[activeLocale || "zh"]?.vaccinename,
+        key: "vaccineName",
+        type: "select",
+        data: ["活苗", "死苗"],
+      },
       {
         name: language[activeLocale || "zh"]?.vaccinestrains,
         key: "vaccineType",
+        type: "select",
+        data: ["-", "CS2"],
       },
       {
         name: language[activeLocale || "zh"]?.vaccinestype,
         key: "vaccineBatch",
+        type: "select",
+        data: [
+          "新城+支氣管炎 ND + IB",
+          "H5 + H7 流感",
+          "新城拉蘇打 ND LaSota",
+          "馬立克液氮 MD CVI988",
+          "馬立克凍干 MD HVT",
+          "甘保羅凍干 Gumboro",
+          "馬立克載甘保羅 rHVT-IBD",
+          "馬立克載甘保羅 rHVT-ND-IBD",
+          "甘保羅抗原抗體 Gumboro AG-AB",
+          "ILT 喉頭",
+          "新城克隆1系 ND Clone 1",
+          "新城+H9 流感",
+          "流感 H9",
+          "肺病毒 APV",
+          "其他:請註明",
+        ],
       },
       { name: language[activeLocale || "zh"]?.vaccinesage, key: "vaccineDate" },
       {
         name: language[activeLocale || "zh"]?.vaccinationsnums,
         key: "vaccineFrequency",
+        type: "select",
+        data: ["第一針", "第二針", "第三針", "第四針"],
       },
       {
         name: language[activeLocale || "zh"]?.administered,
         key: "vaccineDosage",
+        type: "select",
+        data: ["瓶", "毫升"],
       },
       {
         name: language[activeLocale || "zh"]?.vaccinesroute,
         key: "vaccineRoute",
+        type: "select",
+        data: ["滴鼻", "口服", "皮下注射", "肌肉注射"],
       },
       {
         name: language[activeLocale || "zh"]?.manufacturers,
         key: "vaccineManufacturers",
+        type: "select",
+        data: [
+          "菲綽 Fatro",
+          "哈獸研 HRB",
+          "乾元浩 QYH",
+          "英特威 MSD",
+          "梅裡亞 Merial",
+          "詩華 Ceva",
+          "碩騰 Zoetis",
+          "青島易邦 Yibio",
+          "大華農 DHN",
+        ],
       },
       {
         name: language[activeLocale || "zh"]?.vaccinewhere,
         key: "vaccineAddress",
+        type: "select",
+        data: ["中國", "英國", "美國", "德國"],
       },
     ],
     []
@@ -91,7 +136,7 @@ const News = memo(() => {
   }, []);
 
   useEffect(() => {
-    getMsg({dataTime: dayjs().format("YYYY-MM-DD")});
+    getMsg({ dataTime: dayjs().format("YYYY-MM-DD") });
     getDateList();
   }, [getMsg, getDateList]);
 
@@ -111,14 +156,14 @@ const News = memo(() => {
     if (res?.code === "0") {
       console.log(res, "res");
       Toast.show("success");
-      getDateList()
+      getDateList();
     } else {
       Toast.show("Network error");
     }
   };
 
   return (
-    <div className="w-full h-screen bg-white pb-6 overflow-auto relative">
+    <div className="w-full h-screen bg-white pb-6 overflow-auto relative immunity">
       <div className="bg-cover h-24">
         <Header
           back
