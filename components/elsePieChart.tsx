@@ -52,7 +52,7 @@ export const ElsePieChart = memo(() => {
           {
             // name: "Access From",
             type: "pie",
-            radius: "100%",
+            radius: "80%",
             data: [
               { value: data.intermediate, name: "intermediate" },
               { value: data.resistant, name: "resistant" },

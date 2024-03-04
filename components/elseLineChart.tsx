@@ -4,17 +4,21 @@ import { fetchPost } from "@/utils/request";
 import { selectUser, useSelector } from "@/lib/redux";
 import * as echarts from "echarts";
 
-export const ElsePieChart = memo(() => {
+interface Iprops {
+  chickenId?: string;
+}
+
+export const ElseLineChart = memo(({ chickenId }: Iprops) => {
   const [option, setOption] = useState({});
   const query = useSelector(selectUser);
 
   useEffect(() => {
-    if (query.id) getData();
-  }, [query]);
+    if (chickenId) getData();
+  }, [chickenId]);
   const getData = async () => {
     let timeRes = await fetchPost(
-      "/farmOtherAttributes/query_date",
-      { farmId: query.id },
+      "chicken/query_all?page=1&size=10",
+      { id: chickenId },
       {
         "Content-Type": "application/json",
       }

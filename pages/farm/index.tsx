@@ -23,6 +23,7 @@ import { fetchGet, fetchPost } from "@/utils/request";
 import { QuestionChart } from "@/components/questionChat";
 import { ObituaryChart } from "@/components/obituaryChart";
 import { ElsePieChart } from "@/components/elsePieChart";
+import { ElseLineChart } from "@/components/elseLineChart";
 const TypeList = ["-", "泰安雞", "嘉美雞", "雪鳳凰", "其他"];
 const HomeList = ["開放式", "封閉式"];
 
@@ -374,6 +375,9 @@ const News = memo(() => {
           </div>
 
           <Divider direction="vertical" className="!h-12" />
+          <div className="flex-1 h-20">
+            <ElseLineChart chickenId={batchList[msg.batchIdx || 0]?.id} />
+          </div>
         </div>
       </div>
       <div className="mx-3 mt-3 px-5 rounded-md bg-white overflow-hidden">

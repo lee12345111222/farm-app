@@ -21,6 +21,9 @@ import CalendarDown from "@/components/calendarDown";
 import InputList from "@/components/inputList";
 import { fetchGet, fetchPost } from "@/utils/request";
 import dayjs from "dayjs";
+import { QuestionChart } from "@/components/questionChat";
+import { ElsePieChart } from "@/components/elsePieChart";
+import { ObituaryChart } from "@/components/obituaryChart";
 
 const UrlObj = {
   0: "/obituary/add",
@@ -392,16 +395,18 @@ const News = memo(() => {
       </div>
       <div className="mx-3">
         <div className="flex flex-wrap justify-between">
-          {["line", "pie", "line", "bar"].map((ele: any, idx) => (
-            <>
-              <div
-                className="w-[47%] bg-white h-32 mt-3  rounded-2xl py-3"
-                key={idx}
-              >
-                <PieChart type={ele} />
-              </div>
-            </>
-          ))}
+          <div className="w-[47%] bg-white h-32 mt-3  rounded-2xl py-3">
+            <QuestionChart />
+          </div>
+          <div className="w-[47%] bg-white h-32 mt-3  rounded-2xl py-3">
+            <ElsePieChart />
+          </div>
+          <div className="w-[47%] bg-white h-32 mt-3  rounded-2xl py-3">
+            <ObituaryChart chickenId={msg?.id} />
+          </div>
+          <div className="w-[47%] bg-white h-32 mt-3  rounded-2xl py-3">
+            <QuestionChart />
+          </div>
         </div>
       </div>
       <div className="mx-3 mt-3 pt-3 pb-4 px-3  bg-white  rounded-2xl">

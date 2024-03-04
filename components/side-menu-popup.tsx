@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import { Popup, Toast } from "antd-mobile";
 import { useRouter } from "next/router";
 import { language } from "@/utils/language";
-import { FillinOutline, SendOutline } from "antd-mobile-icons";
+import { BankcardOutline, FillinOutline, SendOutline } from "antd-mobile-icons";
 import { fetchPost } from "@/utils/request";
 import { selectUser, useSelector } from "@/lib/redux";
 interface IProps {
@@ -90,9 +90,11 @@ const SideMenuPopup = (props: IProps) => {
           );
         })}
         {query.admin === "1" && (
+          <>
+          
           <div
             key={"out"}
-            className="flex mb-[20px] mt-6"
+            className="flex mb-[20px] mt-6 items-center"
             onClick={() => router.push("/adminTable")}
           >
             <FillinOutline className="w-[20px] h-[20px]" color="#1E84B4" />
@@ -101,6 +103,18 @@ const SideMenuPopup = (props: IProps) => {
               AST PROFILE
             </div>
           </div>
+          <div
+            key={"out"}
+            className="flex mb-[20px] mt-6 items-center"
+            onClick={() => router.push("/batchTable")}
+          >
+            <BankcardOutline className="w-[20px] h-[20px]" color="#1E84B4" />
+            {/* <div className="w-[20px] h-[20px]"></div> */}
+            <div className="text-[#708090] text-[20px] ml-[14px]">
+              BATCH PROFILE
+            </div>
+          </div>
+          </>
         )}
         <div key={"out"} className="flex mb-[20px] mt-6" onClick={handleOut}>
           {/* <SendOutline className="w-[20px] h-[20px]" color="#1E84B4"/> */}
