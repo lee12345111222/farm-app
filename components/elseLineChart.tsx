@@ -16,37 +16,35 @@ export const ElseLineChart = memo(({ chickenId }: Iprops) => {
     if (chickenId) getData();
   }, [chickenId]);
   const getData = async () => {
-    let timeRes = await fetchPost(
-      "chicken/query_all?page=1&size=10",
-      { id: chickenId },
-      {
-        "Content-Type": "application/json",
-      }
-    );
-    console.log(timeRes, "time");
-    let res: Record<string, any> = await fetchPost(
-      "/farmOtherAttributes/query_info",
-      { farmId: query.id, dataTime: timeRes.data?.[0] },
+    let res:Record<string, any> = await fetchPost(
+      "/chicken/query_all?page=1&size=10",
+      { chickenId },
       {
         "Content-Type": "application/json",
       }
     );
     if (res.code === "0") {
       console.log(res, "res23");
-      const data = res?.data || {};
-      let xLabel = ["3.26", "3.27", "3.28", "3.29", "3.30", "3.31"];
-      let goToSchool = ["40", "60", "22", "85", "50", "40"];
+      const data = res?.data?.list?.[0] || {};
+      let xLabel = ['Ds','Dw','Dm'];
+      let goToSchool = [data.d1, data.d2, data.d3];
       let opt = {
         // backgroundColor: "#fff",
         title: {
-          text: "270k",
+          // text: "270k",
+          // textStyle: {
+          //   align: "center",
+          //   color: "#4682B4",
+          //   fontSize: 18,
+          // },
+          // top: "5%",
+          // left: "5%",
+          text: "Info",
+          // show: false,
           textStyle: {
-            align: "center",
-            color: "#4682B4",
-            fontSize: 18,
+            fontSize: 12,
           },
-          top: "5%",
-          left: "5%",
+          // show: false
         },
         tooltip: {
           trigger: "axis",
@@ -162,7 +160,7 @@ export const ElseLineChart = memo(({ chickenId }: Iprops) => {
         ],
         series: [
           {
-            name: "上学",
+            // name: "上学",
             type: "line",
             symbol: "circle", // 默认是空心圆（中间是白色的），改成实心圆
             showAllSymbol: true,
