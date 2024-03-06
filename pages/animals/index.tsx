@@ -37,7 +37,10 @@ const MsgUrlObj = {
   0: "/obituary/query_page?page=1&size=10",
   1: "/medication/query_page?page=1&size=10",
 };
-
+const StateKey = {
+  0: "obituaryList",
+  1: "medicationList",
+}
 const News = memo(() => {
   const router = useRouter();
   const { locale: activeLocale } = router;
@@ -55,7 +58,7 @@ const News = memo(() => {
       "chickenSeedlingAge",
       "deathNumber",
       "eliminateNumber",
-      "chickenFlockId",
+      // "chickenFlockId",
       "incubationDate",
     ];
     const data1 = [
@@ -90,9 +93,9 @@ const News = memo(() => {
               idx === 2
                 ? language[activeLocale || "zh"].animalstab1name4unit
                 : language[activeLocale || "zh"].nums,
-
+            key: ele,
             val: "",
-            hide: idx === 4 || idx === 5,
+            hide: idx === 4,
           };
         }),
         { name: "", key: "dataTime", hide: true },
@@ -122,6 +125,16 @@ const News = memo(() => {
   const [listmsg, setListMsg] = useState(listObj);
   const [activeTime, setActiveTime] = useState("");
 
+  useEffect(() => {
+    setListMsg((pre) => {
+      pre[active].map((ele,idx) => {
+        ele.name = listObj[active][idx].name
+        ele.unit = listObj[active][idx].unit
+      })
+      return pre
+    })
+  },[activeLocale,active])
+
   const getDateList = useCallback(
     async (params?: Record<string, any>) => {
       let res: Record<string, any> = await fetchPost(
@@ -149,8 +162,8 @@ const News = memo(() => {
         }
       );
       if (res?.code === "0") {
-        let obj = res.data?.[0]?.list?.[0] || {};
-        console.log(res, "data");
+        let obj = res.data?.[0]?.list?.[0]?.[StateKey[active]]?.[0] || {};
+        console.log(res, "data", obj);
         setListMsg((pre) => {
           pre[active] = pre?.[active]?.map((ele) => {
             ele.val = obj[ele.key];
@@ -175,8 +188,9 @@ const News = memo(() => {
     obj.forEach((ele) => {
       params[ele.key] = ele.val;
     });
-    params.dataTime = params.dataTime || dayjs().format("YYYY-MM-DD");
+    params.dataTime = activeTime || dayjs().format("YYYY-MM-DD");
     params.chickenId = msg.id;
+    // params.chickenFlockId = msg.id;
 
     let res = await fetchPost(UrlObj[active], params, {
       "Content-Type": "application/json",

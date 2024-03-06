@@ -40,6 +40,7 @@ export default (props: Iporps) => {
             <Radio.Group
               value={valIndex ? val[title] : title} //下标的值特殊处理
               onChange={(val: string) => {
+                console.log(idx,val, '132')
                 onChange?.(idx, val);
                 ref.current?.close();
                 // console.log(ref.current);

@@ -172,6 +172,17 @@ const News = memo(() => {
   );
 
   useEffect(() => {
+    console.log(msg, 'list', list)
+    setMsg((pre) => {
+      pre[active].map((ele,idx) => {
+        ele.name = listObj[active][idx].name
+        ele.unit = listObj[active][idx].unit
+      })
+      return pre
+    })
+  },[activeLocale,active])
+
+  useEffect(() => {
     getMsg({ dataTime: dayjs().format("YYYY-MM-DD") });
     getDateList();
   }, [getMsg, getDateList]);
@@ -184,7 +195,7 @@ const News = memo(() => {
     obj.forEach((ele) => {
       params[ele.key] = ele.val;
     });
-    params.dataTime = params.dataTime || dayjs().format("YYYY-MM-DD");
+    params.dataTime = activeTime || dayjs().format("YYYY-MM-DD");
 
     let res = await fetchPost(UrlObj[active], params, {
       "Content-Type": "application/json",

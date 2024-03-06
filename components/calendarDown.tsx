@@ -56,13 +56,11 @@ export default (props: Iprops) => {
               onChange={(val: string) => onChange?.(val)}
             >
               <Space direction="vertical" block>
-                <Radio
-                  block
-                  value={''}
-                  key={dayjs().format("YYYY-MM-DD")}
-                >
-                  {dayjs().format("YYYY-MM-DD")}
-                </Radio>
+                {dateList.includes(dayjs().format("YYYY-MM-DD")) ? (
+                  <Radio block value={""} key={dayjs().format("YYYY-MM-DD")}>
+                    {dayjs().format("YYYY-MM-DD")}
+                  </Radio>
+                ) : null}
                 {dateList.map((ele) => (
                   <Radio block value={ele} key={ele}>
                     {ele}

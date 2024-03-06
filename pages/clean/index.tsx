@@ -36,12 +36,22 @@ const News = memo(() => {
       { name: language[activeLocale || "zh"]?.insecticide, key: "pesticide" },
       { name: "", key: "dataTime", hide: true },
     ],
-    []
+    [activeLocale]
   );
 
   const [msg, setMsg] = useState(list);
   const [dateList, setDateList] = useState([]);
   const [activeTime, setActiveTime] = useState("");
+
+  useEffect(() => {
+    console.log(msg, 'list', list)
+    setMsg((pre) => {
+      pre.map((ele,idx) => {
+        ele.name = list[idx].name
+      })
+      return pre
+    })
+  },[activeLocale])
 
   const getDateList = useCallback(async (params?: Record<string, any>) => {
     let res: Record<string, any> = await fetchGet("/clear/query_date", {});

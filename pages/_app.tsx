@@ -8,7 +8,7 @@ import { selectUser, useSelector } from "@/lib/redux";
 import { useRouter } from "next/router";
 import Layout from "@/components/layout";
 import { ConfigProvider } from "antd-mobile";
-import enUS from "antd-mobile/es/locales/zh-HK";
+import enUS from "antd-mobile/es/locales/en-US";
 
 export type NextPageWithLayout = NextPage & {
   getLayout?: (page: React.ReactElement) => React.ReactNode;

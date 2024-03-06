@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import { Button, Input, Space } from "antd-mobile";
 import { useEffect } from "react";
 import Select from "./select";
+import { useRouter } from "next/router";
 
 interface Iprops {
   list: Record<string, any>[];
@@ -11,6 +12,9 @@ interface Iprops {
 }
 
 const InputList = ({ list = [], unit = false, onChange, onSubmit }: Iprops) => {
+  const router = useRouter();
+  const { locale: activeLocale } = router;
+
   const [msg, setMsg] = useState<Record<string, any>[]>([]);
   const [initMsg, setInitMsg] = useState<Record<string, any>[]>([]);
 
@@ -25,10 +29,10 @@ const InputList = ({ list = [], unit = false, onChange, onSubmit }: Iprops) => {
       setMsg([...list]);
       setInitMsg([...list]);
     }
-  }, [list]);
+  }, [list, activeLocale]);
 
   const handleChange = (key, val) => {
-    console.log(key, val, "val");
+    console.log(key, val, "val", msg);
     let res = JSON.parse(JSON.stringify(msg));
     res[key].val = val;
     setMsg(res);

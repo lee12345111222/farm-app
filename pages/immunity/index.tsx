@@ -15,7 +15,9 @@ const News = memo(() => {
   const { locale: activeLocale } = router;
 
   const list: Record<string, any>[] = useMemo(
-    () => [
+    () => {
+      console.log(activeLocale, 'activeLocale')
+      return [
       {
         name: language[activeLocale || "zh"]?.immunizationdate,
         key: "periodValidity",
@@ -95,13 +97,23 @@ const News = memo(() => {
         type: "select",
         data: ["中國", "英國", "美國", "德國"],
       },
-    ],
-    []
+    ]},
+    [activeLocale]
   );
 
   const [msg, setMsg] = useState(list);
   const [dateList, setDateList] = useState([]);
   const [activeTime, setActiveTime] = useState("");
+
+  useEffect(() => {
+    console.log(msg, 'list', list)
+    setMsg((pre) => {
+      pre.map((ele,idx) => {
+        ele.name = list[idx].name
+      })
+      return pre
+    })
+  },[activeLocale])
 
   const getDateList = useCallback(async (params?: Record<string, any>) => {
     let res: Record<string, any> = await fetchGet(
