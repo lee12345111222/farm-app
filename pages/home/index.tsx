@@ -13,6 +13,11 @@ const Home = () => {
   const query = useSelector(selectUser);
   const menus = [
     {
+      img: "/home_slices/table.png",
+      label: language[activeLocale || "zh"]?.chickenbatchname,
+      onClick: () => router.push("/chickenBatch"),
+    },
+    {
       img: "/home_slices/mysquare.png",
       label: language[activeLocale || "zh"]?.myfarm,
       onClick: () => router.push("/farm"),
@@ -26,11 +31,6 @@ const Home = () => {
       img: "/home_slices/news.png",
       label: language[activeLocale || "zh"]?.latestnews,
       onClick: () => router.push("/news"),
-    },
-    {
-      img: "/home_slices/table.png",
-      label: language[activeLocale || "zh"]?.usefulforms,
-      onClick: () => router.push("/table"),
     },
     {
       img: "/home_slices/connectus.png",

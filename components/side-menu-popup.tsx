@@ -18,6 +18,11 @@ const SideMenuPopup = (props: IProps) => {
   const query = useSelector(selectUser);
   const menus = [
     {
+      img: "/home_slices/home.png",
+      label: language[activeLocale || "zh"]?.home,
+      onClick: () => router.push("/home"),
+    },
+    {
       img: "/home_slices/mysquare.png",
       label: language[activeLocale || "zh"]?.myfarm,
       onClick: () => router.push("/farm"),

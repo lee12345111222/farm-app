@@ -75,6 +75,14 @@ export const ElsePieChart = memo(() => {
         color: ["#00acee", "#52cdd5", "#79d9f1", "#a7e7ff", "#c8efff"],
       };
       setOption(opt);
+    }else {
+      setOption({title: {
+        text: "Ast",
+        // show: false,
+        textStyle: {
+          fontSize: 12,
+        },
+      }})
     }
   };
   return (

@@ -163,6 +163,10 @@ const News = memo(() => {
 
   const list = [
     {
+      name: language[activeLocale || "zh"]?.chickenbatchname,
+      click: () => router.push("/chickenBatch"),
+    },
+    {
       name: language[activeLocale || "zh"]?.immunityname,
       click: () => router.push("/immunity"),
     },
@@ -173,10 +177,6 @@ const News = memo(() => {
     {
       name: language[activeLocale || "zh"]?.feedname,
       click: () => router.push("/feed"),
-    },
-    {
-      name: language[activeLocale || "zh"]?.chickenbatchname,
-      click: () => router.push("/chickenBatch"),
     },
   ];
 

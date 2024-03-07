@@ -7,7 +7,7 @@ import { SearchIndex } from "emoji-mart";
 import { useRouter } from "next/router";
 import useWebsocket from "@/hooks/useWebsocket";
 import { isFile, isImage, upload } from "@/utils";
-import { baseUrl } from "@/utils/request";
+import { baseUrl, fetchPost } from "@/utils/request";
 import { selectUser, useSelector } from "@/lib/redux";
 
 interface Iprops {
@@ -58,6 +58,7 @@ const Chat = ({ sendMessage, messagememo }: Iprops) => {
       let list = localStorage.getItem("message" + query.id) || "[]";
       let arr = JSON.parse(list);
       setMessage(arr);
+      getHistory();
     }
   }, [query.id]);
 
@@ -66,6 +67,25 @@ const Chat = ({ sendMessage, messagememo }: Iprops) => {
       window.scrollTo(0, ref.current?.clientHeight);
     }
   }, [ref.current?.clientHeight]);
+
+  const getHistory = async () => {
+    let res: Record<string, any> = await fetchPost(
+      "/chat/query_page?page=1&size=4",
+      {
+        sendId: query.id,
+        acceptId:
+          query.id === "42d83d66fdf0451db16c3fe434f09e61"
+            ? accept.id || query.id
+            : "42d83d66fdf0451db16c3fe434f09e61",
+      },
+      {
+        "Content-Type": "application/json",
+      }
+    );
+    if (res?.code === "0") {
+      console.log(res, "data");
+    }
+  };
 
   const onEnterPress = (e: Record<string, any>, type?: string) => {
     const v = (e.target as any).value;
@@ -88,7 +108,7 @@ const Chat = ({ sendMessage, messagememo }: Iprops) => {
           }),
         })
       );
-      console.log(res, 'res')
+      console.log(res, "res");
       if (!res) {
         Toast.show({
           content: "network error",

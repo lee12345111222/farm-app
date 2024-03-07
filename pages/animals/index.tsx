@@ -24,6 +24,7 @@ import dayjs from "dayjs";
 import { QuestionChart } from "@/components/questionChat";
 import { ElsePieChart } from "@/components/elsePieChart";
 import { ObituaryChart } from "@/components/obituaryChart";
+import { ElseLineChart } from "@/components/elseLineChart";
 
 const UrlObj = {
   0: "/obituary/add",
@@ -63,7 +64,7 @@ const News = memo(() => {
     ];
     const data1 = [
       {
-        key: "chickenFlockId",
+        key: "chickenName",
         type: "select",
         data: [
           "阿莫西林​",
@@ -419,7 +420,7 @@ const News = memo(() => {
             <ObituaryChart chickenId={msg?.id} />
           </div>
           <div className="w-[47%] bg-white h-32 mt-3  rounded-2xl py-3">
-            <QuestionChart />
+            <ElseLineChart chickenId={msg?.id} />
           </div>
         </div>
       </div>

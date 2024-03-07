@@ -197,8 +197,8 @@ const News = memo(() => {
             <div
               className="flex justify-between items-center h-11 bg-[#4682B4] px-5"
               onClick={() => {
-                setVisible(true);
-                setCaptcha("test");
+                // setVisible(true);
+                // setCaptcha("test");
               }}
             >
               <div className="font-[PingFang SC, PingFang SC] font-medium text-sm text-white">

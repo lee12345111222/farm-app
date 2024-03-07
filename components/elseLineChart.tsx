@@ -211,6 +211,14 @@ export const ElseLineChart = memo(({ chickenId }: Iprops) => {
         ],
       };
       setOption(opt);
+    }else {
+      setOption({title: {
+        text: "Info",
+        // show: false,
+        textStyle: {
+          fontSize: 12,
+        },
+      }})
     }
   };
   return (

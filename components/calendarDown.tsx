@@ -56,7 +56,7 @@ export default (props: Iprops) => {
               onChange={(val: string) => onChange?.(val)}
             >
               <Space direction="vertical" block>
-                {dateList.includes(dayjs().format("YYYY-MM-DD")) ? (
+                {!dateList.includes(dayjs().format("YYYY-MM-DD")) ? (
                   <Radio block value={""} key={dayjs().format("YYYY-MM-DD")}>
                     {dayjs().format("YYYY-MM-DD")}
                   </Radio>
