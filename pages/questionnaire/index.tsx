@@ -82,7 +82,7 @@ const Register = () => {
 
   return (
     <div className="w-full h-screen bg-white relative pt-[116px] px-4 overflow-auto">
-      <Header home={false} back title={language[activeLocale || "zh"]?.questionnaire} />
+      <Header home={false} back title={language[activeLocale || "zh"]?.questionnaire} styles='!fixed bg-white top-0 pt-16 z-[999]' />
       <div className="">
         <Form
           layout="vertical"

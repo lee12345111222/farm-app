@@ -70,7 +70,7 @@ const Chat = ({ sendMessage, messagememo }: Iprops) => {
 
   const getHistory = async () => {
     let res: Record<string, any> = await fetchPost(
-      "/chat/query_page?page=1&size=4",
+      "/chat/query_page?page=1&size=20",
       {
         sendId: query.id,
         acceptId:

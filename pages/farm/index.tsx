@@ -13,6 +13,7 @@ import {
   SpinLoading,
   DropdownRef,
   Popover,
+  Checkbox,
 } from "antd-mobile";
 import { useRouter } from "next/router";
 import { language } from "@/utils/language";
@@ -24,7 +25,7 @@ import { QuestionChart } from "@/components/questionChat";
 import { ObituaryChart } from "@/components/obituaryChart";
 import { ElsePieChart } from "@/components/elsePieChart";
 import { ElseLineChart } from "@/components/elseLineChart";
-const TypeList = ["-", "泰安雞", "嘉美雞", "雪鳳凰", "其他"];
+const TypeList = ["泰安雞", "嘉美雞", "雪鳳凰", "其他"];
 const HomeList = ["開放式", "封閉式"];
 
 const News = memo(() => {
@@ -40,13 +41,15 @@ const News = memo(() => {
   const ref: React.Ref<DropdownRef> = useRef();
 
   const getDom = (
-    title?: string,
+    //todo 改成组件
+    title?: any,
     key?: string,
     val?: any[],
     onChange?: (key: string, val: string, idx?: React.Key) => void,
-    valIndex?: boolean
+    valIndex?: boolean,
+    checkBox?: boolean
   ) => {
-    console.log(title, key, val, "val");
+    console.log(title, key, val, "val", checkBox);
     return (
       <Dropdown
         className="rounded-md text-[#708090]"
@@ -58,24 +61,53 @@ const News = memo(() => {
           } as any
         }
       >
-        <Dropdown.Item key="sorter" title={title || "-"}>
+        <Dropdown.Item
+          key="sorter"
+          title={title || "-"}
+        >
           <div style={{ padding: 12 }}>
-            <Radio.Group
-              value={valIndex ? val[title] : title} //下标的值特殊处理
-              onChange={(val: string) => {
-                onChange?.(key, val);
-                // ref.current?.close();
-                // console.log(ref.current);
-              }}
-            >
-              <Space direction="vertical" block>
-                {val?.map((ele, idx) => (
-                  <Radio block value={valIndex ? idx : ele}>
-                    {ele}
-                  </Radio>
-                ))}
-              </Space>
-            </Radio.Group>
+            {checkBox ? (
+              <Checkbox.Group
+                value={title}
+                onChange={(val) => {
+                  // setValue(val as string[]);
+                  console.log(val, "Checkbox");
+                  // onChange?.(key, val.join("、"));
+                  // val?.forEach((ele: string, idx: number) => {
+                  //   console.log(key + (idx + 1), ele, title);
+                  //   onChange?.(key + (idx + 1), ele);
+                  // });
+                }}
+              >
+                <Space direction="vertical" block>
+                  {val?.map((ele, idx) => (
+                    <Checkbox
+                      block
+                      value={ele}
+                    >
+                      {ele}
+                    </Checkbox>
+                  ))}
+                </Space>
+              </Checkbox.Group>
+            ) : (
+              <Radio.Group
+                value={valIndex ? val[title] : title} //下标的值特殊处理
+                onChange={(val: string) => {
+                  onChange?.(key, val);
+                  // ref.current?.close();
+                  // console.log(ref.current);
+                }}
+              >
+                <Space direction="vertical" block>
+                  {val?.map((ele, idx) => (
+                    <Radio block value={valIndex ? idx : ele}>
+                      {ele}
+                    </Radio>
+                  ))}
+                </Space>
+              </Radio.Group>
+            )}
           </div>
         </Dropdown.Item>
       </Dropdown>
@@ -181,7 +213,7 @@ const News = memo(() => {
   ];
 
   const handleChangeVal = (key: string, val: string) => {
-    setMsg((pre) => ({
+        setMsg((pre) => ({
       ...pre,
       [key]: val,
     }));
@@ -248,21 +280,19 @@ const News = memo(() => {
                     }}
                   />
                 </div>
-                <div className="flex items-center mb-3 ">
+                <div className="flex items-center mb-3 flex-1">
                   <div className="font-[PingFang SC, PingFang SC] font-medium text-[#708090] text-sm">
                     {language[activeLocale || "zh"]?.chickentype}
                   </div>
-                  <div className="justify-between flex flex-1">
-                    {new Array(3)
-                      .fill(1)
-                      .map((ele, idx) =>
-                        getDom(
-                          msg["chickenSeedlingsType" + (idx + 1)],
-                          "chickenSeedlingsType" + (idx + 1),
-                          TypeList,
-                          handleChangeVal
-                        )
-                      )}
+                  <div className="tablePage flex-1">
+                    {getDom(
+                      msg["chickenSeedlingsType1"],
+                      "chickenSeedlingsType1",
+                      TypeList,
+                      handleChangeVal,
+                      false,
+                      false
+                    )}
                   </div>
                 </div>
                 <div className="flex items-center mb-4 flex-1 justify-between ">
