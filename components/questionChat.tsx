@@ -19,10 +19,10 @@ export const QuestionChart = memo(() => {
       const data = res?.data || [];
       let opt = {
         title: {
-            text: '問卷',
-            textStyle: {
-              fontSize: 12
-            }
+          text: "問卷",
+          textStyle: {
+            fontSize: 12,
+          },
         },
         xAxis: {
           type: "category",
@@ -30,21 +30,21 @@ export const QuestionChart = memo(() => {
           show: false,
         },
         tooltip: {
-            trigger: 'axis',
-            axisPointer: {
-              type: 'shadow'
-            },
-            // formatter: function (params) {
-            //   var tar = params[1];
-            //   return tar.name + '<br/>' + tar.seriesName + ' : ' + tar.value;
-            // }
+          trigger: "axis",
+          axisPointer: {
+            type: "shadow",
           },
+          // formatter: function (params) {
+          //   var tar = params[1];
+          //   return tar.name + '<br/>' + tar.seriesName + ' : ' + tar.value;
+          // }
+        },
         grid: {
           top: "26%",
           right: "3%",
           left: "0%",
           bottom: "3%",
-          containLabel: true
+          containLabel: true,
         },
         yAxis: {
           type: "value",
@@ -53,7 +53,7 @@ export const QuestionChart = memo(() => {
         series: [
           {
             radius: "100%",
-            data: data.map(ele => ele.totalScore),
+            data: data.map((ele) => ele.totalScore),
             type: "bar",
             itemStyle: {
               color: "#4682B4",
@@ -61,13 +61,22 @@ export const QuestionChart = memo(() => {
           },
         ],
       };
-    setOption(opt);
-
+      setOption(opt);
+    } else {
+      setOption({
+        title: {
+          text: "問卷",
+          // show: false,
+          textStyle: {
+            fontSize: 12,
+          },
+        },
+      });
     }
   };
   return (
     <>
-      <PieChart type="bar" options={option}/>
+      <PieChart type="bar" options={option} />
     </>
   );
 });

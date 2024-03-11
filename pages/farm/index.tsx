@@ -25,7 +25,8 @@ import { QuestionChart } from "@/components/questionChat";
 import { ObituaryChart } from "@/components/obituaryChart";
 import { ElsePieChart } from "@/components/elsePieChart";
 import { ElseLineChart } from "@/components/elseLineChart";
-const TypeList = ["泰安雞", "嘉美雞", "雪鳳凰", "其他"];
+import { CheckboxValue } from "antd-mobile/es/components/checkbox";
+const TypeList = ["-","泰安雞", "嘉美雞", "雪鳳凰", "其他"];
 const HomeList = ["開放式", "封閉式"];
 
 const News = memo(() => {
@@ -45,11 +46,22 @@ const News = memo(() => {
     title?: any,
     key?: string,
     val?: any[],
-    onChange?: (key: string, val: string, idx?: React.Key) => void,
+    onChange?: (
+      key: string,
+      val: string | CheckboxValue[],
+      idx?: React.Key
+    ) => void,
     valIndex?: boolean,
     checkBox?: boolean
   ) => {
-    console.log(title, key, val, "val", checkBox);
+    console.log(
+      title,
+      key,
+      val,
+      "val",
+      checkBox,
+      checkBox ? JSON.parse('["a"]') : "-"
+    );
     return (
       <Dropdown
         className="rounded-md text-[#708090]"
@@ -61,10 +73,7 @@ const News = memo(() => {
           } as any
         }
       >
-        <Dropdown.Item
-          key="sorter"
-          title={title || "-"}
-        >
+        <Dropdown.Item key="sorter" title={checkBox? title?.join('、'): (title || "-")}>
           <div style={{ padding: 12 }}>
             {checkBox ? (
               <Checkbox.Group
@@ -72,7 +81,7 @@ const News = memo(() => {
                 onChange={(val) => {
                   // setValue(val as string[]);
                   console.log(val, "Checkbox");
-                  // onChange?.(key, val.join("、"));
+                  onChange?.(key, val);
                   // val?.forEach((ele: string, idx: number) => {
                   //   console.log(key + (idx + 1), ele, title);
                   //   onChange?.(key + (idx + 1), ele);
@@ -81,10 +90,7 @@ const News = memo(() => {
               >
                 <Space direction="vertical" block>
                   {val?.map((ele, idx) => (
-                    <Checkbox
-                      block
-                      value={ele}
-                    >
+                    <Checkbox block value={ele}>
                       {ele}
                     </Checkbox>
                   ))}
@@ -151,7 +157,6 @@ const News = memo(() => {
     setLoad(true);
     let res: Record<string, any> = await fetchGet("/farm/query", {});
     if (res?.code === "0") {
-      console.log(res, "data");
       setMsg(res.data);
       setInitMsg(res.data);
     }
@@ -213,7 +218,7 @@ const News = memo(() => {
   ];
 
   const handleChangeVal = (key: string, val: string) => {
-        setMsg((pre) => ({
+    setMsg((pre) => ({
       ...pre,
       [key]: val,
     }));
@@ -286,12 +291,12 @@ const News = memo(() => {
                   </div>
                   <div className="tablePage flex-1">
                     {getDom(
-                      msg["chickenSeedlingsType1"],
-                      "chickenSeedlingsType1",
+                      msg["chickenSeedlingsType"],
+                      "chickenSeedlingsType",
                       TypeList,
                       handleChangeVal,
                       false,
-                      false
+                      true
                     )}
                   </div>
                 </div>

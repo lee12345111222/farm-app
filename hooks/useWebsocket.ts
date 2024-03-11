@@ -1,3 +1,4 @@
+import { fetchPost } from "@/utils/request";
 import { useState, useRef, useEffect, useCallback } from "react";
 
 interface Iprops {
@@ -22,15 +23,15 @@ const useWebsocket = ({ url }: Iprops) => {
     try {
       ws.current = new WebSocket(url);
       ws.current.onopen = () => {
-        console.log(ws.current?.readyState, 'ws.current?.readyState')
+        console.log(ws.current?.readyState, "ws.current?.readyState");
         setReadyState(stateArr[ws.current?.readyState ?? 0]);
       };
       ws.current.onclose = () => {
-        console.log(ws.current?.readyState, 'ws.current?.readyState onclose')
+        console.log(ws.current?.readyState, "ws.current?.readyState onclose");
         setReadyState(stateArr[ws.current?.readyState ?? 0]);
       };
       ws.current.onerror = () => {
-        console.log(ws.current?.readyState, 'ws.current?.readyState onerror')
+        console.log(ws.current?.readyState, "ws.current?.readyState onerror");
         setReadyState(stateArr[ws.current?.readyState ?? 0]);
       };
       ws.current.onmessage = (e) => {
@@ -50,15 +51,18 @@ const useWebsocket = ({ url }: Iprops) => {
   const closeWebSocket = () => {
     ws.current?.close();
   }; // 发送数据
-  console.log(readyState, 'readyState')
-  const sendMessage = useCallback((str: string) => {
-    if(readyState.key === 1){
+  console.log(readyState, "readyState");
+  const sendMessage = useCallback(
+    (str: string) => {
+      if (readyState.key === 1) {
         ws.current?.send(str);
-        return true
-    }else{
-        return false
-    }
-  },[ ws.current, readyState]);
+        return true;
+      } else {
+        return false;
+      }
+    },
+    [ws.current, readyState]
+  );
 
   const reconnect = () => {
     try {
@@ -72,14 +76,50 @@ const useWebsocket = ({ url }: Iprops) => {
 
   useEffect(() => {
     if (url) {
-      webSocketInit();
+      getHistory()
     }
     return () => {
       ws.current?.close();
     };
   }, [ws, url]);
 
-  console.log(readyState, 'readyState')
+  const getHistory = async () => {
+    const query = JSON.parse(localStorage.getItem("user") || "{}");
+    let res: Record<string, any> = await fetchPost(
+      "/chat/query_page?page=1&size=20",
+      {
+        sendId: query.id,
+        acceptId:
+          // query.id === "42d83d66fdf0451db16c3fe434f09e61"
+          //   ? accept.id || query.id
+          "42d83d66fdf0451db16c3fe434f09e61",
+      },
+      {
+        "Content-Type": "application/json",
+      }
+    );
+    if (res?.code === "0") {
+      console.log(res, "data");
+      let arr = res?.data?.[0]?.list || [];
+      arr = arr.map((ele) => {
+        return {
+          ...ele,
+          text: ele.msgValue,
+          type: ele.sendId === query.id ? "send" : "receive",
+          avatar:
+            ele.sendId === query.id ? "/user_photo2.png" : "/user_photo.png",
+        };
+      });
+      localStorage.setItem(
+        //接受方存储 发送在chat页面
+        "message" + query.id,
+        JSON.stringify(arr)
+      );
+      webSocketInit();
+    }
+  };
+
+  console.log(readyState, "readyState");
 
   return {
     wsData,

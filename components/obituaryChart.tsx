@@ -59,6 +59,7 @@ export const ObituaryChart = memo(({ chickenId }: Iprops) => {
               },
             },
           },
+          show: false,
         },
 
         grid: {
@@ -94,6 +95,14 @@ export const ObituaryChart = memo(({ chickenId }: Iprops) => {
         ],
       };
       setOption(opt);
+    }else {
+      setOption({title: {
+        text: "死淘率",
+        // show: false,
+        textStyle: {
+          fontSize: 12,
+        },
+      }})
     }
   };
   return (

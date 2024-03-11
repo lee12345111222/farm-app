@@ -58,7 +58,7 @@ const Chat = ({ sendMessage, messagememo }: Iprops) => {
       let list = localStorage.getItem("message" + query.id) || "[]";
       let arr = JSON.parse(list);
       setMessage(arr);
-      getHistory();
+      // getHistory();
     }
   }, [query.id]);
 
@@ -84,6 +84,16 @@ const Chat = ({ sendMessage, messagememo }: Iprops) => {
     );
     if (res?.code === "0") {
       console.log(res, "data");
+      let arr = res?.data?.[0]?.list || [];
+      arr = arr.map(ele => {
+        return {
+          ...ele,
+          text: ele.msgValue,
+          type: ele.sendId === query.id ? "send" : "receive",
+          avatar: ele.sendId === query.id ? '/user_photo2.png' : '/user_photo.png',
+        }
+      })
+      setMessage(arr)
     }
   };
 

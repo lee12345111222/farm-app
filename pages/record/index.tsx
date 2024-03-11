@@ -105,12 +105,13 @@ const Record = memo(() => {
   };
   const columns = useMemo(
     () => [
-      {
-        accessorKey: "id", //normal accessorKey
-        header: "Id",
-        size: 30,
-        enableEditing: false,
-      },
+      // {
+      //   accessorKey: "id", //normal accessorKey
+      //   header: "Id",
+      //   size: 30,
+      //   enableEditing: false,
+      //   hidden: true
+      // },
       {
         accessorKey: "price", //normal accessorKey
         header: "Price",
@@ -229,7 +230,7 @@ const Record = memo(() => {
             </div>
           </Dropdown.Item>
         </Dropdown> */}
-        <div className="rounded-xl  px-2 py-2 bg-white relative z-0">
+        <div className="rounded-xl bg-white relative z-0">
           <MaterialReactTable table={table} />
         </div>
         {/* <img src="/news/table.png" className="w-[100%] mt-4" alt="" /> */}
