@@ -37,11 +37,11 @@ const SideMenuPopup = (props: IProps) => {
       label: language[activeLocale || "zh"]?.latestnews,
       onClick: () => router.push("/news"),
     },
-    {
-      img: "/home_slices/table.png",
-      label: language[activeLocale || "zh"]?.usefulforms,
-      onClick: () => router.push("/table"),
-    },
+    // {
+    //   img: "/home_slices/table.png",
+    //   label: language[activeLocale || "zh"]?.usefulforms,
+    //   onClick: () => router.push("/table"),
+    // },
     {
       img: "/home_slices/connectus.png",
       label: language[activeLocale || "zh"]?.contactus,

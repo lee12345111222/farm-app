@@ -54,14 +54,6 @@ const News = memo(() => {
     valIndex?: boolean,
     checkBox?: boolean
   ) => {
-    console.log(
-      title,
-      key,
-      val,
-      "val",
-      checkBox,
-      checkBox ? JSON.parse('["a"]') : "-"
-    );
     return (
       <Dropdown
         className="rounded-md text-[#708090]"
@@ -73,7 +65,7 @@ const News = memo(() => {
           } as any
         }
       >
-        <Dropdown.Item key="sorter" title={checkBox? title?.join('、'): (title || "-")}>
+        <Dropdown.Item className="h-5" key="sorter" title={checkBox? title?.join('、'): (title || "-")}>
           <div style={{ padding: 12 }}>
             {checkBox ? (
               <Checkbox.Group
@@ -157,8 +149,10 @@ const News = memo(() => {
     setLoad(true);
     let res: Record<string, any> = await fetchGet("/farm/query", {});
     if (res?.code === "0") {
-      setMsg(res.data);
-      setInitMsg(res.data);
+      let data = res.data || {}; 
+      data.chickenSeedlingsType = data.chickenSeedlingsType.filter(ele => ele)
+      setMsg(data);
+      setInitMsg(data);
     }
     setLoad(false);
   }, []);

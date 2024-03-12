@@ -77,6 +77,7 @@ const useWebsocket = ({ url }: Iprops) => {
   useEffect(() => {
     if (url) {
       getHistory()
+      // getHistoryPerson()
     }
     return () => {
       ws.current?.close();
@@ -118,6 +119,21 @@ const useWebsocket = ({ url }: Iprops) => {
       webSocketInit();
     }
   };
+
+  const getHistoryPerson = async () => {
+    const query = JSON.parse(localStorage.getItem("user") || "{}");
+    let res: Record<string, any> = await fetchPost(
+      "/chat/query_chat_object?page=1&size=20",
+      {
+      },
+      {
+        "Content-Type": "application/json",
+      }
+    );
+    if (res?.code === "0") {
+      console.log(res, "data");
+    }
+  }
 
   console.log(readyState, "readyState");
 
