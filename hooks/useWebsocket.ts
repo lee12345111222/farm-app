@@ -76,24 +76,25 @@ const useWebsocket = ({ url }: Iprops) => {
 
   useEffect(() => {
     if (url) {
-      getHistory()
-      // getHistoryPerson()
+      const query = JSON.parse(localStorage.getItem("user") || "{}");
+      // if(query.admin === "1"){
+      //   getHistoryPerson() 
+      // }else{
+        getHistory();
+      // }
     }
     return () => {
       ws.current?.close();
     };
   }, [ws, url]);
 
-  const getHistory = async () => {
+  const getHistory = async (acceptId?: string) => {
     const query = JSON.parse(localStorage.getItem("user") || "{}");
     let res: Record<string, any> = await fetchPost(
-      "/chat/query_page?page=1&size=20",
+      "/chat/query_self_page?page=1&size=100",
       {
-        sendId: query.id,
-        acceptId:
-          // query.id === "42d83d66fdf0451db16c3fe434f09e61"
-          //   ? accept.id || query.id
-          "42d83d66fdf0451db16c3fe434f09e61",
+        // sendId: query.id,
+        // acceptId: acceptId || "42d83d66fdf0451db16c3fe434f09e61",
       },
       {
         "Content-Type": "application/json",
@@ -120,11 +121,13 @@ const useWebsocket = ({ url }: Iprops) => {
     }
   };
 
-  const getHistoryPerson = async () => {
+  const adminGetHistory = async (acceptId?: string) => {
     const query = JSON.parse(localStorage.getItem("user") || "{}");
     let res: Record<string, any> = await fetchPost(
-      "/chat/query_chat_object?page=1&size=20",
+      "/chat/query_page?page=1&size=20",
       {
+        sendId: query.id,
+        acceptId: acceptId || "42d83d66fdf0451db16c3fe434f09e61",
       },
       {
         "Content-Type": "application/json",
@@ -132,8 +135,51 @@ const useWebsocket = ({ url }: Iprops) => {
     );
     if (res?.code === "0") {
       console.log(res, "data");
+      let arr = res?.data?.[0]?.list || [];
+      arr = arr.map((ele) => {
+        return {
+          ...ele,
+          text: ele.msgValue,
+          type: ele.sendId === query.id ? "send" : "receive",
+          avatar:
+            ele.sendId === query.id ? "/user_photo2.png" : "/user_photo.png",
+        };
+      });
+      return arr;
     }
-  }
+  };
+
+  const getHistoryPerson = async () => {
+    const query = JSON.parse(localStorage.getItem("user") || "{}");
+    let res: Record<string, any> = await fetchPost(
+      "/chat/query_chat_object?page=1&size=4",
+      {},
+      {
+        "Content-Type": "application/json",
+      }
+    );
+    if (res?.code === "0") {
+      console.log(res, "data");
+      let data = res.data?.[0]?.list || [];
+      data.reverse()
+      Promise.all(
+        data.map((ele: { acceptId: string }) => adminGetHistory(ele.acceptId))
+      ).then((res) => {
+        let all = [];
+        res.forEach((ele: any) => {
+          all = all.concat(ele);
+        });
+        console.log(all, "all");
+
+        localStorage.setItem(
+          //接受方存储 发送在chat页面
+          "message" + query.id,
+          JSON.stringify(all)
+        );
+        webSocketInit();
+      });
+    }
+  };
 
   console.log(readyState, "readyState");
 

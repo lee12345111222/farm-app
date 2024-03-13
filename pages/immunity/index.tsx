@@ -55,6 +55,7 @@ const News = memo(() => {
           "肺病毒 APV",
           "其他:請註明",
         ],
+        topStyle: 'top'
       },
       { name: language[activeLocale || "zh"]?.vaccinesage, key: "vaccineDate" },
       {
@@ -90,12 +91,14 @@ const News = memo(() => {
           "青島易邦 Yibio",
           "大華農 DHN",
         ],
+        topStyle: 'top'
       },
       {
         name: language[activeLocale || "zh"]?.vaccinewhere,
         key: "vaccineAddress",
         type: "select",
         data: ["中國", "英國", "美國", "德國"],
+        topStyle: 'top'
       },
     ]},
     [activeLocale]

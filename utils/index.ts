@@ -1,14 +1,14 @@
 import { Dialog, Toast } from "antd-mobile";
 import { fetchPost } from "./request";
-import * as PDFJS from 'pdfjs-dist';
-import pdfjsWorker from 'pdfjs-dist/build/pdf.worker.entry';
+import * as PDFJS from "pdfjs-dist";
+import pdfjsWorker from "pdfjs-dist/build/pdf.worker.entry";
 PDFJS.GlobalWorkerOptions.workerSrc = pdfjsWorker;
 
 function urlToBase64(url) {
-  console.log(url, 'url')
+  console.log(url, "url");
   return fetch(url)
-    .then(response => response.blob())
-    .then(blob => {
+    .then((response) => response.blob())
+    .then((blob) => {
       return new Promise((resolve, reject) => {
         const reader = new FileReader();
         reader.onloadend = () => resolve(reader.result);
@@ -32,11 +32,11 @@ const readFileData = (file) => {
 };
 
 //param: file -> the input file (e.g. event.target.files[0])
-//return: images -> an array of images encoded in base64 
+//return: images -> an array of images encoded in base64
 export const convertPdfToImages = async (file) => {
   const images: any = [];
   const data = await urlToBase64(file);
-  console.log(data, 'data', file)
+  console.log(data, "data", file);
   const pdf = await PDFJS.getDocument(data).promise;
   const canvas = document.createElement("canvas");
   for (let i = 0; i < pdf.numPages; i++) {
@@ -50,10 +50,9 @@ export const convertPdfToImages = async (file) => {
   }
   canvas.remove();
   return images;
-}
+};
 
-
-export const upload = (url: string, fn: Function, allowed?:any[]) => {
+export const upload = (url: string, fn: Function, allowed?: any[]) => {
   //选择文件的 input 元素
   const fileInput: HTMLInputElement = document.createElement("input");
   fileInput.type = "file";
@@ -94,15 +93,16 @@ export const upload = (url: string, fn: Function, allowed?:any[]) => {
       }
       try {
         Toast.show({
-          icon: 'loading',
-          content: 'uploading…',
+          icon: "loading",
+          content: "uploading…",
           duration: 0,
-        })
+        });
         // 发送文件到服务器
-        const response = await fetchPost(url, { file: file });
+        const response: Record<string, any> = await fetchPost(url, {
+          file: file,
+        });
         if (response?.code === "0") {
-         
-          fn(response.data?.id||'', isImage(file.name) ? "img" : "file");
+          fn(response.data?.id || "", response.data?.type || "");
 
           // await fetchPost("/chat/downloadFile/" + response.data?.[0], {});
         } else {
@@ -111,13 +111,13 @@ export const upload = (url: string, fn: Function, allowed?:any[]) => {
             content: "文件上传失败",
           });
         }
-        Toast.clear()
+        Toast.clear();
       } catch (error) {
         console.error("发生错误:", error);
         Toast.show({
           content: "发生错误" + error,
         });
-        Toast.clear()
+        Toast.clear();
       }
     }
   };

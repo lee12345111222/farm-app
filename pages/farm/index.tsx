@@ -26,7 +26,7 @@ import { ObituaryChart } from "@/components/obituaryChart";
 import { ElsePieChart } from "@/components/elsePieChart";
 import { ElseLineChart } from "@/components/elseLineChart";
 import { CheckboxValue } from "antd-mobile/es/components/checkbox";
-const TypeList = ["-","泰安雞", "嘉美雞", "雪鳳凰", "其他"];
+const TypeList = ["-", "泰安雞", "嘉美雞", "雪鳳凰", "其他"];
 const HomeList = ["開放式", "封閉式"];
 
 const News = memo(() => {
@@ -65,7 +65,11 @@ const News = memo(() => {
           } as any
         }
       >
-        <Dropdown.Item className="h-5" key="sorter" title={checkBox? title?.join('、'): (title || "-")}>
+        <Dropdown.Item
+          className="h-5"
+          key="sorter"
+          title={checkBox ? title?.join("、") : title || "-"}
+        >
           <div style={{ padding: 12 }}>
             {checkBox ? (
               <Checkbox.Group
@@ -149,8 +153,10 @@ const News = memo(() => {
     setLoad(true);
     let res: Record<string, any> = await fetchGet("/farm/query", {});
     if (res?.code === "0") {
-      let data = res.data || {}; 
-      data.chickenSeedlingsType = data.chickenSeedlingsType.filter(ele => ele)
+      let data = res.data || {};
+      data.chickenSeedlingsType = data.chickenSeedlingsType.filter(
+        (ele) => ele
+      );
       setMsg(data);
       setInitMsg(data);
     }
@@ -228,7 +234,7 @@ const News = memo(() => {
           styles="top-8"
         />
         <div className="overflow-hidden">
-          <div className="mt-16 h-52 w-[92%] bg-white pl-6 pt-4 pr-5 rounded-md relative">
+          <div className="mt-16 w-[92%] bg-white pl-6 pt-4 pr-5 rounded-md relative">
             <Space className="absolute right-3 top-4">
               <Button
                 size="mini"
@@ -307,17 +313,19 @@ const News = memo(() => {
                     )}
                   </div>
                 </div>
-                <div className="flex items-center flex-1 justify-between">
+                <div className="flex items-center flex-1 flex-wrap">
                   <div className="font-[PingFang SC, PingFang SC] font-medium text-[#708090] text-sm flex-shrink-0 flex">
                     <Popover
                       content={msg.chickenSeedlingsNumber1}
                       trigger="click"
                       placement="top"
                     >
-                      <span>{language[activeLocale || "zh"]?.small}:</span>
+                      <span className="flex-shrink-0">
+                        {language[activeLocale || "zh"]?.small}:
+                      </span>
                     </Popover>
                     <Input
-                      className="font-medium underline ml-2 !w-10 flex-grow-0 -mt-1"
+                      className="font-medium underline ml-2 -mt-1"
                       defaultValue="xxx"
                       value={msg.chickenSeedlingsNumber1}
                       onChange={(val) =>
@@ -330,16 +338,18 @@ const News = memo(() => {
                     />{" "}
                     {language[activeLocale || "zh"]?.nums}
                   </div>
-                  <div className="font-[PingFang SC, PingFang SC] font-medium text-[#708090] text-sm  flex-shrink-0 flex">
+                  <div className="font-[PingFang SC, PingFang SC] font-medium text-[#708090] text-sm  flex-shrink-0 flex my-2">
                     <Popover
                       content={msg.chickenSeedlingsNumber2}
                       trigger="click"
                       placement="top"
                     >
-                      <span>{language[activeLocale || "zh"]?.medium}:</span>
+                      <span className="flex-shrink-0">
+                        {language[activeLocale || "zh"]?.medium}:
+                      </span>
                     </Popover>
                     <Input
-                      className="font-medium underline ml-2 !w-10 flex-grow-0 -mt-1"
+                      className="font-medium underline ml-2  -mt-1"
                       defaultValue="xxx"
                       value={msg.chickenSeedlingsNumber2}
                       onChange={(val) =>
@@ -358,10 +368,12 @@ const News = memo(() => {
                       trigger="click"
                       placement="top"
                     >
-                      <span>{language[activeLocale || "zh"]?.big}:</span>
+                      <span className="flex-shrink-0">
+                        {language[activeLocale || "zh"]?.big}:
+                      </span>
                     </Popover>
                     <Input
-                      className="font-medium underline ml-2 !w-10 flex-grow-0 -mt-1"
+                      className="font-medium underline ml-2  -mt-1"
                       defaultValue="xxx"
                       value={msg.chickenSeedlingsNumber3}
                       onChange={(val) =>
@@ -380,7 +392,7 @@ const News = memo(() => {
           </div>
         </div>
       </div>
-      <div className="flex items-center justify-between -mt-6 pt-4 rounded-md bg-white mx-3">
+      <div className="flex items-center justify-between mt-6 pt-4 rounded-md bg-white mx-3">
         <div className="flex-1 h-20">
           <QuestionChart />
         </div>

@@ -13,14 +13,14 @@ const Home = () => {
   const query = useSelector(selectUser);
   const menus = [
     {
-      img: "/home_slices/table.png",
-      label: language[activeLocale || "zh"]?.chickenbatchname,
-      onClick: () => router.push("/chickenBatch"),
-    },
-    {
       img: "/home_slices/mysquare.png",
       label: language[activeLocale || "zh"]?.myfarm,
       onClick: () => router.push("/farm"),
+    },
+    {
+      img: "/home_slices/table.png",
+      label: language[activeLocale || "zh"]?.chickenbatchname,
+      onClick: () => router.push("/chickenBatch"),
     },
     {
       img: "/home_slices/medicine.png",

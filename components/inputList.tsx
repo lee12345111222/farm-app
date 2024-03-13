@@ -55,9 +55,10 @@ const InputList = ({ list = [], unit = false, onChange, onSubmit }: Iprops) => {
                 {ele.name}
               </div>
               {ele.type === "select" ? (
-                <div className={`text-right select${idx}`}>
+                <div className={`text-right select${idx} ${ele.topStyle}`}>
                   <Select
                     title={ele.val}
+                    topStyle={ele.topStyle}
                     idx={idx}
                     val={ele.data || []}
                     onChange={handleChange}

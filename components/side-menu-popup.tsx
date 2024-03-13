@@ -67,7 +67,9 @@ const SideMenuPopup = (props: IProps) => {
       localStorage.removeItem("user");
       router.replace("/login");
     } else {
-      Toast.show("Network error");
+      // Toast.show("Network error");
+      localStorage.removeItem("user");
+      router.replace("/login");
     }
   };
   return (

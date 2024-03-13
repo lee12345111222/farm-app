@@ -410,12 +410,12 @@ const News = memo(() => {
       </div>
       <div className="mx-3">
         <div className="flex flex-wrap justify-between">
-          <div className="w-[47%] bg-white h-32 mt-3  rounded-2xl py-3">
+          {/* <div className="w-[47%] bg-white h-32 mt-3  rounded-2xl py-3">
             <QuestionChart />
           </div>
           <div className="w-[47%] bg-white h-32 mt-3  rounded-2xl py-3">
             <ElsePieChart />
-          </div>
+          </div> */}
           <div className="w-[47%] bg-white h-32 mt-3  rounded-2xl py-3">
             <ObituaryChart chickenId={msg?.id} />
           </div>

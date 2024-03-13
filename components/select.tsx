@@ -5,23 +5,24 @@ interface Iporps {
   title?: string;
   idx?: React.Key;
   val?: any[];
+  topStyle?:string;
   onChange?: (key: React.Key, val: string, idx?: React.Key) => void;
   valIndex?: boolean;
 }
 
 export default (props: Iporps) => {
-  const { title, idx, val, valIndex, onChange } = props;
+  const { title, idx, val, valIndex, onChange, topStyle } = props;
   const ref = useRef<DropdownRef>(null);
 
   return (
     <>
       <Dropdown
-        className="rounded-md text-[#708090]"
+        className={`rounded-md text-[#708090] ${topStyle}`}
         ref={ref}
         getContainer={() => {
           let dom = document.querySelector(`.select${idx}`);
-          console.log(idx, 'idx', document.querySelector(`.select1`))
-          return document.querySelector(`.select1`)
+          console.log(idx, 'idx', document.querySelector(`.select1`), dom)
+          return document.querySelector(`.select${idx}`)
           // return dom
           //   ? idx > 1
           //     ? document.querySelector(`.select1`)

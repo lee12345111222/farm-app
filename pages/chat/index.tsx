@@ -85,22 +85,22 @@ const Chat = ({ sendMessage, messagememo }: Iprops) => {
     if (res?.code === "0") {
       console.log(res, "data");
       let arr = res?.data?.[0]?.list || [];
-      arr = arr.map(ele => {
+      arr = arr.map((ele) => {
         return {
           ...ele,
           text: ele.msgValue,
           type: ele.sendId === query.id ? "send" : "receive",
-          avatar: ele.sendId === query.id ? '/user_photo2.png' : '/user_photo.png',
-        }
-      })
-      setMessage(arr)
+          avatar:
+            ele.sendId === query.id ? "/user_photo2.png" : "/user_photo.png",
+        };
+      });
+      setMessage(arr);
     }
   };
 
   const onEnterPress = (e: Record<string, any>, type?: string) => {
     const v = (e.target as any).value;
     const val = e.target.val || {};
-    console.log(e, "e", val);
 
     if (!type) {
       //发送状态
@@ -166,11 +166,15 @@ const Chat = ({ sendMessage, messagememo }: Iprops) => {
   };
 
   const getFiledom = (ele: Record<string, any>) => {
+
     const filetype = isImage(ele.text) ? "img" : isFile(ele.text) ? "file" : "";
+    const text = ele.text?.split('.')?.[0]
+    console.log(ele.text, 'ele', text, isImage(ele.text))
+
     if (filetype === "img") {
       return (
         <img
-          src={baseUrl + "/resources/downloadFile/" + ele.text}
+          src={baseUrl + "/resources/downloadFile/" + text}
           className="rounded-lg w-[100%]"
         />
       );
@@ -179,25 +183,25 @@ const Chat = ({ sendMessage, messagememo }: Iprops) => {
         <a
           className="text-white underline"
           onClick={() =>
-            window.open(baseUrl + "/resources/downloadFile/" + ele.text)
+            window.open(baseUrl + "/resources/downloadFile/" + text)
           }
         >
-          {ele.text}
+          {text}
         </a>
       );
     } else {
-      return ele.text;
+      return text;
     }
   };
   console.log(accept, "accept");
   return (
     <>
       <div
-        className="w-full  bg-[#F5F5F5] relative min-h-screen"
+        className="w-full bg-[#F5F5F5]  relative min-h-screen"
         // style={{ height }}
         onClick={handleAllClick}
       >
-        <Header logo title={accept.name} />
+        <Header logo title={accept.name} styles='!fixed !top-0 pt-8 bg-[#F5F5F5] w-screen z-[999]'/>
         <div className="pt-[134px] pb-[101px] text-white" ref={ref}>
           {/* <img src={'http://54.153.241.236:8000/chat/downloadFil/1705823955736.png'} /> */}
           {message.map((item) => {
@@ -299,7 +303,7 @@ const Chat = ({ sendMessage, messagememo }: Iprops) => {
               e.stopPropagation();
               upload("/resources/add", (name: string, filetype: string) => {
                 onEnterPress({
-                  target: { value: name },
+                  target: { value: name + (filetype ? `.${filetype}` : "") },
                 } as any);
               });
             }}
