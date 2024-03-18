@@ -1,11 +1,27 @@
 import { memo, useEffect, useState } from "react";
 import PieChart from "./pieChart";
 import { fetchPost } from "@/utils/request";
+import { selectUser, useSelector } from "@/lib/redux";
 export const QuestionChart = memo(() => {
+  const query = useSelector(selectUser);
   const [option, setOption] = useState({});
   useEffect(() => {
     getData();
   }, []);
+  const getColor = (item) => {
+    if (query.id === item.farmId) {
+      const score = item?.scores?.[0]?.totalScore;
+      if (score < 60) {
+        return "red";
+      } else if (score <= 80 && score >= 60) {
+        return "yellow";
+      } else if (score > 80) {
+        return "green";
+      }
+    } else {
+      return "#4682B4";
+    }
+  };
   const getData = async () => {
     let res: Record<string, any> = await fetchPost(
       "/score/query_total_score",
@@ -26,7 +42,7 @@ export const QuestionChart = memo(() => {
         },
         xAxis: {
           type: "category",
-          data: data.map((ele) => ele.nickname),
+          data: data.map((ele) => ele.farmIdName),
           show: false,
         },
         tooltip: {
@@ -53,11 +69,16 @@ export const QuestionChart = memo(() => {
         series: [
           {
             radius: "100%",
-            data: data.map((ele) => ele.totalScore),
+            data: data.map((ele) => ({
+              value: ele?.scores?.[0]?.totalScore,
+              itemStyle: {
+                color: getColor(ele),
+              },
+            })),
             type: "bar",
-            itemStyle: {
-              color: "#4682B4",
-            },
+            // itemStyle: {
+            //   color: "#4682B4",
+            // },
           },
         ],
       };

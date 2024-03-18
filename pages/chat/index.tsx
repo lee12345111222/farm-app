@@ -175,6 +175,9 @@ const Chat = ({ sendMessage, messagememo }: Iprops) => {
       return (
         <img
           src={baseUrl + "/resources/downloadFile/" + text}
+          onClick={() =>
+            window.open(baseUrl + "/resources/downloadFile/" + text)
+          }
           className="rounded-lg w-[100%]"
         />
       );
