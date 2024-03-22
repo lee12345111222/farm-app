@@ -23,7 +23,7 @@ const Home = () => {
                     <Button
                         color="primary"
                         fill="solid"
-                        className="w-[321px] !h-[46px] !mb-[31px] primary-solid-button"
+                        className="w-full !h-[46px] !mb-[31px] primary-solid-button"
                         onClick={() => {
                             router.push('/login')
                         }}>
@@ -32,7 +32,7 @@ const Home = () => {
                     <Button
                         color="primary"
                         fill="outline"
-                        className="w-[321px] !h-[46px] primary-outline-button"
+                        className="w-full !h-[46px] primary-outline-button"
                         onClick={() => {
                             router.push('/register')
                         }}>

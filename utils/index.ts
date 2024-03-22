@@ -84,7 +84,7 @@ export const upload = (url: string, fn: Function, allowed?: any[]) => {
       if (!allowedFormats.includes(fileExtension)) {
         // alert('只能上传 ' + allowedFormats.join(', ') + ' 格式的文件');
         Dialog.alert({
-          content: "只能上传 " + allowedFormats.join(", ") + " 格式的文件",
+          content: "只能上傳 " + allowedFormats.join(", ") + " 格式的文件",
           onConfirm: () => {
             console.log("Confirmed");
           },

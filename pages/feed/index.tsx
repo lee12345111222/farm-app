@@ -223,7 +223,7 @@ const News = memo(() => {
           <div
             key={ele.name}
             onClick={() => {setActive(idx);setActiveTime('')}}
-            className={`rounded-lg font-[PingFang SC, PingFang SC] font-medium text-[#fff] text-sm w-28 h-9 text-center leading-9 ${
+            className={`rounded-lg font-[PingFang SC, PingFang SC] font-medium text-[#fff] text-sm w-28 h-9 text-center leading-9 truncate ${
               active === idx ? "bg-[#4682B4]" : ""
             }`}
           >
