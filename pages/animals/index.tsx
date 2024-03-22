@@ -295,7 +295,7 @@ const News = memo(() => {
   return (
     <div className="w-full h-screen bg-[#F6F9FF] pb-6 overflow-auto relative">
       <div className="bg-[url('/home_slices/bg.png')] bg-cover h-64">
-        <Header home back title="雞群A" />
+        <Header home back title={msg.batchName} />
       </div>
       <div className="overflow-hidden px-3 -mt-36 flex justify-center">
         <div className="pb-5 w-[100%] bg-white pl-6 pt-4 pr-5  rounded-2xl relative">
