@@ -91,7 +91,7 @@ const News = memo(() => {
           return {
             name: language[activeLocale || "zh"][`animalstab${0}name${idx}`],
             unit:
-              idx === 2
+              idx === 1
                 ? language[activeLocale || "zh"].animalstab1name4unit
                 : language[activeLocale || "zh"].nums,
             key: ele,

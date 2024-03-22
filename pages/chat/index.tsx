@@ -45,7 +45,7 @@ const Chat = ({ sendMessage, messagememo }: Iprops) => {
   useEffect(() => {
     if (Object.keys(messagememo).length !== 0) {
       console.log(messagememo);
-      const data1 = JSON.parse(messagememo.message);
+      const data1 = JSON.parse(messagememo?.message || '[]');
       console.log(data1, "data1");
       onEnterPress(
         { target: { val: data1, value: data1.msgValue } } as any,
