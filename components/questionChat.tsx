@@ -32,7 +32,8 @@ export const QuestionChart = memo(() => {
     );
     if (res.code === "0") {
       console.log(res, "res");
-      const data = res?.data || [];
+      let data = res?.data || [];
+      data = data.sort((a, b) => a?.scores?.[0]?.totalScore -b?.scores?.[0]?.totalScore)
       let opt = {
         title: {
           text: "問卷",
@@ -69,12 +70,14 @@ export const QuestionChart = memo(() => {
         series: [
           {
             radius: "100%",
-            data: data.map((ele) => ({
-              value: ele?.scores?.[0]?.totalScore,
+            data: data.map((ele) => {
+              const totalScore = ele?.scores?.[0]?.totalScore
+              return {
+              value: totalScore,
               itemStyle: {
                 color: getColor(ele),
               },
-            })),
+            }}),
             type: "bar",
             // itemStyle: {
             //   color: "#4682B4",
