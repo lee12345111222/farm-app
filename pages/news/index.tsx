@@ -133,7 +133,7 @@ const News = memo(() => {
   return (
     <div className="w-full min-h-dvh bg-[#F6F9FF] ">
       <ActionModal
-        title="新增"
+        title={language[activeLocale || "zh"]?.add}
         contentJson={Json}
         visible={visible}
         setVisible={setVisible}
@@ -153,7 +153,7 @@ const News = memo(() => {
             }}
             onClick={() => setVisible(true)}
           >
-            新增
+            {language[activeLocale || "zh"]?.add}
           </Button>
         ) : null}
       </div>

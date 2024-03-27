@@ -41,7 +41,7 @@ export const ActionModal = (props: Iprops) => {
               },
             ]}
           >
-            <Input onChange={console.log} placeholder="请输入" />
+            <Input onChange={console.log} placeholder="Pleace input" />
           </Form.Item>
         );
       case "date":
@@ -62,7 +62,7 @@ export const ActionModal = (props: Iprops) => {
           >
             <DatePicker>
               {(value) =>
-                value ? dayjs(value).format("YYYY-MM-DD") : "请选择日期"
+                value ? dayjs(value).format("YYYY-MM-DD") : "Please Select Date"
               }
             </DatePicker>
           </Form.Item>
@@ -132,7 +132,6 @@ export const ActionModal = (props: Iprops) => {
                 console.log(123, params);
                 onOk(params);
               });
-           
             },
           },
         ]}

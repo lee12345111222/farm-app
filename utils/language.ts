@@ -173,6 +173,7 @@ export const language: Record<string, any> = {
       "I regularly attend educational programmes to keep abreast of new developments in disease control.",
     submit: "submit",
     questionnaire: 'Questionnaire',
+    add: 'add',
   },
   zh: {
     hello: "您好！歡迎登錄",
@@ -328,5 +329,6 @@ export const language: Record<string, any> = {
     questionE3: "我經常參與培訓令自己跟上對疾病控制的新發展",
     submit: "提交",
     questionnaire: '問卷',
+    add: '新增',
   },
 };
