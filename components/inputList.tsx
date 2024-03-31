@@ -3,6 +3,7 @@ import { Button, Input, Space } from "antd-mobile";
 import { useEffect } from "react";
 import Select from "./select";
 import { useRouter } from "next/router";
+import { language } from "@/utils/language";
 
 interface Iprops {
   list: Record<string, any>[];
@@ -95,7 +96,7 @@ const InputList = ({ list = [], unit = false, onChange, onSubmit }: Iprops) => {
             "--background-color": "#4682B4",
           }}
         >
-          保存
+           {language[activeLocale || "zh"]?.save}
         </Button>
         <Button
           type="reset"
@@ -105,7 +106,7 @@ const InputList = ({ list = [], unit = false, onChange, onSubmit }: Iprops) => {
             setMsg(res);
           }}
         >
-          重設
+           {language[activeLocale || "zh"]?.reset}
         </Button>
       </Space>
     </>

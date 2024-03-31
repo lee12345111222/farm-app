@@ -37,7 +37,7 @@ export const ActionModal = (props: Iprops) => {
             rules={[
               {
                 required: ele.required ? true : false,
-                message: ele.lable + "不能为空",
+                message: 'Please Input',
               },
             ]}
           >
@@ -56,7 +56,7 @@ export const ActionModal = (props: Iprops) => {
             rules={[
               {
                 required: ele.required ? true : false,
-                message: ele.lable + "不能为空",
+                message: 'Please Input',
               },
             ]}
           >
@@ -80,7 +80,7 @@ export const ActionModal = (props: Iprops) => {
             rules={[
               {
                 required: ele.required ? true : false,
-                message: ele.lable + "不能为空",
+                message: 'Please Input',
               },
             ]}
           >

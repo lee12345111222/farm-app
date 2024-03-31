@@ -1,8 +1,7 @@
 export const baseUrl = process.env.NODE_ENV === 'production' ? "" : "/base";
 
 const checkLogin = (res: { data: string; code: string }) => {
-  console.log(res, "res", location);
-  if (res.data === "未登录" && location.href.indexOf("login") === -1){
+  if (res.data === "未登錄" && location.href.indexOf("login") === -1){
     window.location.href = "/login/home";
   }
   return res;

@@ -246,7 +246,7 @@ const News = memo(() => {
                 }}
                 onClick={saveFarmMsg}
               >
-                保存
+                 {language[activeLocale || "zh"]?.save}
               </Button>
               <Button
                 size="mini"
@@ -254,7 +254,7 @@ const News = memo(() => {
                 fill="solid"
                 onClick={() => setMsg(initMsg)}
               >
-                重設
+                 {language[activeLocale || "zh"]?.reset}
               </Button>
             </Space>
             {load ? (

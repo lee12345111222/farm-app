@@ -105,6 +105,8 @@ const News = memo(({sendMessage}: Iprops) => {
   const handleAddOrder = () => {
     Dialog.confirm({
       content: "Are you sure to submit your order?",
+      confirmText: 'Ok',
+      cancelText: 'Cancel',
       onConfirm: async () => {
         let result:Record<string,any> = await fetchPost(
           "/order/add",

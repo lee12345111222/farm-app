@@ -15,24 +15,6 @@ import { ActionSheet, Dialog, InfiniteScroll, Input, Toast } from "antd-mobile";
 import { Action } from "antd-mobile/es/components/action-sheet";
 import { fetchGet, fetchPost } from "@/utils/request";
 
-const list = [
-  {
-    left: "活躍中",
-    right: [
-      { name: "雞群A", unit: "2020-11-11" },
-      { name: "雞群A", unit: "2020-11-11" },
-      { name: "雞群A", unit: "2020-11-11" },
-    ],
-  },
-  {
-    left: "已關閉",
-    right: [
-      { name: "雞群A", unit: "2020-11-11" },
-      { name: "雞群A", unit: "2020-11-11" },
-      { name: "雞群A", unit: "2020-11-11" },
-    ],
-  },
-];
 const actions: Action[] = [
   { text: "复制", key: "copy" },
   { text: "修改", key: "edit" },
@@ -40,8 +22,28 @@ const actions: Action[] = [
 ];
 
 const News = memo(() => {
+  
   const router = useRouter();
   const { locale: activeLocale } = router;
+
+  const list = [
+    {
+      left: language[activeLocale || "zh"]?.active,
+      right: [
+        { name: "雞群A", unit: "2020-11-11" },
+        { name: "雞群A", unit: "2020-11-11" },
+        { name: "雞群A", unit: "2020-11-11" },
+      ],
+    },
+    {
+      left: language[activeLocale || "zh"]?.closed,
+      right: [
+        { name: "雞群A", unit: "2020-11-11" },
+        { name: "雞群A", unit: "2020-11-11" },
+        { name: "雞群A", unit: "2020-11-11" },
+      ],
+    },
+  ];
 
   const [visible, setVisible] = useState(false);
   const [captcha, setCaptcha] = useState<string>();

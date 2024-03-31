@@ -31,7 +31,7 @@ export const ObituaryChart = memo(({ chickenId }: Iprops) => {
       console.log(obj, "obj");
       let opt = {
         title: {
-          text: "死淘率",
+          text: "Depletion rate",
           textStyle: {
             fontSize: 12,
           },
@@ -97,7 +97,7 @@ export const ObituaryChart = memo(({ chickenId }: Iprops) => {
       setOption(opt);
     }else {
       setOption({title: {
-        text: "死淘率",
+        text: "Depletion rate",
         // show: false,
         textStyle: {
           fontSize: 12,

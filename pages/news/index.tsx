@@ -1,7 +1,14 @@
 import React, { memo, useEffect, useState } from "react";
 import Image from "next/image";
 import Header from "@/components/header";
-import { Form, Input, Button, InfiniteScroll, Toast, Dialog } from "antd-mobile";
+import {
+  Form,
+  Input,
+  Button,
+  InfiniteScroll,
+  Toast,
+  Dialog,
+} from "antd-mobile";
 import { useRouter } from "next/router";
 import { language } from "@/utils/language";
 import FooterToolBar from "@/components/footer-tool-bar";
@@ -11,10 +18,10 @@ import { selectUser, useSelector } from "@/lib/redux";
 import { Action } from "antd-mobile/es/components/action-sheet";
 
 const Json = [
-  { type: "input", key: "title", lable: "标题", required: true },
-  { type: "input", key: "text", lable: "内容", required: true },
-  { type: "date", key: "msgTime", lable: "日期", required: true },
-  { type: "upload", key: "resourcesId", lable: "图片", required: true },
+  { type: "input", key: "title", lable: "Title", required: true },
+  { type: "input", key: "text", lable: "Content", required: true },
+  { type: "date", key: "msgTime", lable: "Date", required: true },
+  { type: "upload", key: "resourcesId", lable: "Image", required: true },
 ];
 
 const News = memo(() => {
@@ -141,23 +148,25 @@ const News = memo(() => {
       />
       <div className="bg-[url('/home_slices/bg.png')] bg-cover h-64">
         <Header logo home={true} />
-        {query.admin === "1" ? (
-          <Button
-            size="mini"
-            type="button"
-            color="primary"
-            fill="solid"
-            className="top-16 left-16"
-            style={{
-              "--background-color": "#4682B4",
-            }}
-            onClick={() => setVisible(true)}
-          >
-            {language[activeLocale || "zh"]?.add}
-          </Button>
-        ) : null}
       </div>
       <div className="px-6 mt-[-57px] pb-[143px]">
+        {query.admin === "1" ? (
+          <div className="text-right mb-2">
+            <Button
+              size="mini"
+              type="button"
+              color="primary"
+              fill="solid"
+              // className="top-16 left-16"
+              style={{
+                "--background-color": "#4682B4",
+              }}
+              onClick={() => setVisible(true)}
+            >
+              {language[activeLocale || "zh"]?.add}
+            </Button>
+          </div>
+        ) : null}
         <div
           className="h-24 bg-white rounded-t-2xl flex items-center pl-6"
           onClick={() => handleClick(newData.msgTime)}
@@ -168,7 +177,7 @@ const News = memo(() => {
               "/user_photo.png"
             }
             alt=""
-            className="w-14 rounded"
+            className="w-14 h-14 rounded"
           />
           <div className="ml-5 py-1 w-full">
             <div className="font-[PingFang SC-Bold] font-blod text-[#708090] text-2xl leading-7">
@@ -193,9 +202,12 @@ const News = memo(() => {
                 color="danger"
                 fill="solid"
                 className="top-2 right-2 !absolute"
-                onClick={(e) => {e.stopPropagation();handleDelete(ele)}}
+                onClick={(e) => {
+                  e.stopPropagation();
+                  handleDelete(ele);
+                }}
               >
-                删除
+                {language[activeLocale || "zh"]?.delete}
               </Button>
             ) : null}
             <img

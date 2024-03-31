@@ -298,7 +298,7 @@ const News = memo(() => {
         <Header home back title={msg.batchName} />
       </div>
       <div className="overflow-hidden px-3 -mt-36 flex justify-center">
-        <div className="pb-5 w-[100%] bg-white pl-6 pt-4 pr-5  rounded-2xl relative">
+        <div className="pb-5 w-[100%] bg-white pl-6 pt-12 pr-5  rounded-2xl relative">
           <Space className="absolute right-3 top-4">
             <Button
               size="mini"
@@ -311,7 +311,7 @@ const News = memo(() => {
               // }}
               onClick={handleClose}
             >
-              關閉
+              {language[activeLocale || "zh"]?.close}
             </Button>
             <Button
               size="mini"
@@ -323,7 +323,7 @@ const News = memo(() => {
               }}
               onClick={saveFarmMsg}
             >
-              保存
+              {language[activeLocale || "zh"]?.save}
             </Button>
             <Button
               size="mini"
@@ -331,7 +331,7 @@ const News = memo(() => {
               fill="solid"
               onClick={() => setMsg(initMsg)}
             >
-              重設
+               {language[activeLocale || "zh"]?.reset}
             </Button>
           </Space>
           <div className="font-[PingFang SC, PingFang SC] font-medium text-[#708090] text-sm mb-6 flex">

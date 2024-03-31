@@ -123,7 +123,7 @@ const News = memo(() => {
                   handleDelete(ele);
                 }}
               >
-                删除
+                {language[activeLocale || "zh"]?.delete}
               </Button>
             ) : null}
             <img
