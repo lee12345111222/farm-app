@@ -6,19 +6,19 @@ interface Iprops {
 }
 
 const useWebsocket = ({ url }: Iprops) => {
-  const ws = useRef<WebSocket | null>(null); // socket 数据
-  const [wsData, setMessage] = useState({}); //  socket 状态
+  const ws = useRef<WebSocket | null>(null); // socket 數據
+  const [wsData, setMessage] = useState({}); //  socket 狀態
   const [readyState, setReadyState] = useState<any>({
     key: 0,
-    value: "正在连接中",
+    value: "正在連接中",
   });
 
   const creatWebSocket = () => {
     const stateArr = [
-      { key: 0, value: "正在连接中" },
-      { key: 1, value: "已经连接并且可以通讯" },
-      { key: 2, value: "连接正在关闭" },
-      { key: 3, value: "连接已关闭或者没有连接成功" },
+      { key: 0, value: "正在連接中" },
+      { key: 1, value: "已經連接並且可以通訊" },
+      { key: 2, value: "連接正在關閉" },
+      { key: 3, value: "連接已關閉或者没有連接成功" },
     ];
     try {
       ws.current = new WebSocket(url);
@@ -46,11 +46,11 @@ const useWebsocket = ({ url }: Iprops) => {
     if (!ws.current || ws.current.readyState === 3) {
       creatWebSocket();
     }
-  }; //  关闭 WebSocket
+  }; //  關閉 WebSocket
 
   const closeWebSocket = () => {
     ws.current?.close();
-  }; // 发送数据
+  }; // 發送數據
   console.log(readyState, "readyState");
   const sendMessage = useCallback(
     (str: string) => {
@@ -72,7 +72,7 @@ const useWebsocket = ({ url }: Iprops) => {
     } catch (e) {
       console.log(e);
     }
-  }; //重连
+  }; //重連
 
   useEffect(() => {
     if (url) {

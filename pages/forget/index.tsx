@@ -58,7 +58,7 @@ const Register = () => {
       <div className="flex justify-center">
         <img
           src="/logo.png"
-          className="w-[61px] h-[61px]"
+          className="h-[61px]"
           alt=""
           onClick={() => router.push("/")}
         />
@@ -85,7 +85,7 @@ const Register = () => {
           <Form.Item
             rules={[{ required: true, message: "The email cannot be empty" }]}
             name="username"
-            extra={send? <a aria-disabled>已发送</a> : <a onClick={handleSend}>发送验证码</a>}
+            extra={send? <a aria-disabled>已發送</a> : <a onClick={handleSend}>發送驗證碼</a>}
             label={
               <img className="w-[17px] h-[17px]" src="/nickname.png" alt="nickname" />
             }

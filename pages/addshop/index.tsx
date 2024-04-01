@@ -49,7 +49,7 @@ const Register = () => {
       <div className="flex justify-center">
         <img
           src="/logo.png"
-          className="w-[61px] h-[61px]"
+          className="h-[61px]"
           alt=""
           onClick={() => router.push("/")}
         />
@@ -135,7 +135,7 @@ const Register = () => {
               )}
             </div>
           </Form.Item>
-          <Form.Item name="weight" label="数量" childElementPosition="right"  rules={[{ required: true, message: "The number cannot be empty" }]}>
+          <Form.Item name="weight" label="數量" childElementPosition="right"  rules={[{ required: true, message: "The number cannot be empty" }]}>
             <Stepper
               min={1}
               style={{
