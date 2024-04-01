@@ -26,8 +26,9 @@ import { ObituaryChart } from "@/components/obituaryChart";
 import { ElsePieChart } from "@/components/elsePieChart";
 import { ElseLineChart } from "@/components/elseLineChart";
 import { CheckboxValue } from "antd-mobile/es/components/checkbox";
-const TypeList = ["-", "泰安雞", "嘉美雞", "雪鳳凰", "其他"];
-const HomeList = ["開放式", "封閉式"];
+const TypeList = ["泰安雞 TO", "嘉美雞 KM", "雪鳳凰 SP", "雪鳳凰 SP", "胡鬚雞 HS", "麻黄 MW", "沙欄 SL",
+                  "海南 HL", "永明 WM", "科朗 KL", "黄太 WT", "清遠 QY", "蘆花 LH", "竹絲 SK", "其他 Other",];
+const HomeList = ["開放式 Opened", "封閉式 Closed"];
 
 const News = memo(() => {
   const router = useRouter();

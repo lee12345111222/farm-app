@@ -172,7 +172,7 @@ export const language: Record<string, any> = {
     questionE3:
       "I regularly attend educational programmes to keep abreast of new developments in disease control.",
     submit: "submit",
-    questionnaire: 'Questionnaire',
+    questionnaire: 'Farm‘s Bio-Security Questionnaire',
     add: 'add',
     save: 'save',
     reset: 'reset',
@@ -180,6 +180,76 @@ export const language: Record<string, any> = {
     closed: 'Closed',
     close: 'close',
     delete: 'Delete',
+
+    // Country
+    chn: 'China',
+    gbr: 'UK',
+    usa: 'USA',
+    ger: 'Germany',
+    fra: 'France',
+    nld: 'Netherlands',
+    ita: 'Italy',
+
+    // Vaccine Manufacturer
+    manufacturer1: 'Fatro',
+    manufacturer2: 'HRB',
+    manufacturer3: 'QYH',
+    manufacturer4: 'MSD',
+    manufacturer5: 'Merial/Bl',
+    manufacturer6: 'Ceva',
+    manufacturer7: 'Zoetis',
+    manufacturer8: 'Yibio',
+    manufacturer9: 'DHN',
+    manufacturer10: 'HNBio',
+
+    // Admin Route
+    route1: 'IN',
+    route2: 'MD',
+    route3: 'SC',
+    route4: 'IM',
+    route5: 'IO',
+    route6: 'WW',
+    route7: 'DW',
+    route8: 'Spray',
+
+    // Dosage
+    dosage1: 'dose',
+    dosage2: '0.5ml',
+    dosage3: '0.25ml',
+    dosage4: '0.3ml',
+
+    // Vaccine Name:
+    vaccine_name1: 'NDIB',
+    vaccine_name2: 'H5H7',
+    vaccine_name3: 'ND live',
+    vaccine_name4: 'MD Rispens',
+    vaccine_name5: 'MD FD',
+    vaccine_name6: 'IBD',
+    vaccine_name7: 'HVT-vector',
+    vaccine_name8: 'Ag-Ab complex',
+    vaccine_name9: 'NDH9',
+    vaccine_name10: 'ILT',
+    vaccine_name11: 'IB',
+    vaccine_name12: 'H9',
+    vaccine_name13: 'MGMS Live',
+    vaccine_name14: 'MG Inac',
+    vaccine_name15: 'APV Live',
+    vaccine_name16: 'NDIBGReo',
+    vaccine_name17: 'CAV',
+    vaccine_name18: 'Reo live',
+
+    // Vaccine Type:
+    vaccine_type1: 'Live',
+    vaccine_type2: 'Inac',
+    vaccine_type3: 'Vector',
+    vaccine_type4: 'Liquid Nitrogen',
+    vaccine_type5: 'Combl',
+    vaccine_type6: 'Ag-Ab Complex',
+    vaccine_type7: 'Reverse Genetic',
+
+    // Other
+    other: 'Other'
+
   },
   zh: {
     hello: "您好！歡迎登錄",
@@ -334,7 +404,7 @@ export const language: Record<string, any> = {
     questionE2: "我的雞舍貫徹執行全場疾病控制措施",
     questionE3: "我經常參與培訓令自己跟上對疾病控制的新發展",
     submit: "提交",
-    questionnaire: '問卷',
+    questionnaire: '農場生態安全問卷',
     add: '新增',
     save: '保存',
     reset: '重設',
@@ -342,5 +412,74 @@ export const language: Record<string, any> = {
     active: '活躍中',
     closed: '已關閉',
     delete: '刪除',
+
+    // Country
+    chn: '中國',
+    gbr: '英國',
+    usa: '美國',
+    ger: '徳國',
+    fra: '法國',
+    nld: '荷蘭',
+    ita: '意大利',
+
+    // Vaccine Manufacturer
+    manufacturer1: '菲綽',
+    manufacturer2: '哈獸研',
+    manufacturer3: '乾元浩',
+    manufacturer4: '英特威',
+    manufacturer5: '梅里亞-勃林格',
+    manufacturer6: '詩華',
+    manufacturer7: '碩騰',
+    manufacturer8: '青島易邦',
+    manufacturer9: '大華農',
+    manufacturer10: '華南生物',
+
+    // Admin Route
+    route1: '滴鼻',
+    route2: '口服',
+    route3: '皮下注射',
+    route4: '肌肉注射',
+    route5: '滴眼',
+    route6: '翅種',
+    route7: '飮水',
+    route8: '噴霧',
+
+    // Dosage
+    dosage1: '頭份',
+    dosage2: '0.5毫升',
+    dosage3: '0.25毫升',
+    dosage4: '0.3毫升',
+
+    // Vaccine Name:
+    vaccine_name1: '新支二聯',
+    vaccine_name2: '57流感二聯',
+    vaccine_name3: '新城凍乾',
+    vaccine_name4: '馬立克液氮苗',
+    vaccine_name5: '馬立克凍乾',
+    vaccine_name6: '甘保羅凍乾',
+    vaccine_name7: '馬立克載体苗',
+    vaccine_name8: '甘保羅抗原抗體結合',
+    vaccine_name9: '新H9二聯',
+    vaccine_name10: '喉頭',
+    vaccine_name11: '支氣管炎凍乾',
+    vaccine_name12: '流感 H9',
+    vaccine_name13: '支原体活毒',
+    vaccine_name14: '支原体滅活',
+    vaccine_name15: '肺病毒 APV',
+    vaccine_name16: '馬立克載体苗種雞四聯',
+    vaccine_name17: '傳貧',
+    vaccine_name18: '呼腸孤',
+
+    // Vaccine Type:
+    vaccine_type1: '活苗',
+    vaccine_type2: '滅活苗',
+    vaccine_type3: '載體苗',
+    vaccine_type4: '液氮苗',
+    vaccine_type5: '聯苗',
+    vaccine_type6: '抗原-抗體結合',
+    vaccine_type7: '轉基因',
+
+    // Other
+    other: '其他'
   },
 };
