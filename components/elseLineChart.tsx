@@ -39,7 +39,7 @@ export const ElseLineChart = memo(({ chickenId }: Iprops) => {
           // },
           // top: "5%",
           // left: "5%",
-          text: "Info",
+          text: "Weight Info",
           // show: false,
           textStyle: {
             fontSize: 12,
@@ -213,7 +213,7 @@ export const ElseLineChart = memo(({ chickenId }: Iprops) => {
       setOption(opt);
     }else {
       setOption({title: {
-        text: "Info",
+        text: "Weight Info",
         // show: false,
         textStyle: {
           fontSize: 12,

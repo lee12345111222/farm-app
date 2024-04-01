@@ -32,7 +32,7 @@ export const ElsePieChart = memo(() => {
 
       let opt = {
         title: {
-          text: "Ast",
+          text: "AST Profile",
           // show: false,
           textStyle: {
             fontSize: 12,
@@ -72,12 +72,13 @@ export const ElsePieChart = memo(() => {
             },
           },
         ],
-        color: ["#00acee", "#52cdd5", "#79d9f1", "#a7e7ff", "#c8efff"],
+        // intermediate, resistant, sensitive
+        color: ["#ffff00", "#008000", "#ff0000"],
       };
       setOption(opt);
     }else {
       setOption({title: {
-        text: "Ast",
+        text: "AST Profile",
         // show: false,
         textStyle: {
           fontSize: 12,

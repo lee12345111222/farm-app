@@ -36,7 +36,7 @@ export const QuestionChart = memo(() => {
       data = data.sort((a, b) => a?.scores?.[0]?.totalScore -b?.scores?.[0]?.totalScore)
       let opt = {
         title: {
-          text: "Questionnaire",
+          text: "Bio-Security Questionnaire",
           textStyle: {
             fontSize: 12,
           },
