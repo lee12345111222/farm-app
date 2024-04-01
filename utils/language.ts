@@ -218,7 +218,7 @@ export const language: Record<string, any> = {
     dosage3: '0.25ml',
     dosage4: '0.3ml',
 
-    // Vaccine Name:
+    // Vaccine Name
     vaccine_name1: 'NDIB',
     vaccine_name2: 'H5H7',
     vaccine_name3: 'ND live',
@@ -238,7 +238,7 @@ export const language: Record<string, any> = {
     vaccine_name17: 'CAV',
     vaccine_name18: 'Reo live',
 
-    // Vaccine Type:
+    // Vaccine Type
     vaccine_type1: 'Live',
     vaccine_type2: 'Inac',
     vaccine_type3: 'Vector',
@@ -246,6 +246,20 @@ export const language: Record<string, any> = {
     vaccine_type5: 'Combl',
     vaccine_type6: 'Ag-Ab Complex',
     vaccine_type7: 'Reverse Genetic',
+
+    // Medicine Name
+    medicine_name1: 'Amoxicillin',
+    medicine_name2: 'Amprolium',
+    medicine_name3: 'Diclazuril',
+    medicine_name4: 'Florfenicol',
+    medicine_name5: 'Enrofloxacin',
+    medicine_name6: 'Enrofloxacin-S',
+    medicine_name7: 'MultivitaMin',
+    medicine_name8: 'Sulfamethoxazole_Trimethoprim',
+    medicine_name9: 'Tilmicoxin',
+    medicine_name10: 'Tilmicoxin-S',
+    medicine_name11: 'Tylosin',
+    medicine_name12: 'Linco-spectin',
 
     // Other
     other: 'Other'
@@ -450,7 +464,7 @@ export const language: Record<string, any> = {
     dosage3: '0.25毫升',
     dosage4: '0.3毫升',
 
-    // Vaccine Name:
+    // Vaccine Name
     vaccine_name1: '新支二聯',
     vaccine_name2: '57流感二聯',
     vaccine_name3: '新城凍乾',
@@ -470,7 +484,7 @@ export const language: Record<string, any> = {
     vaccine_name17: '傳貧',
     vaccine_name18: '呼腸孤',
 
-    // Vaccine Type:
+    // Vaccine Type
     vaccine_type1: '活苗',
     vaccine_type2: '滅活苗',
     vaccine_type3: '載體苗',
@@ -478,6 +492,20 @@ export const language: Record<string, any> = {
     vaccine_type5: '聯苗',
     vaccine_type6: '抗原-抗體結合',
     vaccine_type7: '轉基因',
+
+    // Medicine Name
+    medicine_name1: '阿莫西林',
+    medicine_name2: '氨丙啉',
+    medicine_name3: '地克珠利',
+    medicine_name4: '氟苯尼考',
+    medicine_name5: '恩諾沙星',
+    medicine_name6: '恩諾沙星-水',
+    medicine_name7: '電解多維',
+    medicine_name8: '複方磺胺甲噁唑',
+    medicine_name9: '替米考星',
+    medicine_name10: '替米考星-水',
+    medicine_name11: '泰樂菌數',
+    medicine_name12: '利高-壯觀黴素',
 
     // Other
     other: '其他'
