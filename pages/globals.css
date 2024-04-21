@@ -173,3 +173,6 @@ main {
 .immunity .top .adm-dropdown-popup{
     top: 50vh!important;
 }
+.maxDropDown .adm-dropdown-item-title-text{
+    max-width: 196px;
+}

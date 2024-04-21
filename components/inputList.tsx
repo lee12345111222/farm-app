@@ -61,6 +61,7 @@ const InputList = ({ list = [], unit = false, onChange, onSubmit }: Iprops) => {
                     title={ele.val}
                     topStyle={ele.topStyle}
                     idx={idx}
+                    selectKey={ele.key}
                     val={ele.data || []}
                     onChange={handleChange}
                   />

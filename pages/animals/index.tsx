@@ -66,6 +66,7 @@ const News = memo(() => {
       { key: "batchName"},
       { key: "medicationName",
         type: "select",
+        topStyle: 'top' ,
         data: [
           language[activeLocale || "zh"]?.medicine_name1,
           language[activeLocale || "zh"]?.medicine_name2,
@@ -80,7 +81,7 @@ const News = memo(() => {
           language[activeLocale || "zh"]?.medicine_name11,
           language[activeLocale || "zh"]?.medicine_name12,
           language[activeLocale || "zh"]?.other,
-        ], 
+        ],
       },
       { key: "medicationDose" },
       { key: "medicationMeasure" },

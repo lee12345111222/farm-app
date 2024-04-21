@@ -26,6 +26,7 @@ import { ObituaryChart } from "@/components/obituaryChart";
 import { ElsePieChart } from "@/components/elsePieChart";
 import { ElseLineChart } from "@/components/elseLineChart";
 import { CheckboxValue } from "antd-mobile/es/components/checkbox";
+import { useFetchSelectList } from "@/hooks/useFetchSelectList";
 const TypeList = ["泰安雞 TO", "嘉美雞 KM", "雪鳳凰 SP", "雪鳳凰 SP", "胡鬚雞 HS", "麻黄 MW", "沙欄 SL",
                   "海南 HL", "永明 WM", "科朗 KL", "黄太 WT", "清遠 QY", "蘆花 LH", "竹絲 SK", "其他 Other",];
 const HomeList = ["開放式 Opened", "封閉式 Closed"];
@@ -40,7 +41,13 @@ const News = memo(() => {
   const [load, setLoad] = useState(false);
   const [batchList, setBatchList] = useState([]);
   const [isOnline, setIsOnline] = useState(true);
+  const [selectObj, setSelectObj] = useState({
+    TypeList,
+    HomeList,
+  })
   const ref: React.Ref<DropdownRef> = useRef();
+
+  const [queryList] = useFetchSelectList()
 
   const getDom = (
     //todo 改成组件
@@ -57,7 +64,7 @@ const News = memo(() => {
   ) => {
     return (
       <Dropdown
-        className="rounded-md text-[#708090]"
+        className="rounded-md text-[#708090] top maxDropDown"
         ref={ref}
         closeOnClickAway
         style={
@@ -171,6 +178,21 @@ const News = memo(() => {
   useEffect(() => {
     getBatch();
   }, []);
+  useEffect(() => {
+    getSelectList()
+  },[activeLocale])
+
+  const getSelectList = async() => {
+    let Type = await queryList({dictType: 'TypeList'})
+    let Home  = await queryList({dictType: 'HomeList'})
+    setSelectObj(pre => {
+      return {
+        TypeList: Type?.length? Type : pre.TypeList,
+        HomeList: Home?.length? Home : pre.TypeList
+      }
+    })
+  }
+  
 
   const getBatch = async (params?: Record<string, any>) => {
     let res: Record<string, any> = await fetchGet("/farm/query_batch", {
@@ -294,7 +316,7 @@ const News = memo(() => {
                     {getDom(
                       msg["chickenSeedlingsType"],
                       "chickenSeedlingsType",
-                      TypeList,
+                      selectObj.TypeList,
                       handleChangeVal,
                       false,
                       true
@@ -309,7 +331,7 @@ const News = memo(() => {
                     {getDom(
                       msg["breedingMethods"],
                       "breedingMethods",
-                      HomeList,
+                      selectObj.HomeList,
                       handleChangeVal
                     )}
                   </div>
