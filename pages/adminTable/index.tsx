@@ -45,7 +45,7 @@ const Record = memo(() => {
   const getShopList = useCallback(
     async (params?: Record<string, any>) => {
       let res: Record<string, any> = await fetchPost(
-        `/chicken/query_all?page=${
+        `/farmOtherAttributes/query_page?page=${
           pagination.pageIndex + 1
         }&size=${pagination.pageSize}`,
         {
