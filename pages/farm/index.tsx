@@ -46,6 +46,8 @@ const TypeList = [
 ];
 const HomeList = ["開放式 Opened", "封閉式 Closed"];
 
+const DocInputArr = ["small", "medium", "big"];
+
 const News = memo(() => {
   const router = useRouter();
   const { locale: activeLocale } = router;
@@ -180,6 +182,12 @@ const News = memo(() => {
       data.chickenSeedlingsType = data.chickenSeedlingsType.filter(
         (ele) => ele
       );
+      data = {
+        chickenSeedlingsVolume1: 1,
+        chickenSeedlingsVolume2: 1,
+        chickenSeedlingsVolume3: 1,
+        ...data,
+      };
       setMsg(data);
       setInitMsg(data);
     }
@@ -351,50 +359,63 @@ const News = memo(() => {
                   </div>
                 </div>
                 <div>
-                  <div className="flex items-center flex-1 flex-wrap">
-                    <div className="font-[PingFang SC, PingFang SC] font-medium text-[#708090] text-sm flex-shrink-0 flex w-[60%]">
-                      <Popover
-                        content={msg.chickenSeedlingsNumber1}
-                        trigger="click"
-                        placement="top"
+                  {DocInputArr.map((item, index) => {
+                    return (
+                      <div
+                        className="flex items-center flex-1 flex-wrap"
+                        key={index}
                       >
-                        <span className="flex-shrink-0">
-                          {language[activeLocale || "zh"]?.small}:
-                        </span>
-                      </Popover>
-                      <Input
-                        className="font-medium underline ml-2 -mt-1"
-                        defaultValue="xxx"
-                        value={msg.chickenSeedlingsNumber1}
-                        onChange={(val) =>
-                          handleChangeVal("chickenSeedlingsNumber1", val)
-                        }
-                        style={{
-                          "--color": "#708090",
-                          fontSize: 14,
-                        }}
-                      />{" "}
-                      {language[activeLocale || "zh"]?.nums}
-                    </div>
-                    <div className="font-[PingFang SC, PingFang SC] font-medium text-[#708090] text-sm flex-shrink-0 flex w-[40%]">
-                      <span className="flex-shrink-0">
-                        {language[activeLocale || "zh"]?.size}(cm^3):
-                      </span>
-                      <Input
-                        className="font-medium underline ml-2 -mt-1"
-                        defaultValue="xxx"
-                        value={msg.chickenSeedlingsVolume1}
-                        onChange={(val) =>
-                          handleChangeVal("chickenSeedlingsVolume1", val)
-                        }
-                        style={{
-                          "--color": "#708090",
-                          fontSize: 14,
-                        }}
-                      />
-                    </div>
-                  </div>
-                  <div className="font-[PingFang SC, PingFang SC] font-medium text-[#708090] text-sm  flex-shrink-0 flex my-2">
+                        <div className="font-[PingFang SC, PingFang SC] font-medium text-[#708090] text-sm flex-shrink-0 flex w-[60%]">
+                          <Popover
+                            content={
+                              msg["chickenSeedlingsNumber" + (index + 1)]
+                            }
+                            trigger="click"
+                            placement="top"
+                          >
+                            <span className="flex-shrink-0">
+                              {language[activeLocale || "zh"]?.[item]}:
+                            </span>
+                          </Popover>
+                          <Input
+                            className="font-medium underline ml-2 -mt-1"
+                            defaultValue="xxx"
+                            value={msg["chickenSeedlingsNumber" + (index + 1)]}
+                            onChange={(val) =>
+                              handleChangeVal(
+                                "chickenSeedlingsNumber" + (index + 1),
+                                val
+                              )
+                            }
+                            style={{
+                              "--color": "#708090",
+                              fontSize: 14,
+                            }}
+                          />{" "}
+                          {language[activeLocale || "zh"]?.nums}
+                        </div>
+                        <div className="font-[PingFang SC, PingFang SC] font-medium text-[#708090] text-sm flex-shrink-0 flex w-[40%]">
+                          <span className="flex-shrink-0">
+                            {language[activeLocale || "zh"]?.size}(cm^3):
+                          </span>
+                          <Input
+                            className="font-medium underline ml-2 -mt-1"
+                            defaultValue="xxx"
+                            value={msg["chickenSeedlingsVolume" + (index + 1)]}
+                            onChange={(val) =>
+                              handleChangeVal("chickenSeedlingsVolume" + (index + 1), val)
+                            }
+                            style={{
+                              "--color": "#708090",
+                              fontSize: 14,
+                            }}
+                          />
+                        </div>
+                      </div>
+                    );
+                  })}
+
+                  {/* <div className="font-[PingFang SC, PingFang SC] font-medium text-[#708090] text-sm  flex-shrink-0 flex my-2">
                     <Popover
                       content={msg.chickenSeedlingsNumber2}
                       trigger="click"
@@ -441,7 +462,7 @@ const News = memo(() => {
                       }}
                     />{" "}
                     {language[activeLocale || "zh"]?.nums}
-                  </div>
+                  </div> */}
                 </div>
               </>
             )}
