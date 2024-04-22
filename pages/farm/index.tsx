@@ -27,8 +27,23 @@ import { ElsePieChart } from "@/components/elsePieChart";
 import { ElseLineChart } from "@/components/elseLineChart";
 import { CheckboxValue } from "antd-mobile/es/components/checkbox";
 import { useFetchSelectList } from "@/hooks/useFetchSelectList";
-const TypeList = ["泰安雞 TO", "嘉美雞 KM", "雪鳳凰 SP", "雪鳳凰 SP", "胡鬚雞 HS", "麻黄 MW", "沙欄 SL",
-                  "海南 HL", "永明 WM", "科朗 KL", "黄太 WT", "清遠 QY", "蘆花 LH", "竹絲 SK", "其他 Other",];
+const TypeList = [
+  "泰安雞 TO",
+  "嘉美雞 KM",
+  "雪鳳凰 SP",
+  "雪鳳凰 SP",
+  "胡鬚雞 HS",
+  "麻黄 MW",
+  "沙欄 SL",
+  "海南 HL",
+  "永明 WM",
+  "科朗 KL",
+  "黄太 WT",
+  "清遠 QY",
+  "蘆花 LH",
+  "竹絲 SK",
+  "其他 Other",
+];
 const HomeList = ["開放式 Opened", "封閉式 Closed"];
 
 const News = memo(() => {
@@ -44,10 +59,10 @@ const News = memo(() => {
   const [selectObj, setSelectObj] = useState({
     TypeList,
     HomeList,
-  })
+  });
   const ref: React.Ref<DropdownRef> = useRef();
 
-  const [queryList] = useFetchSelectList()
+  const [queryList] = useFetchSelectList();
 
   const getDom = (
     //todo 改成组件
@@ -179,20 +194,19 @@ const News = memo(() => {
     getBatch();
   }, []);
   useEffect(() => {
-    getSelectList()
-  },[activeLocale])
+    getSelectList();
+  }, [activeLocale]);
 
-  const getSelectList = async() => {
-    let Type = await queryList({dictType: 'TypeList'})
-    let Home  = await queryList({dictType: 'HomeList'})
-    setSelectObj(pre => {
+  const getSelectList = async () => {
+    let Type = await queryList({ dictType: "TypeList" });
+    let Home = await queryList({ dictType: "HomeList" });
+    setSelectObj((pre) => {
       return {
-        TypeList: Type?.length? Type : pre.TypeList,
-        HomeList: Home?.length? Home : pre.TypeList
-      }
-    })
-  }
-  
+        TypeList: Type?.length ? Type : pre.TypeList,
+        HomeList: Home?.length ? Home : pre.TypeList,
+      };
+    });
+  };
 
   const getBatch = async (params?: Record<string, any>) => {
     let res: Record<string, any> = await fetchGet("/farm/query_batch", {
@@ -269,7 +283,7 @@ const News = memo(() => {
                 }}
                 onClick={saveFarmMsg}
               >
-                 {language[activeLocale || "zh"]?.save}
+                {language[activeLocale || "zh"]?.save}
               </Button>
               <Button
                 size="mini"
@@ -277,7 +291,7 @@ const News = memo(() => {
                 fill="solid"
                 onClick={() => setMsg(initMsg)}
               >
-                 {language[activeLocale || "zh"]?.reset}
+                {language[activeLocale || "zh"]?.reset}
               </Button>
             </Space>
             {load ? (
@@ -336,30 +350,49 @@ const News = memo(() => {
                     )}
                   </div>
                 </div>
-                <div className="flex items-center flex-1 flex-wrap">
-                  <div className="font-[PingFang SC, PingFang SC] font-medium text-[#708090] text-sm flex-shrink-0 flex">
-                    <Popover
-                      content={msg.chickenSeedlingsNumber1}
-                      trigger="click"
-                      placement="top"
-                    >
+                <div>
+                  <div className="flex items-center flex-1 flex-wrap">
+                    <div className="font-[PingFang SC, PingFang SC] font-medium text-[#708090] text-sm flex-shrink-0 flex w-[60%]">
+                      <Popover
+                        content={msg.chickenSeedlingsNumber1}
+                        trigger="click"
+                        placement="top"
+                      >
+                        <span className="flex-shrink-0">
+                          {language[activeLocale || "zh"]?.small}:
+                        </span>
+                      </Popover>
+                      <Input
+                        className="font-medium underline ml-2 -mt-1"
+                        defaultValue="xxx"
+                        value={msg.chickenSeedlingsNumber1}
+                        onChange={(val) =>
+                          handleChangeVal("chickenSeedlingsNumber1", val)
+                        }
+                        style={{
+                          "--color": "#708090",
+                          fontSize: 14,
+                        }}
+                      />{" "}
+                      {language[activeLocale || "zh"]?.nums}
+                    </div>
+                    <div className="font-[PingFang SC, PingFang SC] font-medium text-[#708090] text-sm flex-shrink-0 flex w-[40%]">
                       <span className="flex-shrink-0">
-                        {language[activeLocale || "zh"]?.small}:
+                        {language[activeLocale || "zh"]?.size}(cm^3):
                       </span>
-                    </Popover>
-                    <Input
-                      className="font-medium underline ml-2 -mt-1"
-                      defaultValue="xxx"
-                      value={msg.chickenSeedlingsNumber1}
-                      onChange={(val) =>
-                        handleChangeVal("chickenSeedlingsNumber1", val)
-                      }
-                      style={{
-                        "--color": "#708090",
-                        fontSize: 14,
-                      }}
-                    />{" "}
-                    {language[activeLocale || "zh"]?.nums}
+                      <Input
+                        className="font-medium underline ml-2 -mt-1"
+                        defaultValue="xxx"
+                        value={msg.chickenSeedlingsVolume1}
+                        onChange={(val) =>
+                          handleChangeVal("chickenSeedlingsVolume1", val)
+                        }
+                        style={{
+                          "--color": "#708090",
+                          fontSize: 14,
+                        }}
+                      />
+                    </div>
                   </div>
                   <div className="font-[PingFang SC, PingFang SC] font-medium text-[#708090] text-sm  flex-shrink-0 flex my-2">
                     <Popover
@@ -372,7 +405,7 @@ const News = memo(() => {
                       </span>
                     </Popover>
                     <Input
-                      className="font-medium underline ml-2  -mt-1"
+                      className="font-medium underline ml-2 -mt-1"
                       defaultValue="xxx"
                       value={msg.chickenSeedlingsNumber2}
                       onChange={(val) =>

@@ -262,7 +262,9 @@ export const language: Record<string, any> = {
     medicine_name12: 'Linco-spectin',
 
     // Other
-    other: 'Other'
+    other: 'Other',
+
+    size: 'size',
 
   },
   zh: {
@@ -508,6 +510,9 @@ export const language: Record<string, any> = {
     medicine_name12: '利高-壯觀黴素',
 
     // Other
-    other: '其他'
+    other: '其他',
+
+
+    size: '體積',
   },
 };
