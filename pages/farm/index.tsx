@@ -27,6 +27,7 @@ import { ElsePieChart } from "@/components/elsePieChart";
 import { ElseLineChart } from "@/components/elseLineChart";
 import { CheckboxValue } from "antd-mobile/es/components/checkbox";
 import { useFetchSelectList } from "@/hooks/useFetchSelectList";
+import Select from "@/components/select";
 const TypeList = [
   "泰安雞 TO",
   "嘉美雞 KM",
@@ -403,7 +404,10 @@ const News = memo(() => {
                             defaultValue="xxx"
                             value={msg["chickenSeedlingsVolume" + (index + 1)]}
                             onChange={(val) =>
-                              handleChangeVal("chickenSeedlingsVolume" + (index + 1), val)
+                              handleChangeVal(
+                                "chickenSeedlingsVolume" + (index + 1),
+                                val
+                              )
                             }
                             style={{
                               "--color": "#708090",
@@ -469,9 +473,49 @@ const News = memo(() => {
           </div>
         </div>
       </div>
-      <div className="flex items-center justify-between mt-6 pt-4 rounded-md bg-white mx-3">
-        <div className="flex-1 h-20">
-          <QuestionChart />
+      <div className="mt-6 pt-4 rounded-md bg-white mx-3">
+        <div className="flex items-center justify-between ">
+          <div className="flex-1 h-40">
+            <Select
+              title={"最新比較"}
+              idx={1}
+              selectKey={"bacteria"}
+              val={[]}
+              onChange={() => {}}
+            />
+            <QuestionChart />
+          </div>
+          <div className="flex-1 h-40">
+            <div className="w-40 mx-auto">
+              <Select
+                title={"本周"}
+                idx={1}
+                selectKey={"bacteria"}
+                val={[]}
+                onChange={() => {}}
+              />
+            </div>
+            <ObituaryChart showFarm={true} />
+          </div>
+        </div>
+        <Divider />
+        <div className="w-40 mx-auto">
+          <Select
+            title={"菌類"}
+            idx={1}
+            selectKey={"bacteria"}
+            val={[]}
+            onChange={() => {}}
+          />
+        </div>
+        <div className="w-40 mt-2 mx-auto ">
+          <Select
+            title={"抗生素"}
+            idx={2}
+            selectKey="antibiotics"
+            val={[]}
+            onChange={() => {}}
+          />
         </div>
         <div className="flex-1 h-20">
           <ElsePieChart />

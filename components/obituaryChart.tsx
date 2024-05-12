@@ -3,23 +3,29 @@ import PieChart from "./pieChart";
 import { fetchPost } from "@/utils/request";
 import dayjs from "dayjs";
 import { Popup } from "antd-mobile";
+import { selectUser, useSelector } from "@/lib/redux";
 
 interface Iprops {
   chickenId?: string;
+  showFarm?: boolean;
 }
-export const ObituaryChart = memo(({ chickenId }: Iprops) => {
+export const ObituaryChart = memo(({ chickenId, showFarm }: Iprops) => {
   const [option, setOption] = useState({});
   const [visible2, setVisible2] = useState(false);
+  const query = useSelector(selectUser);
+
   useEffect(() => {
-    if (chickenId) getData();
+    if (query.id && showFarm) getData({ userId: query.id });
+  }, [query, showFarm]);
+  useEffect(() => {
+    if (chickenId) {
+      getData({ chickenId });
+    }
   }, [chickenId]);
-  const getData = async () => {
+  const getData = async (params) => {
     let res: Record<string, any> = await fetchPost(
       "/obituary/query_page?page=1&size=3",
-      {
-        dataTime: dayjs().format("YYYY-MM-DD"),
-        chickenId,
-      },
+      params,
       {
         "Content-Type": "application/json",
       }
@@ -28,7 +34,9 @@ export const ObituaryChart = memo(({ chickenId }: Iprops) => {
       console.log(res, "res");
       const data = res?.data?.[0]?.list || [];
       let obj = data[0]?.obituaryList?.[0] || {};
-      console.log(obj, "obj");
+      const obituaryList = data[0]?.obituaryList || [];
+
+      console.log(obj, "obj", data);
       let opt = {
         title: {
           text: "Depletion rate",
@@ -75,34 +83,56 @@ export const ObituaryChart = memo(({ chickenId }: Iprops) => {
         },
         xAxis: {
           type: "category",
-          data: ["本批雞總數", "淘汰了的", "死了的"],
+          data: obituaryList.map((ele) => ele.dataTime),
           show: false,
         },
         series: [
           {
-            radius: "100%",
-            data: [
-              obj.chickenSeedlingNumber,
-              obj.eliminateNumber,
-              obj.deathNumber,
-            ],
+            name: "淘汰了的",
             type: "bar",
-            itemStyle: {
-              // color: "#4682B4",
+            stack: "Batch",
+            emphasis: {
+              focus: "series",
             },
-            name: "",
+            data: obituaryList.map((ele) => ele.eliminateNumber),
+          },
+          {
+            name: "死了的",
+            type: "bar",
+            stack: "Batch",
+            emphasis: {
+              focus: "series",
+            },
+            data: obituaryList.map((ele) => ele.deathNumber),
           },
         ],
+        // series: [
+        //   {
+        //     radius: "100%",
+        //     data: [
+        //       obj.chickenSeedlingNumber,
+        //       obj.eliminateNumber,
+        //       obj.deathNumber,
+        //     ],
+        //     type: "bar",
+        //     itemStyle: {
+        //       // color: "#4682B4",
+        //     },
+        //     name: "",
+        //   },
+        // ],
       };
       setOption(opt);
-    }else {
-      setOption({title: {
-        text: "Depletion rate",
-        // show: false,
-        textStyle: {
-          fontSize: 12,
+    } else {
+      setOption({
+        title: {
+          text: "Depletion rate",
+          // show: false,
+          textStyle: {
+            fontSize: 12,
+          },
         },
-      }})
+      });
     }
   };
   return (
