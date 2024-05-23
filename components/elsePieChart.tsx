@@ -2,13 +2,13 @@ import { memo, useEffect, useState } from "react";
 import PieChart from "./pieChart";
 import { fetchPost } from "@/utils/request";
 import { selectUser, useSelector } from "@/lib/redux";
-export const ElsePieChart = memo(() => {
+export const ElsePieChart = memo(({elseParams} : {elseParams: Record<string, any>}) => {
   const [option, setOption] = useState({});
   const query = useSelector(selectUser);
-
+  console.log(elseParams, "elseParams");
   useEffect(() => {
     if (query.id) getData();
-  }, [query]);
+  }, [query, elseParams]);
   const getData = async () => {
     let timeRes = await fetchPost(
       "/farmOtherAttributes/query_date",
@@ -20,7 +20,7 @@ export const ElsePieChart = memo(() => {
     console.log(timeRes, "time");
     let res: Record<string, any> = await fetchPost(
       "/farmOtherAttributes/query_info",
-      { farmId: query.id, dataTime: timeRes.data?.[0] },
+      { farmId: query.id, dataTime: timeRes.data?.[0], ...elseParams },
       {
         "Content-Type": "application/json",
       }

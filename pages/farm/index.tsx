@@ -63,6 +63,10 @@ const News = memo(() => {
     TypeList,
     HomeList,
   });
+
+  const [bacterialList, setBacterialList] = useState([]);
+  const [antibioticList, setAntibioticList] = useState([]);
+  const [elseParams, setElseParams] = useState<Record<string, any>>({});
   const ref: React.Ref<DropdownRef> = useRef();
 
   const [queryList] = useFetchSelectList();
@@ -142,6 +146,23 @@ const News = memo(() => {
     );
   };
 
+  const getBacteriaData = async () => {
+    let res: Record<string, any> = await fetchGet("farmOtherAttributes/query_all_bacterialType" , {});
+    if (res?.code === "0") {
+      console.log(res, "res");
+      setBacterialList(res?.data || []);
+    } else {
+      setBacterialList([]);
+    }
+    let res1: Record<string, any> = await fetchGet("farmOtherAttributes/query_all_antibiotic" , {});
+    if (res?.code === "0") {
+      console.log(res1, "res");
+      setAntibioticList(res1?.data || []);
+    } else {
+      setAntibioticList([]);
+    }
+  }
+
   useEffect(() => {
     if (
       typeof window !== "undefined" &&
@@ -201,6 +222,7 @@ const News = memo(() => {
 
   useEffect(() => {
     getBatch();
+    getBacteriaData()
   }, []);
   useEffect(() => {
     getSelectList();
@@ -501,24 +523,24 @@ const News = memo(() => {
         <Divider />
         <div className="w-40 mx-auto">
           <Select
-            title={"菌類"}
-            idx={1}
+            title={elseParams.bacteria || ""}
+            idx={'bacteria'}
             selectKey={"bacteria"}
-            val={[]}
-            onChange={() => {}}
+            val={bacterialList || []}
+            onChange={(key, val) => {setElseParams(pre => ({...pre, [key]: val}))}}
           />
         </div>
         <div className="w-40 mt-2 mx-auto ">
           <Select
-            title={"抗生素"}
-            idx={2}
+            title={elseParams.antibiotics || ""}
+            idx={'antibiotics'}
             selectKey="antibiotics"
-            val={[]}
-            onChange={() => {}}
+            val={antibioticList || []}
+            onChange={(key, val) => {setElseParams(pre => ({...pre, [key]: val}))}}
           />
         </div>
         <div className="flex-1 h-20">
-          <ElsePieChart />
+          <ElsePieChart elseParams={elseParams}/>
         </div>
       </div>
       <div className="mx-3 mt-4 px-5 py-4 rounded-md bg-white">
