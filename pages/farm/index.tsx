@@ -48,6 +48,8 @@ const TypeList = [
 const HomeList = ["開放式 Opened", "封閉式 Closed"];
 
 const DocInputArr = ["small", "medium", "big"];
+export const BatchTimeFilter = ["本年", "本月", "歷史紀錄"];
+export const QuestionFilter = ["最新紀錄", "歷史紀錄"];
 
 const News = memo(() => {
   const router = useRouter();
@@ -66,7 +68,10 @@ const News = memo(() => {
 
   const [bacterialList, setBacterialList] = useState([]);
   const [antibioticList, setAntibioticList] = useState([]);
-  const [elseParams, setElseParams] = useState<Record<string, any>>({});
+  const [elseParams, setElseParams] = useState<Record<string, any>>({});//農場其他信息下拉參數
+
+  const [filterParams, setFilterParams] = useState<Record<string, any>>({});//農場下拉參數同一存儲
+
   const ref: React.Ref<DropdownRef> = useRef();
 
   const [queryList] = useFetchSelectList();
@@ -499,25 +504,25 @@ const News = memo(() => {
         <div className="flex items-center justify-between ">
           <div className="flex-1 h-40">
             <Select
-              title={"最新比較"}
-              idx={1}
-              selectKey={"bacteria"}
-              val={[]}
-              onChange={() => {}}
+              title={filterParams.questionFilter || QuestionFilter[0]}
+              idx={'questionFilter'}
+              selectKey={"questionFilter"}
+              val={QuestionFilter}
+              onChange={(key, val) => {setFilterParams(pre => ({...pre, [key]: val}))}}
             />
-            <QuestionChart />
+            <QuestionChart filter={filterParams.questionFilter || QuestionFilter[0]}/>
           </div>
           <div className="flex-1 h-40">
             <div className="w-40 mx-auto">
               <Select
-                title={"本周"}
-                idx={1}
-                selectKey={"bacteria"}
-                val={[]}
-                onChange={() => {}}
+                title={filterParams.timeFilter || BatchTimeFilter[0]}
+                idx={'timeFilter'}
+                selectKey={"timeFilter"}
+                val={BatchTimeFilter}
+                onChange={(key, val) => {setFilterParams(pre => ({...pre, [key]: val}))}}
               />
             </div>
-            <ObituaryChart showFarm={true} />
+            <ObituaryChart showFarm={true} timeFilter={filterParams.timeFilter || BatchTimeFilter[0]} />
           </div>
         </div>
         <Divider />
