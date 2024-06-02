@@ -27,6 +27,7 @@ export const QuestionChart = memo(({ filter }: { filter?: string }) => {
           ...ele.scores[0],
         });
       })
+      console.log(data, "filter", filter, sortData);
     } else {
       chartData.forEach((ele) => {
         ele.scores = ele?.scores.sort(
@@ -61,7 +62,6 @@ export const QuestionChart = memo(({ filter }: { filter?: string }) => {
           }
         }
       });
-      data = []
       console.log(data, "filter", filter);
     }
     let opt = {
