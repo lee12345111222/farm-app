@@ -528,18 +528,18 @@ const News = memo(() => {
         <Divider />
         <div className="w-40 mx-auto">
           <Select
-            title={elseParams.bacteria || ""}
-            idx={'bacteria'}
-            selectKey={"bacteria"}
+            title={elseParams.bacterialType || ""}
+            idx={'bacterialType'}
+            selectKey={"bacterialType"}
             val={bacterialList || []}
             onChange={(key, val) => {setElseParams(pre => ({...pre, [key]: val}))}}
           />
         </div>
         <div className="w-40 mt-2 mx-auto ">
           <Select
-            title={elseParams.antibiotics || ""}
-            idx={'antibiotics'}
-            selectKey="antibiotics"
+            title={elseParams.antibiotic   || ""}
+            idx={'antibiotic  '}
+            selectKey="antibiotic  "
             val={antibioticList || []}
             onChange={(key, val) => {setElseParams(pre => ({...pre, [key]: val}))}}
           />
