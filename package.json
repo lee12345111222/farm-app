@@ -13,6 +13,7 @@
         "@mui/icons-material": "^5.15.6",
         "@mui/material": "^5.15.6",
         "@mui/x-date-pickers": "^6.19.2",
+        "@next/bundle-analyzer": "^14.2.4",
         "@reduxjs/toolkit": "1.9.5",
         "antd-mobile": "^5.33.2",
         "antd-mobile-icons": "^0.3.0",
