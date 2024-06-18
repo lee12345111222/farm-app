@@ -537,11 +537,11 @@ const News = memo(() => {
         </div>
         <div className="w-40 mt-2 mx-auto ">
           <Select
-            title={elseParams.antibiotic   || ""}
-            idx={'antibiotic  '}
-            selectKey="antibiotic  "
+            title={elseParams.antibiotic || ""}
+            idx={'antibiotic'}
+            selectKey="antibiotic"
             val={antibioticList || []}
-            onChange={(key, val) => {setElseParams(pre => ({...pre, [key]: val}))}}
+            onChange={(key, val) => {console.log(key, val)}}
           />
         </div>
         <div className="flex-1 h-20">
