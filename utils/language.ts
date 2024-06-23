@@ -409,7 +409,7 @@ export const language: Record<string, any> = {
     questionC8: "我的顧員不會去非我控制的其它雞場",
     questionD: "D. Score 2 points for each “yes” answer.",
     questionD0: "所有的用品和服務車輛在進場前都經過適當消毒，司機不會進入雞舍",
-    questionD1: "所有的用品和服務車輛在進場前都經過適當消毒，司機不會進入雞舍",
+    questionD1: "農場員工只在指定區域工作,不會前往農場的其他區域",
     questionD2: "死雞不會在雞舍間串流",
     questionD3: "其它雞場的雞場廢棄物從不會在我場隔壁",
     questionD4:
