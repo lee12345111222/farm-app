@@ -13,6 +13,8 @@ export const useAddOrder = ({data, sendMessage, query}: Iprops) => {
     const handleAddOrder = () => {
         Dialog.confirm({
           content: "Are you sure to submit your order?",
+          confirmText: 'Ok',
+          cancelText: 'Cancel',
           onConfirm: async () => {
             let result = await fetchPost(
               "/order/add",

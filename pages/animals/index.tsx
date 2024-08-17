@@ -63,7 +63,7 @@ const News = memo(() => {
       "incubationDate",
     ];
     const data1 = [
-      { key: "batchName"},
+      { key: "chickenName"},
       { key: "medicationName",
         type: "select",
         topStyle: 'top' ,
@@ -282,6 +282,27 @@ const News = memo(() => {
   );
 
   const handleClose = () => {
+    if(msg.status === '已关闭'){
+      Dialog.confirm({
+        title: "確認嗎 若確認 批次將從已關閉移至活躍中",
+        onConfirm: async () => {
+          let res = await fetchGet("/chicken/open/" + msg.id, {});
+          if (res?.code === "0") {
+            console.log(res, "res");
+            Toast.show("success");
+            setMsg((pre) => ({
+              ...pre,
+              status: '活动中',
+            }))
+          } else {
+            Toast.show("Network error");
+          }
+        },
+        confirmText: 'Ok',
+        cancelText: 'Cancel',
+      });
+      return
+    }
     Dialog.confirm({
       title: "確認嗎 若確認 批次將從活躍中移至已關閉",
       onConfirm: async () => {
@@ -289,10 +310,16 @@ const News = memo(() => {
         if (res?.code === "0") {
           console.log(res, "res");
           Toast.show("success");
+          setMsg((pre) => ({
+            ...pre,
+            status: '已关闭',
+          }))
         } else {
           Toast.show("Network error");
         }
       },
+      confirmText: 'Ok',
+      cancelText: 'Cancel',
     });
   };
 
@@ -316,7 +343,7 @@ const News = memo(() => {
               // }}
               onClick={handleClose}
             >
-              {language[activeLocale || "zh"]?.close}
+              {language[activeLocale || "zh"]?.[msg.status === '已关闭'? 'open':'close']}
             </Button>
             <Button
               size="mini"
@@ -328,6 +355,7 @@ const News = memo(() => {
               }}
               onClick={saveFarmMsg}
             >
+              
               {language[activeLocale || "zh"]?.save}
             </Button>
             <Button

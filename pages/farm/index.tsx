@@ -68,9 +68,9 @@ const News = memo(() => {
 
   const [bacterialList, setBacterialList] = useState([]);
   const [antibioticList, setAntibioticList] = useState([]);
-  const [elseParams, setElseParams] = useState<Record<string, any>>({});//農場其他信息下拉參數
+  const [elseParams, setElseParams] = useState<Record<string, any>>({}); //農場其他信息下拉參數
 
-  const [filterParams, setFilterParams] = useState<Record<string, any>>({});//農場下拉參數同一存儲
+  const [filterParams, setFilterParams] = useState<Record<string, any>>({}); //農場下拉參數同一存儲
 
   const ref: React.Ref<DropdownRef> = useRef();
 
@@ -152,21 +152,27 @@ const News = memo(() => {
   };
 
   const getBacteriaData = async () => {
-    let res: Record<string, any> = await fetchGet("farmOtherAttributes/query_all_bacterialType" , {});
+    let res: Record<string, any> = await fetchGet(
+      "farmOtherAttributes/query_all_bacterialType",
+      {}
+    );
     if (res?.code === "0") {
       console.log(res, "res");
       setBacterialList(res?.data || []);
     } else {
       setBacterialList([]);
     }
-    let res1: Record<string, any> = await fetchGet("farmOtherAttributes/query_all_antibiotic" , {});
+    let res1: Record<string, any> = await fetchGet(
+      "farmOtherAttributes/query_all_antibiotic",
+      {}
+    );
     if (res?.code === "0") {
       console.log(res1, "res");
       setAntibioticList(res1?.data || []);
     } else {
       setAntibioticList([]);
     }
-  }
+  };
 
   useEffect(() => {
     if (
@@ -210,10 +216,16 @@ const News = memo(() => {
         (ele) => ele
       );
       data = {
-        chickenSeedlingsVolume1: 1,
-        chickenSeedlingsVolume2: 1,
-        chickenSeedlingsVolume3: 1,
         ...data,
+        chickenSeedlingsVolume1: data.chickenSeedlingsVolume1?.includes("{") //前端处理体积通过'{}'格式存储
+          ? JSON.parse(data.chickenSeedlingsVolume1)
+          : {},
+        chickenSeedlingsVolume2: data.chickenSeedlingsVolume2?.includes("{")
+        ? JSON.parse(data.chickenSeedlingsVolume2)
+        : {},
+        chickenSeedlingsVolume3: data.chickenSeedlingsVolume2?.includes("{")
+        ? JSON.parse(data.chickenSeedlingsVolume2)
+        : {},
       };
       setMsg(data);
       setInitMsg(data);
@@ -227,7 +239,7 @@ const News = memo(() => {
 
   useEffect(() => {
     getBatch();
-    getBacteriaData()
+    getBacteriaData();
   }, []);
   useEffect(() => {
     getSelectList();
@@ -256,9 +268,17 @@ const News = memo(() => {
   };
 
   const saveFarmMsg = useCallback(async () => {
+
+    let params  = {
+      ...msg,
+      chickenSeedlingsVolume1: JSON.stringify(msg.chickenSeedlingsVolume1),
+      chickenSeedlingsVolume2: JSON.stringify(msg.chickenSeedlingsVolume2),
+      chickenSeedlingsVolume3: JSON.stringify(msg.chickenSeedlingsVolume3),
+    }
+    console.log(params, msg, 'params')
     let res = await fetchPost(
       "/farm/add",
-      { ...msg },
+      { ...params },
       {
         "Content-Type": "application/json",
       }
@@ -290,7 +310,7 @@ const News = memo(() => {
     },
   ];
 
-  const handleChangeVal = (key: string, val: string) => {
+  const handleChangeVal = (key: string, val: string | Record<string,any>) => {
     setMsg((pre) => ({
       ...pre,
       [key]: val,
@@ -300,14 +320,14 @@ const News = memo(() => {
   console.log(msg.batchIdx, "msg", batchList);
   return (
     <div className="w-full h-screen bg-[#F6F9FF] farm pb-6 overflow-auto relative">
-      <div className="bg-[url('/news/farmbg.png')] bg-cover h-80 ">
+      <div className="bg-[url('/news/farmbg.png')] bg-cover pb-4">
         <Header
           back
           title={language[activeLocale || "zh"]?.myfarm}
           styles="top-8"
         />
         <div className="overflow-hidden">
-          <div className="mt-16 w-[92%] bg-white pl-6 pt-4 pr-5 rounded-md relative">
+          <div className="mt-16 w-[92%] bg-white pl-6 pt-4 pr-5 rounded-md relative pb-4">
             <Space className="absolute right-3 top-4">
               <Button
                 size="mini"
@@ -389,111 +409,81 @@ const News = memo(() => {
                 <div>
                   {DocInputArr.map((item, index) => {
                     return (
-                      <div
-                        className="flex items-center flex-1 flex-wrap"
-                        key={index}
-                      >
-                        <div className="font-[PingFang SC, PingFang SC] font-medium text-[#708090] text-sm flex-shrink-0 flex w-[60%]">
-                          <Popover
-                            content={
-                              msg["chickenSeedlingsNumber" + (index + 1)]
-                            }
-                            trigger="click"
-                            placement="top"
-                          >
-                            <span className="flex-shrink-0">
-                              {language[activeLocale || "zh"]?.[item]}:
-                            </span>
-                          </Popover>
-                          <Input
-                            className="font-medium underline ml-2 -mt-1"
-                            defaultValue="xxx"
-                            value={msg["chickenSeedlingsNumber" + (index + 1)]}
-                            onChange={(val) =>
-                              handleChangeVal(
-                                "chickenSeedlingsNumber" + (index + 1),
-                                val
-                              )
-                            }
-                            style={{
-                              "--color": "#708090",
-                              fontSize: 14,
-                            }}
-                          />{" "}
-                          {language[activeLocale || "zh"]?.nums}
+                      <>
+                        <div
+                          className="flex items-center flex-1 flex-wrap"
+                          key={index}
+                        >
+                          <div className="font-[PingFang SC, PingFang SC] font-medium text-[#708090] text-sm flex-shrink-0 flex w-full">
+                            <Popover
+                              content={
+                                msg["chickenSeedlingsNumber" + (index + 1)]
+                              }
+                              trigger="click"
+                              placement="top"
+                            >
+                              <span className="flex-shrink-0">
+                                {language[activeLocale || "zh"]?.[item]}:
+                              </span>
+                            </Popover>
+                            <div className="flex items-center flex-1">
+                              <Input
+                                className="font-medium underline ml-2 -mt-1"
+                                defaultValue="xxx"
+                                value={
+                                  msg["chickenSeedlingsNumber" + (index + 1)]
+                                }
+                                onChange={(val) =>
+                                  handleChangeVal(
+                                    "chickenSeedlingsNumber" + (index + 1),
+                                    val
+                                  )
+                                }
+                                style={{
+                                  "--color": "#708090",
+                                  fontSize: 14,
+                                }}
+                              />{" "}
+                              {language[activeLocale || "zh"]?.nums}
+                            </div>
+                          </div>
                         </div>
-                        <div className="font-[PingFang SC, PingFang SC] font-medium text-[#708090] text-sm flex-shrink-0 flex w-[40%]">
-                          <span className="flex-shrink-0">
-                            {language[activeLocale || "zh"]?.size}(cm^3):
-                          </span>
-                          <Input
-                            className="font-medium underline ml-2 -mt-1"
-                            defaultValue="xxx"
-                            value={msg["chickenSeedlingsVolume" + (index + 1)]}
-                            onChange={(val) =>
-                              handleChangeVal(
-                                "chickenSeedlingsVolume" + (index + 1),
-                                val
-                              )
-                            }
-                            style={{
-                              "--color": "#708090",
-                              fontSize: 14,
-                            }}
-                          />
+                        <div className="flex">
+                          {["length", "width", "height"].map((ele) => (
+                            <div
+                              className="font-[PingFang SC, PingFang SC] font-medium text-[#708090] text-sm flex flex-shrink-0 flex-1"
+                              key={ele}
+                            >
+                              <span className="flex-shrink-0">
+                                {language[activeLocale || "zh"]?.[ele]}(cm):
+                              </span>
+                              <Input
+                                className="font-medium underline ml-2 -mt-1"
+                                defaultValue="xxx"
+                                value={
+                                  msg["chickenSeedlingsVolume" + (index + 1)]?.[ele]
+                                }
+                                onChange={(val) =>
+                                  handleChangeVal(
+                                    "chickenSeedlingsVolume" + (index + 1),
+                                    {
+                                      ...msg["chickenSeedlingsVolume" + (index + 1)],
+                                      [ele]: val
+                                    }
+                                  )
+                                }
+                                style={{
+                                  "--color": "#708090",
+                                  fontSize: 14,
+                                }}
+                              />
+                            </div>
+                          ))}
                         </div>
-                      </div>
+                        <Divider />
+                      </>
                     );
                   })}
-
-                  {/* <div className="font-[PingFang SC, PingFang SC] font-medium text-[#708090] text-sm  flex-shrink-0 flex my-2">
-                    <Popover
-                      content={msg.chickenSeedlingsNumber2}
-                      trigger="click"
-                      placement="top"
-                    >
-                      <span className="flex-shrink-0">
-                        {language[activeLocale || "zh"]?.medium}:
-                      </span>
-                    </Popover>
-                    <Input
-                      className="font-medium underline ml-2 -mt-1"
-                      defaultValue="xxx"
-                      value={msg.chickenSeedlingsNumber2}
-                      onChange={(val) =>
-                        handleChangeVal("chickenSeedlingsNumber2", val)
-                      }
-                      style={{
-                        "--color": "#708090",
-                        fontSize: 14,
-                      }}
-                    />{" "}
-                    {language[activeLocale || "zh"]?.nums}
-                  </div>
-                  <div className="font-[PingFang SC, PingFang SC] font-medium text-[#708090] text-sm  flex-shrink-0 flex">
-                    <Popover
-                      content={msg.chickenSeedlingsNumber3}
-                      trigger="click"
-                      placement="top"
-                    >
-                      <span className="flex-shrink-0">
-                        {language[activeLocale || "zh"]?.big}:
-                      </span>
-                    </Popover>
-                    <Input
-                      className="font-medium underline ml-2  -mt-1"
-                      defaultValue="xxx"
-                      value={msg.chickenSeedlingsNumber3}
-                      onChange={(val) =>
-                        handleChangeVal("chickenSeedlingsNumber3", val)
-                      }
-                      style={{
-                        "--color": "#708090",
-                        fontSize: 14,
-                      }}
-                    />{" "}
-                    {language[activeLocale || "zh"]?.nums}
-                  </div> */}
                 </div>
               </>
             )}
@@ -505,47 +495,61 @@ const News = memo(() => {
           <div className="flex-1 h-40">
             <Select
               title={filterParams.questionFilter || QuestionFilter[0]}
-              idx={'questionFilter'}
+              idx={"questionFilter"}
               selectKey={"questionFilter"}
               val={QuestionFilter}
-              onChange={(key, val) => {setFilterParams(pre => ({...pre, [key]: val}))}}
+              onChange={(key, val) => {
+                setFilterParams((pre) => ({ ...pre, [key]: val }));
+              }}
             />
-            <QuestionChart filter={filterParams.questionFilter || QuestionFilter[0]}/>
+            <QuestionChart
+              filter={filterParams.questionFilter || QuestionFilter[0]}
+            />
           </div>
           <div className="flex-1 h-40">
             <div className="w-40 mx-auto">
               <Select
                 title={filterParams.timeFilter || BatchTimeFilter[0]}
-                idx={'timeFilter'}
+                idx={"timeFilter"}
                 selectKey={"timeFilter"}
                 val={BatchTimeFilter}
-                onChange={(key, val) => {setFilterParams(pre => ({...pre, [key]: val}))}}
+                onChange={(key, val) => {
+                  setFilterParams((pre) => ({ ...pre, [key]: val }));
+                }}
               />
             </div>
-            <ObituaryChart showFarm={true} timeFilter={filterParams.timeFilter || BatchTimeFilter[0]} />
+            <ObituaryChart
+              showFarm={true}
+              timeFilter={filterParams.timeFilter || BatchTimeFilter[0]}
+            />
           </div>
         </div>
         <Divider />
         <div className="w-40 mx-auto">
           <Select
             title={elseParams.bacterialType || ""}
-            idx={'bacterialType'}
+            idx={"bacterialType"}
             selectKey={"bacterialType"}
             val={bacterialList || []}
-            onChange={(key, val) => {setElseParams(pre => ({...pre, [key]: val}))}}
+            onChange={(key, val) => {
+              setElseParams((pre) => ({ ...pre, [key]: val }));
+            }}
           />
         </div>
         <div className="w-40 mt-2 mx-auto ">
           <Select
             title={elseParams.antibiotic || ""}
-            idx={'antibiotic'}
+            idx={"antibiotic"}
             selectKey="antibiotic"
             val={antibioticList || []}
-            onChange={(key, val) => {console.log(key, val)}}
+            onChange={(key, val) => {
+              console.log(key, val, "antibiotic");
+              setElseParams((pre) => ({ ...pre, [key]: val }));
+            }}
           />
         </div>
         <div className="flex-1 h-20">
-          <ElsePieChart elseParams={elseParams}/>
+          <ElsePieChart elseParams={elseParams} />
         </div>
       </div>
       <div className="mx-3 mt-4 px-5 py-4 rounded-md bg-white">

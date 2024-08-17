@@ -168,6 +168,8 @@ const News = memo(() => {
         //   content: "提交成功",
         // });
       },
+      confirmText: 'Ok',
+      cancelText: 'Cancel',
     });
   };
   return (

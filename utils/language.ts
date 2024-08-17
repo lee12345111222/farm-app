@@ -179,6 +179,7 @@ export const language: Record<string, any> = {
     active: 'Active',
     closed: 'Closed',
     close: 'close',
+    open: 'open',
     delete: 'Delete',
 
     // Country
@@ -260,6 +261,10 @@ export const language: Record<string, any> = {
     medicine_name10: 'Tilmicoxin-S',
     medicine_name11: 'Tylosin',
     medicine_name12: 'Linco-spectin',
+
+    length: 'length',
+    width: 'width',
+    height: 'height',
 
     // Other
     other: 'Other',
@@ -425,6 +430,7 @@ export const language: Record<string, any> = {
     save: '保存',
     reset: '重設',
     close: '關閉',
+    open: '開啟',
     active: '活躍中',
     closed: '已關閉',
     delete: '刪除',
@@ -514,5 +520,8 @@ export const language: Record<string, any> = {
 
 
     size: '體積',
+    length: '長',
+    width: '寬',
+    height: '高',
   },
 };

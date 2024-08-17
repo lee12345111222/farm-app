@@ -10,6 +10,9 @@ interface Iporps {
   title?: string;
   onConfirm?: (date: string) => void
 }
+const min = new Date()
+min.setDate(5)
+min.setMonth(min.getMonth() - 12)
 
 export default (props: Iporps) => {
   const { containerStyles, styles, title,onConfirm } = props;
@@ -29,6 +32,8 @@ export default (props: Iporps) => {
       </div>
       <CalendarPicker
         visible={visible3}
+        min={min}
+        defaultValue={new Date()}
         selectionMode="single"
         // value={val}
         onClose={() => setVisible3(false)}

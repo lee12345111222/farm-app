@@ -15,7 +15,7 @@
         "@mui/x-date-pickers": "^6.19.2",
         "@next/bundle-analyzer": "^14.2.4",
         "@reduxjs/toolkit": "1.9.5",
-        "antd-mobile": "^5.33.2",
+        "antd-mobile": "^5.37.1",
         "antd-mobile-icons": "^0.3.0",
         "autoprefixer": "^10.4.16",
         "dayjs": "^1.11.10",

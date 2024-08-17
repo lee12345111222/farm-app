@@ -27,7 +27,6 @@ export const QuestionChart = memo(({ filter }: { filter?: string }) => {
           ...ele.scores[0],
         });
       })
-      console.log(data, "filter", filter, sortData);
     } else {
       chartData.forEach((ele) => {
         ele.scores = ele?.scores.sort(
@@ -62,7 +61,6 @@ export const QuestionChart = memo(({ filter }: { filter?: string }) => {
           }
         }
       });
-      console.log(data, "filter", filter);
     }
     let opt = {
       title: {
@@ -73,7 +71,7 @@ export const QuestionChart = memo(({ filter }: { filter?: string }) => {
       },
       xAxis: {
         type: "category",
-        data: data.map((ele) => ele.farmIdName),
+        data: data.map((ele) => query.id === ele.farmId ? ele.farmIdName : ''),
         show: false,
       },
       tooltip: {
@@ -120,7 +118,7 @@ export const QuestionChart = memo(({ filter }: { filter?: string }) => {
 
   const getColor = (item) => {
     if (query.id === item.farmId) {
-      const score = item?.scores?.[0]?.totalScore;
+      const score = item?.totalScore;
       if (score < 60) {
         return "red";
       } else if (score <= 80 && score >= 60) {
@@ -141,7 +139,6 @@ export const QuestionChart = memo(({ filter }: { filter?: string }) => {
       }
     );
     if (res.code === "0") {
-      console.log(res, "res");
       let data = res?.data || [];
 
       setChartData(data);
