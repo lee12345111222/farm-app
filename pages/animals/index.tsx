@@ -63,7 +63,7 @@ const News = memo(() => {
       "incubationDate",
     ];
     const data1 = [
-      { key: "chickenName"},
+      { key: "chickenName" , hiden: true},
       { key: "medicationName",
         type: "select",
         topStyle: 'top' ,
@@ -101,7 +101,7 @@ const News = memo(() => {
                 : language[activeLocale || "zh"].nums,
             key: ele,
             val: "",
-            hide: idx === 4,
+            hide: idx === 0 || idx ===1 || idx === 4,
           };
         }),
         { name: "", key: "dataTime", hide: true },
@@ -118,6 +118,7 @@ const News = memo(() => {
             type: ele?.type,
             data: ele?.data,
             val: "",
+            hide: ele?.hiden,
           };
         }),
         { name: "", key: "dataTime", hide: true },

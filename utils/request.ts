@@ -1,5 +1,5 @@
 export const baseUrl = process.env.NODE_ENV === 'production' ? "/api" : "/base";
-
+console.log(baseUrl, 'base')
 const checkLogin = (res: { data: string; code: string }) => {
   if (res.data === "未登錄" && location.href.indexOf("login") === -1){
     window.location.href = "/login/home";
@@ -26,11 +26,11 @@ export const fetchGet = function (url: any, params: { [x: string]: any }) {
     .then((res) => {
       return res.json();
     })
-    .then(checkLogin);
-  // .catch((err) => {
-  //   console.log(err);
-  //   // return err;
-  // });
+    .then(checkLogin)
+  .catch((err) => {
+    console.log(err);
+    // return err;
+  });
 };
 // post请求封装
 export const fetchPost = function (
@@ -54,11 +54,11 @@ export const fetchPost = function (
     .then((res) => {
       return res.json();
     })
-    .then(checkLogin);
-  // .catch((err) => {
-  //   console.log(err);
-  //   return err;
-  // });
+    .then(checkLogin)
+  .catch((err) => {
+    console.log(err);
+    return err;
+  });
 };
 // 这个其实写不写都不行
 const fetchAll = function (
