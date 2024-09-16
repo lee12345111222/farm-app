@@ -13,11 +13,12 @@ const Register = () => {
   const { locale: activeLocale } = router;
 
   const [send, setSend] = useState(false);
+  const [load, setLoad] = useState(false);
 
   const [form] = Form.useForm()
   
   const onFinish = async (vals: Record<string, string>) => {
-    console.log(vals, "vals");
+    setLoad(true)
     if(vals.password !== vals.repassword){
       return Toast.show('The password and reset password must be the same')
     }
@@ -30,7 +31,7 @@ const Register = () => {
     }else{
       Toast.show(res.data)
     }
-    console.log(res,'res')
+    setLoad(false)
     // let res1 = await fetchPost("api/users/activation/", {});
     // // router.push("/home");
   };
@@ -74,6 +75,7 @@ const Register = () => {
               <Button
                 type="submit"
                 color="primary"
+                loading={load}
                 fill="solid"
                 className="w-[321px] !h-[46px] !mb-[31px] primary-solid-button"
               >

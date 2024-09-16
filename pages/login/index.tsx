@@ -14,6 +14,7 @@ const Login = () => {
   const { locale: activeLocale } = router;
 
   const [visible, setVisible] = useState(false);
+  const [load, setLoad] = useState(false)
   const dispatch = useDispatch();
 
  
@@ -24,6 +25,7 @@ const Login = () => {
 
   const onFinish = async (vals: Record<string, string>) => {
     console.log(vals, "vals");
+    setLoad(true)
     let res = await fetchPost("/user/login", vals, {
       "Content-Type": "application/json",
     });
@@ -35,6 +37,7 @@ const Login = () => {
     }else{
       Toast.show(res.data)
     }
+    setLoad(false)
   
   };
 
@@ -68,6 +71,7 @@ const Login = () => {
                   type="submit"
                   color="primary"
                   fill="solid"
+                  loading={load}
                   className="w-[321px] !h-[46px] !mb-[31px] primary-solid-button"
                 >
                   {language[activeLocale || "en"]?.login}

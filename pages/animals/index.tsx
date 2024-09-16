@@ -132,6 +132,8 @@ const News = memo(() => {
   const [listmsg, setListMsg] = useState(listObj);
   const [activeTime, setActiveTime] = useState("");
 
+  const [saveLoad, setSaveLoad] = useState(false);
+
   useEffect(() => {
     setListMsg((pre) => {
       pre[active].map((ele,idx) => {
@@ -230,6 +232,7 @@ const News = memo(() => {
   }, [getFarmMsg]);
 
   const saveFarmMsg = useCallback(async () => {
+    setSaveLoad(true)
     let res = await fetchPost(
       "/chicken/update",
       { ...msg },
@@ -244,6 +247,7 @@ const News = memo(() => {
     } else {
       Toast.show("Network error");
     }
+    setSaveLoad(false)
   }, [msg]);
 
   const fetchBatch = async () => {
@@ -351,6 +355,7 @@ const News = memo(() => {
               type="button"
               color="primary"
               fill="solid"
+              loading={saveLoad}
               style={{
                 "--background-color": "#4682B4",
               }}

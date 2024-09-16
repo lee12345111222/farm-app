@@ -32,14 +32,14 @@ const Register = () => {
 
   const query = useSelector(selectUser);
 
-  console.log(query,'query')
+  const [load, setLoad] = useState(false);
 
   const [url, setUrl] = useState("");
 
   const [form] = Form.useForm();
 
   const onFinish = async (vals: Record<string, string>) => {
-    console.log(vals, "vals");
+    setLoad(true)
     let res = 0;
     for (let key in vals) {
       if (key.includes("questionA")) {
@@ -78,6 +78,7 @@ const Register = () => {
     }else{
       Toast.show(result?.data||"network error");
     }
+    setLoad(false)
   };
 
   return (
@@ -98,6 +99,7 @@ const Register = () => {
               <Button
                 type="submit"
                 color="primary"
+                loading={load}
                 fill="solid"
                 className="w-[321px] !h-[46px] !mb-[31px] primary-solid-button"
               >

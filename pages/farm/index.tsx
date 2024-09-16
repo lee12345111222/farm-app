@@ -72,6 +72,8 @@ const News = memo(() => {
 
   const [filterParams, setFilterParams] = useState<Record<string, any>>({}); //農場下拉參數同一存儲
 
+  const [saveLoad, setSaveLoad] = useState(false);
+
   const ref: React.Ref<DropdownRef> = useRef();
 
   const [queryList] = useFetchSelectList();
@@ -275,7 +277,7 @@ const News = memo(() => {
       chickenSeedlingsVolume2: JSON.stringify(msg.chickenSeedlingsVolume2),
       chickenSeedlingsVolume3: JSON.stringify(msg.chickenSeedlingsVolume3),
     }
-    console.log(params, msg, 'params')
+    setSaveLoad(true)
     let res = await fetchPost(
       "/farm/add",
       { ...params },
@@ -289,6 +291,7 @@ const News = memo(() => {
     } else {
       Toast.show("Network error");
     }
+    setSaveLoad(false)
   }, [msg]);
 
   const list = [
@@ -334,6 +337,7 @@ const News = memo(() => {
                 type="button"
                 color="primary"
                 fill="solid"
+                loading={saveLoad}
                 style={{
                   "--background-color": "#4682B4",
                 }}
