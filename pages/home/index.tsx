@@ -40,7 +40,7 @@ const Home = () => {
   ];
   return (
     <div className="w-full h-full relative bg-[#F6F9FF] firstPage">
-      <div className="relative bg-[url('/home_slices/bg.png')] bg-cover h-[38%]">
+      <div className="relative bg-[url('/background.png')] bg-cover h-[38%]">
         <Header home logo />
         <div className="absolute top-[118px] left-[30px] text-white text-[19px]">
           {language[activeLocale || "zh"]?.goodnight.replace(

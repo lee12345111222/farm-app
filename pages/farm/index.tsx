@@ -586,7 +586,7 @@ const News = memo(() => {
             <div className="font-[PingFang SC, PingFang SC] font-normal text-[#708090] text-base">
               {ele.name}
             </div>
-            <div className="flex items-center" onClick={ele.click}>
+            <div className="flex items-center cursor-pointer" onClick={ele.click}>
               <div className="font-[PingFang SC, PingFang SC] font-normal text-[#4682B4] text-xs mr-2.5">
                 view more
               </div>

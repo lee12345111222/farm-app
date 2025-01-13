@@ -10,25 +10,29 @@ export const ElsePieChart = memo(({elseParams} : {elseParams: Record<string, any
     if (query.id) getData();
   }, [query, elseParams]);
   const getData = async () => {
-    let timeRes = await fetchPost(
-      "/farmOtherAttributes/query_date",
-      { farmId: query.id },
-      {
-        "Content-Type": "application/json",
-      }
-    );
-    console.log(timeRes, "time");
+    // let timeRes = await fetchPost(
+    //   "/farmOtherAttributes/query_date",
+    //   { farmId: query.id },
+    //   {
+    //     "Content-Type": "application/json",
+    //   }
+    // );
+    // console.log(timeRes, "AST Profile time");
+    console.log(query, "query.farmName", elseParams);
     let res: Record<string, any> = await fetchPost(
-      "/farmOtherAttributes/query_info",
-      { farmId: query.id, dataTime: timeRes.data?.[0], ...elseParams },
+      "/farmOtherAttributes/query_page?page=1&size=10",
+      { farmName: query.farmName },
       {
         "Content-Type": "application/json",
       }
     );
     if (res.code === "0") {
-      const data = res?.data || {};
+      const list = res?.data?.[0]?.list?.[0]?.farmOtherAttributes || {};
+      const data = list.filter(item => {
+        return item.bacterialType.includes(elseParams.bacterialType || '') && item.antibiotic.includes(elseParams.antibiotic || '')
+      })[0] || {}
       const total = Number(data.intermediate) + Number(data.resistant) + Number(data.sensitive);
-      console.log(data,total, "res23");
+      console.log(data,total, "AST Profile data");
 
       let opt = {
         title: {

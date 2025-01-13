@@ -101,7 +101,7 @@ export const ObituaryChart = memo(
         },
         xAxis: {
           type: "category",
-          data: timeArrData.map((ele) => `${ele.batchName}(${ele.dataTime})`),
+          data: timeArrData.sort((a, b) => dayjs(a.dataTime).valueOf() - dayjs(b.dataTime).valueOf()).map((ele) => `${ele.batchName}(${ele.dataTime})`),
           show: false,
         },
         series: [
@@ -140,7 +140,8 @@ export const ObituaryChart = memo(
         console.log(res, "res");
         const data = res?.data?.[0]?.list || [];
         let obj = data[0]?.obituaryList?.[0] || {};
-        const obituaryList = data[0]?.obituaryList || [];
+        const obituaryList = (data[0]?.obituaryList || []).sort((a, b) => dayjs(a.dataTime).valueOf() - dayjs(b.dataTime).valueOf());
+
 
         console.log(obj, "obj", data);
         let opt = {
@@ -237,7 +238,7 @@ export const ObituaryChart = memo(
         }
       );
       if (res.code === "0") {
-        console.log(res, "res");
+        console.log(res, "getAllBatchData res");
         const data = res?.data?.[0]?.list || [];
         setFarmBatchData(data)
        

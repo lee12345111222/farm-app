@@ -19,14 +19,14 @@ const Header = (props: IHeader) => {
     >
       {logo ? (
         <img
-          className="ml-[40px] w-[26px] h-[26px]"
+          className="ml-[40px] w-[26px] h-[26px] cursor-pointer"
           src={`${home ? "/home_slices/logo-white.png" : "/logo.png"}`}
           alt="logo"
           onClick={() => router.push("/home")}
         />
       ) : back ? (
         <img
-          className="ml-[40px] w-2 h-4"
+          className="ml-[40px] w-2 h-4 cursor-pointer"
           src={home ? "/backwhite.png" : `/back.png`}
           alt="back"
           onClick={() => router.back()}
