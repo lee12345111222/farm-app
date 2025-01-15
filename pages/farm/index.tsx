@@ -567,12 +567,12 @@ const News = memo(() => {
           )}
         </div>
         <div className="flex mt-4 items-center justify-between">
-          <div className="flex-1 h-20">
+          <div className="flex-1 h-48">
             <ObituaryChart chickenId={batchList[msg.batchIdx || 0]?.id} />
           </div>
 
           <Divider direction="vertical" className="!h-12" />
-          <div className="flex-1 h-20">
+          <div className="flex-1 h-48">
             <ElseLineChart chickenId={batchList[msg.batchIdx || 0]?.id} />
           </div>
         </div>
