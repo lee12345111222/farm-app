@@ -3,6 +3,9 @@ FROM node:18-alpine
 # 使用国内镜像源设置npm
 RUN npm config set registry https://registry.npmmirror.com
 
+# 增加 Node.js 的内存限制
+ENV NODE_OPTIONS="--max-old-space-size=4096"
+
 WORKDIR /app
 
 # 复制 package.json 和 package-lock.json
