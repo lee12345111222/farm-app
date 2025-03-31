@@ -1,4 +1,4 @@
-export const baseUrl = process.env.NODE_ENV === 'production' ? "/api" : "/base";
+export const baseUrl = "/api";
 console.log(baseUrl, 'base')
 const checkLogin = (res: { data: string; code: string }) => {
   if (res.data === "未登錄" && location.href.indexOf("login") === -1){
@@ -76,3 +76,4 @@ export default {
   fetchPost,
   fetchAll,
 };
+

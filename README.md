@@ -23,3 +23,16 @@ pnpm create next-app --example i18n-routing i18n-app
 ```
 
 Deploy it to the cloud with [Vercel](https://vercel.com/new?utm_source=github&utm_medium=readme&utm_campaign=next-example) ([Documentation](https://nextjs.org/docs/deployment)).
+
+## Docker 运行和部署
+
+本项目支持使用 Docker 进行开发、测试和部署。详细说明请参阅 [Docker 运行和部署指南](DOCKER.md)。
+
+快速启动：
+
+```bash
+# 使用 Docker Compose 启动应用
+docker-compose up -d
+```
+
+访问 http://localhost:3000 查看应用。

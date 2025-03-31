@@ -23,9 +23,9 @@ const nextConfig = withTM(
       return {
         fallback: [
           {
-            source: "/base/:path*",
-            // destination: `http://13.211.67.47:8000/:path*`,
-            destination: `http://127.0.0.1:8000//:path*`,
+            source: "/api/:path*",
+            destination: `http://13.211.67.47/api/:path*`,
+            // destination: `http://127.0.0.1:8000/:path*`,
           },
         ],
       };
