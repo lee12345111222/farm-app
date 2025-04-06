@@ -113,7 +113,7 @@ const useWebsocket = ({ url }: Iprops) => {
         };
       });
       localStorage.setItem(
-        //接受方存储 发送在chat页面
+        //接受方存儲 發送在chat頁面
         "message" + query.id,
         JSON.stringify(arr)
       );
@@ -172,7 +172,7 @@ const useWebsocket = ({ url }: Iprops) => {
         console.log(all, "all");
 
         localStorage.setItem(
-          //接受方存储 发送在chat页面
+          //接受方存儲 發送在chat頁面
           "message" + query.id,
           JSON.stringify(all)
         );

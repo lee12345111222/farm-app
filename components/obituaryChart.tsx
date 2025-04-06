@@ -71,10 +71,10 @@ export const ObituaryChart = memo(
         legend: {
           show: false,
         },
-        // 右上角下载的按钮
+        // 右上角下載的按钮
         toolbox: {
           feature: {
-            saveAsImage: {}, // 下载的按钮
+            saveAsImage: {}, // 下載的按钮
             myFull: {
               // 全屏
               show: true,
@@ -160,10 +160,10 @@ export const ObituaryChart = memo(
           legend: {
             show: false,
           },
-          // 右上角下载的按钮
+          // 右上角下載的按钮
           toolbox: {
             feature: {
-              saveAsImage: {}, // 下载的按钮
+              saveAsImage: {}, // 下載的按钮
               myFull: {
                 // 全屏
                 show: true,
@@ -228,7 +228,7 @@ export const ObituaryChart = memo(
       }
     };
 
-    //当前农场所有批次折线图
+    //當前農場所有批次折线图
     const getAllBatchData = async (params) => {
       let res: Record<string, any> = await fetchPost(
         "/obituary/query_page?page=1&size=3",

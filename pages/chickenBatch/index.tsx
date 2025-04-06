@@ -16,7 +16,7 @@ import { Action } from "antd-mobile/es/components/action-sheet";
 import { fetchGet, fetchPost } from "@/utils/request";
 
 const actions: Action[] = [
-  { text: "复制", key: "copy" },
+  { text: "複製", key: "copy" },
   { text: "修改", key: "edit" },
   { text: "保存", key: "save" },
 ];

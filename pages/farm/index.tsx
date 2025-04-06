@@ -131,7 +131,7 @@ const News = memo(() => {
               </Checkbox.Group>
             ) : (
               <Radio.Group
-                value={valIndex ? val[title] : title} //下标的值特殊处理
+                value={valIndex ? val[title] : title} //下標的值特殊處理
                 onChange={(val: string) => {
                   onChange?.(key, val);
                   // ref.current?.close();
@@ -219,7 +219,7 @@ const News = memo(() => {
       );
       data = {
         ...data,
-        chickenSeedlingsVolume1: data.chickenSeedlingsVolume1?.includes("{") //前端处理体积通过'{}'格式存储
+        chickenSeedlingsVolume1: data.chickenSeedlingsVolume1?.includes("{") //前端處理體積通過'{}'格式存儲
           ? JSON.parse(data.chickenSeedlingsVolume1)
           : {},
         chickenSeedlingsVolume2: data.chickenSeedlingsVolume2?.includes("{")

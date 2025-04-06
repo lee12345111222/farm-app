@@ -53,7 +53,7 @@ export const convertPdfToImages = async (file) => {
 };
 
 export const upload = (url: string, fn: Function, allowed?: any[]) => {
-  //选择文件的 input 元素
+  //選擇文件的 input 元素
   const fileInput: HTMLInputElement = document.createElement("input");
   fileInput.type = "file";
   fileInput.click();
@@ -74,7 +74,7 @@ export const upload = (url: string, fn: Function, allowed?: any[]) => {
     "gif",
     "jpeg",
   ];
-  // 当文件选择后触发的函数
+  // 當文件選擇後觸發的函數
   fileInput.onchange = async (event: Event) => {
     const target = event.target as HTMLInputElement;
     if (target.files && target.files[0]) {
@@ -82,7 +82,7 @@ export const upload = (url: string, fn: Function, allowed?: any[]) => {
       const file: File = target.files[0];
       var fileExtension = file?.name?.split(".").pop().toLowerCase() || "";
       if (!allowedFormats.includes(fileExtension)) {
-        // alert('只能上传 ' + allowedFormats.join(', ') + ' 格式的文件');
+        // alert('只能上傳 ' + allowedFormats.join(', ') + ' 格式的文件');
         Dialog.alert({
           content: "只能上傳 " + allowedFormats.join(", ") + " 格式的文件",
           onConfirm: () => {
@@ -97,7 +97,7 @@ export const upload = (url: string, fn: Function, allowed?: any[]) => {
           content: "uploading…",
           duration: 0,
         });
-        // 发送文件到服务器
+        // 發送文件到服務器
         const response: Record<string, any> = await fetchPost(url, {
           file: file,
         });
@@ -106,16 +106,16 @@ export const upload = (url: string, fn: Function, allowed?: any[]) => {
 
           // await fetchPost("/chat/downloadFile/" + response.data?.[0], {});
         } else {
-          console.error("文件上传失败");
+          console.error("文件上傳失败");
           Toast.show({
-            content: "文件上传失败",
+            content: "文件上傳失败",
           });
         }
         Toast.clear();
       } catch (error) {
-        console.error("发生错误:", error);
+        console.error("發生錯誤:", error);
         Toast.show({
-          content: "发生错误" + error,
+          content: "發生錯誤" + error,
         });
         Toast.clear();
       }
@@ -123,7 +123,7 @@ export const upload = (url: string, fn: Function, allowed?: any[]) => {
   };
   console.log("123");
 
-  // // 将 input 元素添加到页面中
+  // // 將 input 元素添加到頁面中
   // document.body.appendChild(fileInput);
 };
 export const isImage = (filename: string) => {

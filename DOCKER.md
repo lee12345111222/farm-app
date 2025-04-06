@@ -1,52 +1,52 @@
-# Docker 运行和部署指南
+# Docker 運行和部署指南
 
-本文档提供了使用 Docker 运行和部署此应用程序的详细说明。
+本文档提供了使用 Docker 運行和部署此應用程序的詳细說明。
 
-## 前提条件
+## 前提條件
 
 - 已安装 [Docker](https://docs.docker.com/get-docker/)
 - 已安装 [Docker Compose](https://docs.docker.com/compose/install/) (通常随 Docker Desktop 一起安装)
 
-## 使用 Docker 运行应用程序
+## 使用 Docker 運行應用程序
 
 ### 方法 1: 使用 Docker Compose (推荐)
 
-1. 克隆仓库并进入项目目录
+1. 克隆倉庫並進入項目目錄
    ```
-   git clone <仓库URL>
-   cd <项目目录>
+   git clone <倉庫URL>
+   cd <項目目錄>
    ```
 
-2. 启动应用程序
+2. 啟動應用程序
    ```
    docker-compose up -d
    ```
-   应用程序将在后台启动，并在 http://localhost:3000 上可访问
+   應用程序將在後台啟動，並在 http://localhost:3000 上可訪問
 
-3. 查看日志
+3. 查看日誌
    ```
    docker-compose logs -f
    ```
 
-4. 停止应用程序
+4. 停止應用程序
    ```
    docker-compose down
    ```
 
 ### 方法 2: 直接使用 Docker
 
-1. 构建 Docker 镜像
+1. 構建 Docker 鏡像
    ```
    docker build -t my-app .
    ```
 
-2. 运行 Docker 容器
+2. 運行 Docker 容器
    ```
    docker run -p 3000:3000 -d my-app
    ```
-   应用程序将在后台启动，并在 http://localhost:3000 上可访问
+   應用程序將在後台啟動，並在 http://localhost:3000 上可訪問
 
-3. 查看日志
+3. 查看日誌
    ```
    docker logs -f <容器ID>
    ```
@@ -56,28 +56,28 @@
    docker stop <容器ID>
    ```
 
-## 生产环境部署
+## 生產環境部署
 
 ### 使用 Docker Compose 部署
 
-1. 在服务器上克隆仓库
+1. 在服務器上克隆倉庫
    ```
-   git clone <仓库URL>
-   cd <项目目录>
+   git clone <倉庫URL>
+   cd <項目目錄>
    ```
 
-2. 根据需要修改 docker-compose.yml 中的环境变量和配置
+2. 根據需要修改 docker-compose.yml 中的環境變量和配置
 
-3. 启动应用程序
+3. 啟動應用程序
    ```
    docker-compose up -d
    ```
 
-4. 配置反向代理（如 Nginx 或 Traefik）以将流量转发到应用程序
+4. 配置反向代理（如 Nginx 或 Traefik）以將流量轉發到應用程序
 
-### 持续集成/持续部署 (CI/CD)
+### 持續集成/持續部署 (CI/CD)
 
-您可以配置 CI/CD 管道（如 GitHub Actions、GitLab CI 或 Jenkins）自动化构建 Docker 镜像并部署到服务器。示例 GitHub Actions 工作流程：
+您可以配置 CI/CD 管道（如 GitHub Actions、GitLab CI 或 Jenkins）自動化構建 Docker 鏡像並部署到服務器。示例 GitHub Actions 工作流程：
 
 ```yaml
 name: Deploy to Production
@@ -107,11 +107,11 @@ jobs:
             docker-compose up -d
 ```
 
-## 环境变量配置
+## 環境變量配置
 
-您可以通过以下方式配置环境变量：
+您可以通過以下方式配置環境變量：
 
-1. 在 docker-compose.yml 文件中添加环境变量：
+1. 在 docker-compose.yml 文件中添加環境變量：
    ```yaml
    services:
      app:
@@ -120,14 +120,14 @@ jobs:
          - API_URL=https://api.example.com
    ```
 
-2. 创建一个 .env 文件并使用 Docker Compose 加载：
+2. 創建一個 .env 文件並使用 Docker Compose 加載：
    ```
    # .env 文件
    NODE_ENV=production
    API_URL=https://api.example.com
    ```
 
-   然后在 docker-compose.yml 中引用：
+   然後在 docker-compose.yml 中引用：
    ```yaml
    services:
      app:
@@ -137,37 +137,37 @@ jobs:
 
 ## 故障排除
 
-1. 如果应用无法启动，检查日志：
+1. 如果應用無法啟動，檢查日誌：
    ```
    docker-compose logs -f
    ```
 
-2. 确保端口没有被其他应用占用：
+2. 確保端口没有被其他應用占用：
    ```
    lsof -i :3000
    ```
 
-3. 检查 Docker 容器状态：
+3. 檢查 Docker 容器狀態：
    ```
    docker ps -a
    ```
 
-4. 重建容器及镜像：
+4. 重建容器及鏡像：
    ```
    docker-compose down
    docker-compose build --no-cache
    docker-compose up -d
    ```
 
-## 网络问题解决方案
+## 網絡問题解决方案
 
-如果您在构建或拉取 Docker 镜像时遇到网络超时问题，可以尝试以下解决方案：
+如果您在構建或拉取 Docker 鏡像時遇到網絡超時問题，可以嘗試以下解决方案：
 
-### 配置 Docker 使用国内镜像源
+### 配置 Docker 使用国内鏡像源
 
-1. 创建或编辑 Docker 配置文件：
+1. 創建或编輯 Docker 配置文件：
 
-   对于 Linux：
+   對於 Linux：
    ```bash
    sudo mkdir -p /etc/docker
    sudo tee /etc/docker/daemon.json <<-'EOF'
@@ -183,9 +183,9 @@ jobs:
    sudo systemctl restart docker
    ```
 
-   对于 macOS 和 Windows：
-   - 打开 Docker Desktop
-   - 转到 Settings/Preferences
+   對於 macOS 和 Windows：
+   - 打開 Docker Desktop
+   - 轉到 Settings/Preferences
    - 在 Docker Engine 配置中添加以下内容：
      ```json
      {
@@ -196,21 +196,21 @@ jobs:
        ]
      }
      ```
-   - 点击 Apply & Restart
+   - 點击 Apply & Restart
 
-2. 验证配置：
+2. 驗証配置：
    ```bash
    docker info
    ```
-   确认输出中包含您配置的镜像源。
+   確認输出中包含您配置的鏡像源。
 
 ### 使用代理
 
-如果您需要通过代理访问 Docker Hub：
+如果您需要通過代理訪問 Docker Hub：
 
-1. 为 Docker 服务设置代理：
+1. 為 Docker 服務設置代理：
 
-   对于 Linux：
+   對於 Linux：
    ```bash
    sudo mkdir -p /etc/systemd/system/docker.service.d
    sudo tee /etc/systemd/system/docker.service.d/http-proxy.conf <<-'EOF'
@@ -221,25 +221,25 @@ jobs:
    sudo systemctl restart docker
    ```
 
-   对于 macOS 和 Windows：
-   - 在 Docker Desktop 的设置中配置代理
+   對於 macOS 和 Windows：
+   - 在 Docker Desktop 的設置中配置代理
 
-2. 在构建镜像时使用代理：
+2. 在構建鏡像時使用代理：
    ```bash
    docker build --build-arg HTTP_PROXY=http://proxy.example.com:port --build-arg HTTPS_PROXY=http://proxy.example.com:port -t my-image .
    ```
 
-### 临时解决方案
+### 臨時解决方案
 
-如果以上方法不起作用，可以尝试以下临时解决方案：
+如果以上方法不起作用，可以嘗試以下臨時解决方案：
 
-1. 使用手机热点或其他网络连接
-2. 增加构建超时时间：
+1. 使用手機熱點或其他網絡連接
+2. 增加構建超時時间：
    ```bash
    DOCKER_CLIENT_TIMEOUT=120 COMPOSE_HTTP_TIMEOUT=120 docker-compose up -d
    ```
-3. 先手动拉取基础镜像：
+3. 先手動拉取基礎鏡像：
    ```bash
    docker pull node:18-alpine
    ```
-   然后再运行 `docker-compose up -d` 
+   然後再運行 `docker-compose up -d` 

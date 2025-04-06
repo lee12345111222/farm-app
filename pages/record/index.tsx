@@ -23,9 +23,9 @@ const list = [{ name: "", id: "" }];
 const Status = {
   未付款: 1,
   已付款: 2,
-  已发货: 3,
-  已收货: 4,
-  订单正常完成: 20,
+  已發貨: 3,
+  已收貨: 4,
+  訂單正常完成: 20,
 };
 
 const Record = memo(() => {
@@ -126,9 +126,9 @@ const Record = memo(() => {
         editSelectOptions: [
           "未付款",
           "已付款",
-          "已发货",
-          "已收货",
-          "订单正常完成",
+          "已發貨",
+          "已收貨",
+          "訂單正常完成",
         ],
       },
     ],
@@ -220,10 +220,10 @@ const Record = memo(() => {
                     综合排序
                   </Radio>
                   <Radio block value="nearest">
-                    距离最近
+                    距離最近
                   </Radio>
                   <Radio block value="top-rated">
-                    评分最高
+                    評分最高
                   </Radio>
                 </Space>
               </Radio.Group>

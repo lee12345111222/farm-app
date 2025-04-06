@@ -60,18 +60,18 @@ export const ElseLineChart = memo(({ chickenId }: Iprops) => {
                 colorStops: [
                   {
                     offset: 0,
-                    color: "rgba(126,199,255,0)", // 0% 处的颜色
+                    color: "rgba(126,199,255,0)", // 0% 處的颜色
                   },
                   {
                     offset: 0.5,
-                    color: "rgba(126,199,255,1)", // 100% 处的颜色
+                    color: "rgba(126,199,255,1)", // 100% 處的颜色
                   },
                   {
                     offset: 1,
-                    color: "rgba(126,199,255,0)", // 100% 处的颜色
+                    color: "rgba(126,199,255,0)", // 100% 處的颜色
                   },
                 ],
-                global: false, // 缺省为 false
+                global: false, // 缺省為 false
               },
             },
           },
@@ -88,14 +88,14 @@ export const ElseLineChart = memo(({ chickenId }: Iprops) => {
             type: "category",
             boundaryGap: false,
             axisLine: {
-              //坐标轴轴线相关设置。数学上的x轴
+              //坐標轴轴线相關設置。數学上的x轴
               show: false,
               lineStyle: {
                 color: "#233653",
               },
             },
             axisLabel: {
-              //坐标轴刻度标签的相关设置
+              //坐標轴刻度標签的相關設置
               textStyle: {
                 color: "#7ec7ff",
                 padding: 16,
@@ -120,7 +120,7 @@ export const ElseLineChart = memo(({ chickenId }: Iprops) => {
         ],
         yAxis: [
           {
-            name: "人数",
+            name: "人數",
             show: false,
             nameTextStyle: {
               color: "#7ec7ff",
@@ -162,14 +162,14 @@ export const ElseLineChart = memo(({ chickenId }: Iprops) => {
           {
             // name: "上学",
             type: "line",
-            symbol: "circle", // 默认是空心圆（中间是白色的），改成实心圆
+            symbol: "circle", // 默認是空心圆（中间是白色的），改成实心圆
             showAllSymbol: true,
             symbolSize: 0,
             smooth: true,
             lineStyle: {
               normal: {
                 width: 1,
-                color: "#308BF2", // 线条颜色
+                color: "#308BF2", // 线條颜色
               },
               borderColor: "rgba(0,0,0,.4)",
             },
@@ -184,7 +184,7 @@ export const ElseLineChart = memo(({ chickenId }: Iprops) => {
             areaStyle: {
               //区域填充样式
               normal: {
-                //线性渐变，前4个参数分别是x0,y0,x2,y2(范围0~1);相当于图形包围盒中的百分比。如果最后一个参数是‘true’，则该四个值是绝对像素位置。
+                //线性渐變，前4個參數分别是x0,y0,x2,y2(范围0~1);相當於图形包围盒中的百分比。如果最後一個參數是‘true’，则該四個值是绝對像素位置。
                 color: new echarts.graphic.LinearGradient(
                   0,
                   0,
@@ -203,7 +203,7 @@ export const ElseLineChart = memo(({ chickenId }: Iprops) => {
                   false
                 ),
                 shadowColor: "rgba(25,163,223, 0.5)", //阴影颜色
-                shadowBlur: 20, //shadowBlur设图形阴影的模糊大小。配合shadowColor,shadowOffsetX/Y, 设置图形的阴影效果。
+                shadowBlur: 20, //shadowBlur設图形阴影的模糊大小。配合shadowColor,shadowOffsetX/Y, 設置图形的阴影效果。
               },
             },
             data: goToSchool,

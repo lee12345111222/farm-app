@@ -121,7 +121,7 @@ const News = memo(({sendMessage}: Iprops) => {
         console.log(result, 'result')
         if (result?.code === "0") {
           Toast.show("success");
-          //发送状态
+          //發送狀態
           let res = sendMessage?.(
             JSON.stringify({
               message: JSON.stringify({
@@ -130,7 +130,7 @@ const News = memo(({sendMessage}: Iprops) => {
                 acceptId:
                   "42d83d66fdf0451db16c3fe434f09e61",
                 msgType: "1",
-                msgValue: '生成一条订单:' + result.data?.orderId,
+                msgValue: '生成一條訂單:' + result.data?.orderId,
               }),
             })
           );
@@ -149,7 +149,7 @@ const News = memo(({sendMessage}: Iprops) => {
               ...pre,
               {
                 id: Math.random(),
-                text: '生成一条订单:' + result.data?.orderId,
+                text: '生成一條訂單:' + result.data?.orderId,
                 type: "send",
                 avatar: "/user_photo2.png",
               },

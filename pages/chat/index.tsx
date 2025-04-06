@@ -23,13 +23,13 @@ const Chat = ({ sendMessage, messagememo }: Iprops) => {
   const [message, setMessage] = useState<Record<string, any>[]>([
     // {
     //   id: 1,
-    //   text: "这是文字这是文字这是文字这是文字这是文字这是文字这是文字这是文字这是文字",
+    //   text: "這是文字這是文字這是文字這是文字這是文字這是文字這是文字這是文字這是文字",
     //   type: "receive",
     //   avatar: "/user_photo.png",
     // },
     // {
     //   id: 2,
-    //   text: "这是文字这是文字这是文字这是文字这是文字这是文字这是文字这是文字这是文字",
+    //   text: "這是文字這是文字這是文字這是文字這是文字這是文字這是文字這是文字這是文字",
     //   type: "send",
     //   avatar: "/user_photo2.png",
     // },
@@ -103,7 +103,7 @@ const Chat = ({ sendMessage, messagememo }: Iprops) => {
     const val = e.target.val || {};
 
     if (!type) {
-      //发送状态
+      //發送狀態
       let res = sendMessage?.(
         JSON.stringify({
           message: JSON.stringify({

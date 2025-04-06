@@ -59,7 +59,7 @@ export default (props: Iporps) => {
         <Dropdown.Item key="sorter" title={title || "-"}>
           <div style={{ padding: '12px 12px 0' }} className="max-h-[50vh] overflow-scroll">
             <Radio.Group
-              value={valIndex ? val[title] : title} //下标的值特殊处理
+              value={valIndex ? val[title] : title} //下標的值特殊處理
               onChange={(val: string) => {
                 console.log(idx,val, '132')
                 onChange?.(idx, val);

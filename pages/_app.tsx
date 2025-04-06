@@ -28,7 +28,7 @@ export default function MyApp({ Component, pageProps }: AppPropsWithLayout) {
       url: user.id
       ? "ws://13.211.67.47:8000/ws/chat/" + user.id + "/" + user.token
         // ? "ws://127.0.0.1:8000/ws/chat/" + user.id + "/" + user.token
-        : "", // 此参数为websocket地址
+        : "", // 此參數為websocket地址
     });
 
   const messagememo: any = useMemo(() => wsData, [wsData]);
@@ -37,9 +37,9 @@ export default function MyApp({ Component, pageProps }: AppPropsWithLayout) {
     const res = JSON.parse(localStorage.getItem("user") || "{}");
     setUser(res);
     const handleRouteChange = (url: string) => {
-      // 在路由变化时执行你的逻辑
+      // 在路由變化時執行你的邏輯
       console.log(
-        "路由发生了变化",
+        "路由發生了變化",
         url,
         url.includes("login") ||
           url.includes("register") ||
@@ -63,10 +63,10 @@ export default function MyApp({ Component, pageProps }: AppPropsWithLayout) {
       }
     };
 
-    // 监听路由变化
+    // 監聽路由變化
     router.events.on("routeChangeStart", handleRouteChange);
 
-    // 清除监听器以避免内存泄漏
+    // 清除監聽器以避免内存泄漏
     return () => {
       router.events.off("routeChangeStart", handleRouteChange);
       setUser({});
@@ -75,7 +75,7 @@ export default function MyApp({ Component, pageProps }: AppPropsWithLayout) {
   console.log(user, "user");
   //   const [data, setData] = useState<Record<string,any>[]>([]);
   useEffect(() => {
-    // 接受到socket数据， 进行业务逻辑处理
+    // 接受到socket數據， 進行業務邏輯處理
     if (Object.keys(messagememo).length !== 0) {
       console.log(typeof messagememo, 'messagememo');
       const data1 = JSON.parse(messagememo?.message  || '[]');
@@ -83,7 +83,7 @@ export default function MyApp({ Component, pageProps }: AppPropsWithLayout) {
       let list = localStorage.getItem("message" + user.id) || "[]";
       let pre = JSON.parse(list);
       localStorage.setItem(
-        //接受方存储 发送在chat页面
+        //接受方存儲 發送在chat頁面
         "message" + user.id,
         JSON.stringify([
           ...pre,
@@ -98,7 +98,7 @@ export default function MyApp({ Component, pageProps }: AppPropsWithLayout) {
       );
     }
 
-    // 如果是已关闭且是当前页面自动重连
+    // 如果是已關閉且是當前頁面自動重連
     if (readyState.key === 3) {
       reconnect();
     }

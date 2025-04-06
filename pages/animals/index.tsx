@@ -217,7 +217,7 @@ const News = memo(() => {
   const [initMsg, setInitMsg] = useState<Record<string, any>>({});
 
   const getFarmMsg = useCallback(async (params?: Record<string, any>) => {
-    //获取农场信息，之前漏了接口，应该通过id查询todo
+    //獲取農場信息，之前漏了接口，應該通過id查詢todo
     let res = JSON.parse(localStorage.getItem("animal") || "{}");
     for (let item in res) {
       console.log(item);
@@ -287,7 +287,7 @@ const News = memo(() => {
   );
 
   const handleClose = () => {
-    if(msg.status === '已关闭'){
+    if(msg.status === '已關閉'){
       Dialog.confirm({
         title: "確認嗎 若確認 批次將從已關閉移至活躍中",
         onConfirm: async () => {
@@ -297,7 +297,7 @@ const News = memo(() => {
             Toast.show("success");
             setMsg((pre) => ({
               ...pre,
-              status: '活动中',
+              status: '活動中',
             }))
           } else {
             Toast.show("Network error");
@@ -317,7 +317,7 @@ const News = memo(() => {
           Toast.show("success");
           setMsg((pre) => ({
             ...pre,
-            status: '已关闭',
+            status: '已關閉',
           }))
         } else {
           Toast.show("Network error");
@@ -348,7 +348,7 @@ const News = memo(() => {
               // }}
               onClick={handleClose}
             >
-              {language[activeLocale || "zh"]?.[msg.status === '已关闭'? 'open':'close']}
+              {language[activeLocale || "zh"]?.[msg.status === '已關閉'? 'open':'close']}
             </Button>
             <Button
               size="mini"

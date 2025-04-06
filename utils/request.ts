@@ -7,7 +7,7 @@ const checkLogin = (res: { data: string; code: string }) => {
   return res;
 };
 
-//get请求封装
+//get請求封装
 export const fetchGet = function (url: any, params: { [x: string]: any }) {
   let list = [];
   for (let key in params) {
@@ -32,7 +32,7 @@ export const fetchGet = function (url: any, params: { [x: string]: any }) {
     // return err;
   });
 };
-// post请求封装
+// post請求封装
 export const fetchPost = function (
   url: string | URL | Request,
   params: { [x: string]: string | Blob | any },
@@ -60,7 +60,7 @@ export const fetchPost = function (
     return err;
   });
 };
-// 这个其实写不写都不行
+// 這個其实写不写都不行
 const fetchAll = function (
   url: string | URL | Request,
   params: { [x: string]: any },
